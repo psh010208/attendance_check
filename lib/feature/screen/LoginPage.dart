@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart'; // Firestore 사용을 위한 import
 import 'SignUpPage.dart'; // 회원가입 페이지 import
+import 'cardScreen.dart'; // CardScreen 페이지 import
 
 class LoginPage extends StatelessWidget {
   final TextEditingController _studentIdController = TextEditingController();
@@ -8,14 +9,17 @@ class LoginPage extends StatelessWidget {
   String? _selectedRole;
 
   // Firestore 인스턴스
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   // 로그인 처리 함수
   Future<void> _login(BuildContext context) async {
     String studentId = _studentIdController.text.trim();
     String password = _passwordController.text.trim();
+    String? _selectedRole = '학부생';
 
-    if (studentId.isEmpty || password.isEmpty || _selectedRole == null) {
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+    if (studentId.isEmpty || password.isEmpty || _selectedRole == 'null') {
       // 입력 필드가 비어있을 때 처리
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('모든 필드를 입력하세요.')),
@@ -26,7 +30,7 @@ class LoginPage extends StatelessWidget {
     try {
       // 학부생일 경우 student 컬렉션에서 확인
       if (_selectedRole == '학부생') {
-        var snapshot = await _firestore
+        var snapshot = await firestore
             .collection('student')
             .where('studentId', isEqualTo: studentId)
             .where('password', isEqualTo: password)
@@ -37,6 +41,11 @@ class LoginPage extends StatelessWidget {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('로그인 성공!')),
           );
+          // CardScreen으로 이동
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => cardScreen()),
+          );
         } else {
           // 로그인 실패
           ScaffoldMessenger.of(context).showSnackBar(
@@ -46,7 +55,7 @@ class LoginPage extends StatelessWidget {
       }
       // 관리자인 경우 manager 컬렉션에서 확인
       else if (_selectedRole == '교수(관리자)') {
-        var snapshot = await _firestore
+        var snapshot = await firestore
             .collection('manager')
             .where('managerId', isEqualTo: studentId)
             .where('password', isEqualTo: password)
@@ -56,6 +65,11 @@ class LoginPage extends StatelessWidget {
           // 로그인 성공
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('로그인 성공!')),
+          );
+          // CardScreen으로 이동
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => cardScreen()),
           );
         } else {
           // 로그인 실패
@@ -86,11 +100,12 @@ class LoginPage extends StatelessWidget {
             // 학부생/관리자 선택
             DropdownButtonFormField<String>(
               decoration: InputDecoration(
-                labelText: '역할을 선택하세요',
+                labelText: '학부생',
                 border: OutlineInputBorder(),
               ),
+              value: _selectedRole, // 기본값으로 '학부생' 설정
               items: ['학부생', '교수(관리자)']
-                  .map((value) => DropdownMenuItem(
+          .map((value) => DropdownMenuItem(
                 child: Text(value),
                 value: value,
               ))
@@ -98,8 +113,7 @@ class LoginPage extends StatelessWidget {
               onChanged: (value) {
                 _selectedRole = value;
               },
-              validator: (value) =>
-              value == null ? '역할을 선택하세요' : null,
+              validator: (value) => value == null ? '역할을 선택하세요' : null,
             ),
             const SizedBox(height: 20),
 

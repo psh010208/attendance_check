@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:attendance_check/database/model/managerModel.dart';
 
-class ManagerFirestoreService {
+class ManagerDbQuery {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   // 관리자 데이터를 Firestore에서 가져오는 함수

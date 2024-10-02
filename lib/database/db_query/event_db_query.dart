@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:attendance_check/database/model/EventModel.dart';
 
-class EventFirestoreService {
+class EventDbQuery {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   // 이벤트 데이터를 Firestore에서 가져오는 함수
