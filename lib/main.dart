@@ -6,8 +6,13 @@ import 'feature/screen/SignUpPage.dart';  // 회원가입 페이지 import
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(); // Firebase 초기화
-
+  try {
+    await Firebase.initializeApp();
+    runApp(const MyApp());
+    print('Firebase 초기화 성공');
+  } catch (e) {
+    print('Firebase 초기화 중 오류 발생: $e');
+  }
   runApp(const MyApp());
 }
 
