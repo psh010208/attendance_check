@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';  // inputFormatters를 사용하기 위한 import
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -70,7 +71,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                     const SizedBox(height: 20),
 
-                    // 이름 입력 필드
+                    // 이름 입력 필드 (한국어만 입력 가능)
                     TextFormField(
                       decoration: InputDecoration(
                         labelText: '이름',
@@ -79,10 +80,12 @@ class _SignUpPageState extends State<SignUpPage> {
                       validator: (value) => value == null || value.isEmpty
                           ? '이름을 입력하세요'
                           : null,
+                      keyboardType: TextInputType.text,
+
                     ),
                     const SizedBox(height: 20),
 
-                    // 학번 입력 필드
+                    // 학번 입력 필드 (숫자만 입력 가능)
                     TextFormField(
                       decoration: InputDecoration(
                         labelText: '학번',
@@ -91,20 +94,27 @@ class _SignUpPageState extends State<SignUpPage> {
                       validator: (value) => value == null || value.isEmpty
                           ? '학번을 입력하세요'
                           : null,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,  // 숫자만 입력 가능
+                      ],
                     ),
                     const SizedBox(height: 20),
 
-                    // 전화번호 입력 필드 (선택 사항)
+                    // 전화번호 입력 필드 (숫자만 입력 가능, 선택 사항)
                     TextFormField(
                       decoration: InputDecoration(
                         labelText: '전화번호 (선택 사항)',
                         border: OutlineInputBorder(),
                       ),
-                      // validator를 null로 설정하여 선택적으로 입력 가능하게 함
+                      keyboardType: TextInputType.phone,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,  // 숫자만 입력 가능
+                      ],
                     ),
                     const SizedBox(height: 20),
 
-                    // 비밀번호 입력 필드
+                    // 비밀번호 입력 필드 (숫자만 입력 가능)
                     TextFormField(
                       decoration: InputDecoration(
                         labelText: '비밀번호',
@@ -114,6 +124,10 @@ class _SignUpPageState extends State<SignUpPage> {
                       validator: (value) => value == null || value.isEmpty
                           ? '비밀번호를 입력하세요'
                           : null,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly,  // 숫자만 입력 가능
+                      ],
                     ),
                     const SizedBox(height: 40),
 
