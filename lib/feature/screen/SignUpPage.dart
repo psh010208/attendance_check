@@ -18,7 +18,7 @@ class SignUpPage extends StatelessWidget {
                 labelText: '학과를 선택하세요',
                 border: OutlineInputBorder(),
               ),
-              items: ['의료IT공학과', '컴퓨터소프트웨어공학과', '정보보호학과'] // 예시 학과
+              items: ['의료IT공학과', '컴퓨터소프트웨어공학과', '정보보호학과','AI빅데이터학과','사물인터넷학과','메타버스&게임학과'] // 예시 학과
                   .map((value) => DropdownMenuItem(
                 child: Text(value),
                 value: value,

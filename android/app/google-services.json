@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "621780629029",
+    "firebase_url": "https://attendance-check-ae9ef-default-rtdb.firebaseio.com",
+    "project_id": "attendance-check-ae9ef",
+    "storage_bucket": "attendance-check-ae9ef.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:621780629029:android:1ee4a625334077a15ef1cc",
+        "android_client_info": {
+          "package_name": "com.example.attendance_check"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBrqGk8LEnt3rw6sohbaQ3oeXEYzKKW1I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
