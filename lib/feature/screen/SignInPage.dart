@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart'; // Firestore 사용을 �
 import 'SignUpPage.dart'; // 회원가입 페이지 import
 import 'cardScreen.dart'; // CardScreen 페이지 import
 
-class LoginPage extends StatelessWidget {
+class SignInPage extends StatelessWidget {
   final TextEditingController _studentIdController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   String? _selectedRole;

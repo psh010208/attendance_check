@@ -26,7 +26,7 @@ class homeScreeen extends StatelessWidget {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, '/login'); // '/login' 페이지로 이동
+                    Navigator.pushNamed(context, '/signin'); // '/signin' 페이지로 이동
                   },
                   child: Text('로그인'),
                 ),
