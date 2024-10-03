@@ -24,7 +24,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
 
   // 왼쪽 바에 사용할 색상을 리스트로 정의
   final List<Color> barColors = [
-    Color(0xff2d6fed), // 일정 5
+    Color(0xff2d6fea), // 일정 5
     Color(0xff1f88cf), // 일정 4
     Color(0xff1797ef), // 일정 3
     Color(0xff0c8ad1), // 일정 2
@@ -47,84 +47,90 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            SizedBox(width: 10),
             Image.asset('assets/logo.png', width: 150, height: 30), // 학교 로고
+            Spacer(),
             IconButton(onPressed: () {}, icon: Icon(Icons.menu)), // 메뉴 아이콘
           ],
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            if (!isExpanded) ...[
-              // 카드를 펼치기 전 참여 상황 및 진행도 표시
-              SizedBox(height: 20),
-              Text('참여 상황: $currentProgress / 9', style: TextStyle(fontSize: 20)),
-              SizedBox(height: 10),
-              // 커스텀 막대
-              buildCustomProgressBar(currentProgress),
-              SizedBox(height: 20),
+      body: GestureDetector(
+        onVerticalDragEnd: (details) {
+          setState(() {
+            isExpanded = true; // 카드를 펼치도록 설정
+          });
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              if (!isExpanded) ...[
+                // 카드를 펼치기 전 참여 상황 및 진행도 표시
+                SizedBox(height: 20),
+                Text('참여 상황: $currentProgress / 9', style: TextStyle(fontSize: 18)),
+                SizedBox(height: 10),
+                // 커스텀 막대
+                buildCustomProgressBar(currentProgress),
+                SizedBox(height: 20),
 
-            ],
-            if (isExpanded)
-            // '밀어서 접기' 버튼이 상단에 나타남
-              TextButton(
-                onPressed: () {
-                  setState(() {
-                    isExpanded = false;
-                  });
-                },
-                child: Text("밀어서 접기", style: TextStyle(decoration: TextDecoration.underline)),
-              ),
-            Expanded(
-              child: Stack(
-                children: [
-                  if (!isExpanded)
-                    buildOverlappingCards(), // 카드들이 겹쳐 보이도록
-                  if (isExpanded)
-                    ListView(
-                      children: schedules.map((schedule) {
-                        // schedule 정보를 사용하여 카드 생성
-                        int index = schedules.indexOf(schedule);
-                        return buildScheduleCard(schedule["title"]!, schedule["time"]!, schedule["location"]!, barColors[index]);
-                      }).toList(),
-                    ),
-                ],
-              ),
-            ),
-            if (!isExpanded)
-            // '밀어서 펼치기' 버튼 표시
-              TextButton(
-                onPressed: () {
-                  setState(() {
-                    isExpanded = true;
-                  });
-                },
-                child: Text("밀어서 펼치기", style: TextStyle(decoration: TextDecoration.underline)),
-              ),
-            // QR 코드 인식 버튼 추가
-            if (!isExpanded)
-              SizedBox(height: 30), // 버튼과 위의 내용 간격
-            if (!isExpanded)
-            // 펼친 이후에는 QR코드 인식 버튼 숨김
-              IconButton(
-                onPressed: () {
-                  // QR 코드 인식 기능을 추가하는 부분
-                },
-                icon: Icon(Icons.qr_code_2_rounded, size: 35,),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.transparent, // 배경색을 투명하게 설정
-                  shadowColor: Colors.transparent, // 그림자 색상도 투명하게 설정
+              ],
+              if (isExpanded)
+              // '밀어서 접기' 버튼이 상단에 나타남
+                TextButton(
+                  onPressed: () {
+                    setState(() {
+                      isExpanded = false;
+                    });
+                  },
+                  child: Text("클릭해서 접기", style: TextStyle(decoration: TextDecoration.underline)),
+                ),
+              Expanded(
+                child: Stack(
+                  children: [
+                    if (!isExpanded)
+                      buildOverlappingCards(), // 카드들이 겹쳐 보이도록
+                    if (isExpanded)
+                      ListView(
+                        children: schedules.map((schedule) {
+                          // schedule 정보를 사용하여 카드 생성
+                          int index = schedules.indexOf(schedule);
+                          return buildScheduleCard(schedule["title"]!, schedule["time"]!, schedule["location"]!, barColors[index]);
+                        }).toList(),
+                      ),
+                  ],
                 ),
               ),
-            if (!isExpanded)
-              SizedBox(height: 16), // 버튼과 화면 아래 간격
-          ],
+              if (!isExpanded)
+              // '밀어서 펼치기' 버튼 표시
+                TextButton(
+                  onPressed: () {
+                    setState(() {
+                      isExpanded = true;
+                    });
+                  },
+                  child: Text("밀어서 펼치기", style: TextStyle(decoration: TextDecoration.underline)),
+                ),
+              // QR 코드 인식 버튼 추가
+              if (!isExpanded)
+                SizedBox(height: 30), // 버튼과 위의 내용 간격
+              if (!isExpanded)
+              // 펼친 이후에는 QR코드 인식 버튼 숨김
+                IconButton(
+                  onPressed: () {
+                    // QR 코드 인식 기능을 추가하는 부분
+                  },
+                  icon: Icon(Icons.qr_code_2_rounded, size: 35,),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.transparent, // 배경색을 투명하게 설정
+                    shadowColor: Colors.transparent, // 그림자 색상도 투명하게 설정
+                  ),
+                ),
+              if (!isExpanded)
+                SizedBox(height: 16), // 버튼과 화면 아래 간격
+            ],
+          ),
         ),
-      ),
-    );
+      ),);
   }
 
   Widget buildOverlappingCards() {
