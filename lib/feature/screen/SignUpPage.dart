@@ -167,9 +167,9 @@ class _SignUpPageState extends State<SignUpPage> {
                         '메타버스&게임학과'
                       ]
                           .map((value) => DropdownMenuItem(
-                                child: Text(value),
-                                value: value,
-                              ))
+                        child: Text(value),
+                        value: value,
+                      ))
                           .toList(),
                       onChanged: (value) {
                         setState(() {
@@ -190,7 +190,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         _name = value;
                       },
                       validator: (value) =>
-                          value == null || value.isEmpty ? '이름을 입력하세요' : null,
+                      value == null || value.isEmpty ? '이름을 입력하세요' : null,
                     ),
                     const SizedBox(height: 20),
 
@@ -204,7 +204,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         _studentId = value;
                       },
                       validator: (value) =>
-                          value == null || value.isEmpty ? '학번을 입력하세요' : null,
+                      value == null || value.isEmpty ? '학번을 입력하세요' : null,
                       keyboardType: TextInputType.number,
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly, // 숫자만 입력 가능
@@ -223,7 +223,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       },
                       obscureText: true, // 비밀번호 가리기
                       validator: (value) =>
-                      value == null || value.isEmpty ? '비밀번호를 입력하세요' : null,
+                      value == null || value.isEmpty ? '생년월일을 입력하세요' : null,
                       keyboardType: TextInputType.number,
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly, // 숫자만 입력 가능
