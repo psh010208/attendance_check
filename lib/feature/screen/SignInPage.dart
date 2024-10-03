@@ -88,34 +88,52 @@ class SignInPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold( //--지히
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text('로그인 페이지'),
+        backgroundColor: Colors.white,
+        title: Padding(
+          padding: EdgeInsets.only(left: 10, top: 20), // Image 주변에 margin을 적용
+          child: Image.asset(
+            'assets/logo.png',
+            height: 100,
+            width: 160,
+            fit: BoxFit.contain,
+          ),
+        ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(35.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // 학부생/관리자 선택
-            DropdownButtonFormField<String>(
-              decoration: InputDecoration(
-                labelText: '학부생',
-                border: OutlineInputBorder(),
+            // 학부생/관리자 선택 --지히
+            Align(
+              alignment: Alignment.centerLeft, // 왼쪽 정렬
+              child: SizedBox(
+                width: 150, // 원하는 너비 설정
+                height: 60, // 원하는 높이 설정
+
+                child: DropdownButtonFormField<String>(
+                  decoration: InputDecoration(
+                    labelText: '학부생',
+                    border: OutlineInputBorder(),
+                  ),
+                  value: _selectedRole, // 기본값으로 '학부생' 설정
+                  items: ['학부생', '교수(관리자)']
+                      .map((value) => DropdownMenuItem(
+                            child: Text(value),
+                            value: value,
+                          ))
+                      .toList(),
+                  onChanged: (value) {
+                    _selectedRole = value;
+                  },
+                  validator: (value) => value == null ? '역할을 선택하세요' : null,
+                ),
               ),
-              value: _selectedRole, // 기본값으로 '학부생' 설정
-              items: ['학부생', '교수(관리자)']
-          .map((value) => DropdownMenuItem(
-                child: Text(value),
-                value: value,
-              ))
-                  .toList(),
-              onChanged: (value) {
-                _selectedRole = value;
-              },
-              validator: (value) => value == null ? '역할을 선택하세요' : null,
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 15),
 
             // 학번 입력 필드
             TextField(
@@ -131,7 +149,7 @@ class SignInPage extends StatelessWidget {
             TextField(
               controller: _passwordController,
               decoration: InputDecoration(
-                labelText: '비밀번호(생년월일)',
+                labelText: '비밀번호(생년월일 6자리)',
                 border: OutlineInputBorder(),
               ),
               obscureText: true, // 비밀번호 가리기
@@ -146,7 +164,13 @@ class SignInPage extends StatelessWidget {
               },
               child: Text('로그인'),
               style: ElevatedButton.styleFrom(
-                minimumSize: Size(double.infinity, 50), // 버튼 가로크기
+                //--지히
+                backgroundColor: Colors.black, // 버튼의 배경색을 검정색으로 설정
+                foregroundColor: Colors.white, // 버튼 텍스트 색상을 하얀색으로 설정
+                minimumSize: Size(200, 50), // 버튼 크기 설정
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10), // 버튼 모서리 둥글게
+                ),
               ),
             ),
             const SizedBox(height: 20),
@@ -161,9 +185,10 @@ class SignInPage extends StatelessWidget {
                 );
               },
               child: Text(
+                //--지히
                 '회원가입을 하시겠습니까?',
                 style: TextStyle(
-                  color: Colors.blue,
+                  color: Colors.indigo[800],
                   decoration: TextDecoration.underline,
                 ),
               ),
