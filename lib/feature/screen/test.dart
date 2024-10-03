@@ -24,11 +24,11 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
 
   // 왼쪽 바에 사용할 색상을 리스트로 정의
   final List<Color> barColors = [
-    Color(0xff2d6fea), // 일정 5
-    Color(0xff1f88cf), // 일정 4
-    Color(0xff1797ef), // 일정 3
-    Color(0xff0c8ad1), // 일정 2
-    Color(0xff6a96c3), // 일정 1
+    Color(0xFF3f51b5), // 일정 1
+    Color(0xFF7986CB), // 일정 2
+    Color(0xFF2962ff), // 일정 3
+    Color(0xff6ab0f6), // 일정 4
+    Color(0xFF0D47A1), // 일정 5
   ];
 
   // 카드 정보를 저장하는 리스트
@@ -56,11 +56,11 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
       body: GestureDetector(
         onVerticalDragEnd: (details) {
           setState(() {
-            isExpanded = true; // 카드를 펼치도록 설정
+            isExpanded = !isExpanded; // 카드를 펼치도록 설정
           });
         },
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0), /////////////////////
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -82,7 +82,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                       isExpanded = false;
                     });
                   },
-                  child: Text("클릭해서 접기", style: TextStyle(decoration: TextDecoration.underline)),
+                  child: Text("밀어서 접기", style: TextStyle(decoration: TextDecoration.underline)),
                 ),
               Expanded(
                 child: Stack(
@@ -94,7 +94,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                         children: schedules.map((schedule) {
                           // schedule 정보를 사용하여 카드 생성
                           int index = schedules.indexOf(schedule);
-                          return buildScheduleCard(schedule["title"]!, schedule["time"]!, schedule["location"]!, barColors[index]);
+                          return buildScheduleCard(schedule["title"]!, schedule["time"]!, schedule["location"]!, barColors[4-index]);
                         }).toList(),
                       ),
                   ],

@@ -10,7 +10,6 @@ class cardScreen extends StatefulWidget {
 class _cardScreenState extends State<cardScreen> {
   @override
   Widget build(BuildContext context) {
-
     return const Placeholder();
   }
 }
