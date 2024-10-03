@@ -121,7 +121,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
       body: SingleChildScrollView(  // 스크롤 가능하게 설정
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(35.0),
           child: Column(
             children: [
               const SizedBox(height: 80),  // 상단 여백 추가
@@ -132,8 +132,9 @@ class _SignUpPageState extends State<SignUpPage> {
                   children: [
                     // 역할 선택 필드
                     DropdownButtonFormField<String>(
+                      value: '학부생', // 기본값 설정
                       decoration: InputDecoration(
-                        labelText: '사용자 유형을 선택하세요',
+                        labelText: '사용자 유형',
                         border: OutlineInputBorder(),
                       ),
                       items: ['학부생', '관리자']
@@ -147,7 +148,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         });
                       },
                       validator: (value) =>
-                      value == null ? '사용자 유형을 선택하세요' : null,
+                      value == null ? '사용자 유형' : null,
                     ),
                     const SizedBox(height: 20),
 
