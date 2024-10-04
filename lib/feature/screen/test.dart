@@ -44,6 +44,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -121,7 +122,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                   },
                   icon: Icon(Icons.qr_code_2_rounded, size: 35,),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.transparent, // 배경색을 투명하게 설정
+                    backgroundColor: Colors.white, // 배경색을 투명하게 설정
                     shadowColor: Colors.transparent, // 그림자 색상도 투명하게 설정
                   ),
                 ),

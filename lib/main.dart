@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: homeScreeen(), // 메인 페이지 설정
       routes: {
-        '/signin': (context) => SignInPage(), // 로그인 페이지 경로 등록
+        '/signin': (context) => Signinpage(), // 로그인 페이지 경로 등록
         '/signup': (context) => SignUpPage(), // 회원가입 페이지 경로 등록
       },
     );
