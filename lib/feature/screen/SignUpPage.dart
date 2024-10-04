@@ -1,5 +1,6 @@
 import 'package:attendance_check/database/db_query/manage_db_query.dart';
 import 'package:attendance_check/database/db_query/student_db_query.dart';
+import 'package:attendance_check/feature/screen/SignInPage.dart'; // SignInPage import
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart'; // inputFormatters를 사용하기 위한 import
 import 'package:cloud_firestore/cloud_firestore.dart'; // Firestore 사용을 위한 import
@@ -21,7 +22,10 @@ class SignUpDialog extends StatelessWidget {
     // 일정 시간 후에 팝업을 닫고 로그인 페이지로 이동
     Future.delayed(delay, () {
       Navigator.pop(context); // 팝업 닫기
-      Navigator.pushReplacementNamed(context, '/login'); // 로그인 페이지로 이동
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => Signinpage()), // 로그인 페이지로 이동
+      );
     });
 
     return AlertDialog(
@@ -118,7 +122,6 @@ class _SignUpPageState extends State<SignUpPage> {
           ),
         ),
       ),
-
       body: SingleChildScrollView(  // 스크롤 가능하게 설정
         child: Padding(
           padding: const EdgeInsets.all(35.0),
