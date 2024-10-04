@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart'; // Firestore 사용을 위한 import
-import 'SignUpPage.dart'; // 회원가입 페이지 import
-import 'CardScreen.dart'; // CardScreen 페이지 import
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'CardScreen.dart'; // CardScreen을 import
+import 'SignUpPage.dart';
 class Signinpage extends StatelessWidget {
   final TextEditingController _studentIdController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -17,7 +16,6 @@ class Signinpage extends StatelessWidget {
     String password = _passwordController.text.trim();
 
     if (studentId.isEmpty || password.isEmpty || _selectedRole == null) {
-      // 입력 필드가 비어있을 때 처리
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('모든 필드를 입력하세요.')),
       );
@@ -25,7 +23,7 @@ class Signinpage extends StatelessWidget {
     }
 
     try {
-      // 학부생일 경우 student 컬렉션에서 확인
+      // 학부생일 경우
       if (_selectedRole == '학부생') {
         var snapshot = await firestore
             .collection('student')
@@ -34,23 +32,20 @@ class Signinpage extends StatelessWidget {
             .get();
 
         if (snapshot.docs.isNotEmpty) {
-          // 로그인 성공
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('로그인 성공!')),
           );
-
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => cardScreen()),
+            MaterialPageRoute(builder: (context) => CardScreen()), // CardScreen으로 이동
           );
         } else {
-          // 로그인 실패
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('학번 또는 비밀번호가 잘못되었습니다.')),
           );
         }
       }
-      // 관리자인 경우 manager 컬렉션에서 확인
+      // 관리자일 경우
       else if (_selectedRole == '교수(관리자)') {
         var snapshot = await firestore
             .collection('manager')
@@ -59,24 +54,20 @@ class Signinpage extends StatelessWidget {
             .get();
 
         if (snapshot.docs.isNotEmpty) {
-          // 로그인 성공
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('로그인 성공!')),
           );
-          // CardScreen으로 이동
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => cardScreen()),
+            MaterialPageRoute(builder: (context) => CardScreen()), // CardScreen으로 이동
           );
         } else {
-          // 로그인 실패
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('ID 또는 비밀번호가 잘못되었습니다.')),
           );
         }
       }
     } catch (e) {
-      // Firestore 조회 오류
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('로그인 중 오류가 발생했습니다. 다시 시도하세요.')),
       );
@@ -87,8 +78,8 @@ class Signinpage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-
-      appBar: AppBar( backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: Colors.white,
         title: Padding(
           padding: const EdgeInsets.all(35.0),
           child: Image.asset(
@@ -104,34 +95,30 @@ class Signinpage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // 학부생/관리자 선택
-
-          Align(
-          alignment: Alignment.centerLeft, // 왼쪽 정렬
-          child: SizedBox(
-            width: 150, // 원하는 너비 설정
-            height: 60, // 원하는 높이 설정
-
-            child: DropdownButtonFormField<String>(
-              decoration: InputDecoration(
-                labelText: '학부생',
-                border: OutlineInputBorder(),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: SizedBox(
+                width: 150,
+                height: 60,
+                child: DropdownButtonFormField<String>(
+                  decoration: InputDecoration(
+                    labelText: '학부생',
+                    border: OutlineInputBorder(),
+                  ),
+                  value: _selectedRole,
+                  items: ['학부생', '교수(관리자)']
+                      .map((value) => DropdownMenuItem(
+                    child: Text(value),
+                    value: value,
+                  ))
+                      .toList(),
+                  onChanged: (value) {
+                    _selectedRole = value;
+                  },
+                ),
               ),
-              value: _selectedRole, // 기본값으로 '학부생' 설정
-              items: ['학부생', '교수(관리자)']
-                  .map((value) => DropdownMenuItem(
-                child: Text(value),
-                value: value,
-              ))
-                  .toList(),
-              onChanged: (value) {
-                _selectedRole = value;
-              },
-              validator: (value) => value == null ? '역할을 선택하세요' : null,
-            ),),),
+            ),
             const SizedBox(height: 15),
-
-            // 학번 입력 필드
             TextField(
               controller: _studentIdController,
               decoration: InputDecoration(
@@ -140,40 +127,32 @@ class Signinpage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-
-            // 비밀번호 입력 필드
             TextField(
               controller: _passwordController,
               decoration: InputDecoration(
                 labelText: '비밀번호(생년월일 6자리)',
                 border: OutlineInputBorder(),
               ),
-              obscureText: true, // 비밀번호 가리기
+              obscureText: true,
             ),
             const SizedBox(height: 40),
-
-            // 로그인 버튼
             ElevatedButton(
               onPressed: () {
-                // 로그인 처리
                 _login(context);
               },
               child: Text('로그인'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.black, // 버튼의 배경색을 검정색으로 설정
-                foregroundColor: Colors.white, // 버튼 텍스트 색상을 하얀색으로 설정
-                minimumSize: Size(200, 50), // 버튼 크기 설정
+                backgroundColor: Colors.black,
+                foregroundColor: Colors.white,
+                minimumSize: Size(200, 50),
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10), // 버튼 모서리 둥글게
+                  borderRadius: BorderRadius.circular(10),
                 ),
               ),
             ),
             const SizedBox(height: 20),
-
-            // 회원가입 유도 텍스트
             GestureDetector(
               onTap: () {
-                // 회원가입 페이지로 이동
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => SignUpPage()),
