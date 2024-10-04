@@ -15,7 +15,7 @@ class LoginCheckModel {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
-      'loginTime': loginTime.toIso8601String(),
+      'loginTime': loginTime.toIso8601String(),  // DateTime을 ISO 8601 문자열로 변환
       'managerId': managerId,
       'studentId': studentId,
     };
@@ -25,7 +25,7 @@ class LoginCheckModel {
   factory LoginCheckModel.fromMap(Map<String, dynamic> map) {
     return LoginCheckModel(
       id: map['id'],
-      loginTime: DateTime.parse(map['loginTime']),
+      loginTime: DateTime.parse(map['loginTime']),  // 문자열을 DateTime으로 변환
       managerId: map['managerId'],
       studentId: map['studentId'],
     );

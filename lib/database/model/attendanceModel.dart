@@ -1,6 +1,3 @@
-
-
-
 class AttendanceModel {
   final String attendanceId;
   final String studentId;
@@ -20,26 +17,26 @@ class AttendanceModel {
     required this.perception,
   });
 
-  // Firestore에 데이터를 저장하기 위한 Map 변환
+  // Firestore에 저장하기 위한 Map으로 변환
   Map<String, dynamic> toMap() {
     return {
       'attendanceId': attendanceId,
       'studentId': studentId,
       'eventId': eventId,
-      'attendanceTime': attendanceTime.toIso8601String(),
+      'attendanceTime': attendanceTime.toIso8601String(),  // DateTime을 ISO 8601 문자열로 변환
       'attendanceStatus': attendanceStatus,
       'absence': absence,
       'perception': perception,
     };
   }
 
-  // Firestore에서 데이터를 가져와 객체로 변환
+  // Firestore에서 가져온 데이터를 AttendanceModel로 변환
   factory AttendanceModel.fromMap(Map<String, dynamic> map) {
     return AttendanceModel(
       attendanceId: map['attendanceId'],
       studentId: map['studentId'],
       eventId: map['eventId'],
-      attendanceTime: DateTime.parse(map['attendanceTime']),
+      attendanceTime: DateTime.parse(map['attendanceTime']),  // 문자열을 DateTime으로 변환
       attendanceStatus: map['attendanceStatus'],
       absence: map['absence'],
       perception: map['perception'],

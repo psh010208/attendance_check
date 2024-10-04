@@ -22,8 +22,8 @@ class EventModel {
     return {
       'eventId': eventId,
       'eventName': eventName,
-      'startTime': startTime.toIso8601String(),
-      'endTime': endTime.toIso8601String(),
+      'startTime': startTime.toIso8601String(),  // DateTime을 문자열로 변환
+      'endTime': endTime.toIso8601String(),      // DateTime을 문자열로 변환
       'eventLocation': eventLocation,
       'eventDate': eventDate,
       'barcode': barcode,
@@ -35,8 +35,8 @@ class EventModel {
     return EventModel(
       eventId: map['eventId'],
       eventName: map['eventName'],
-      startTime: DateTime.parse(map['startTime']),
-      endTime: DateTime.parse(map['endTime']),
+      startTime: DateTime.parse(map['startTime']),  // 문자열을 DateTime으로 변환
+      endTime: DateTime.parse(map['endTime']),      // 문자열을 DateTime으로 변환
       eventLocation: map['eventLocation'],
       eventDate: map['eventDate'],
       barcode: map['barcode'],

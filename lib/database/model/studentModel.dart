@@ -15,6 +15,7 @@ class StudentModel {
     this.subscription,  // nullable 필드
   });
 
+  // Firestore에 저장하기 위한 Map으로 변환
   Map<String, dynamic> toMap() {
     return {
       'studentId': studentId,
@@ -26,6 +27,7 @@ class StudentModel {
     };
   }
 
+  // Firestore에서 데이터를 가져와 StudentModel로 변환
   factory StudentModel.fromMap(Map<String, dynamic> map) {
     return StudentModel(
       studentId: map['studentId'],
