@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'ExpandedCardView.dart';
-import 'CollapsedCardView.dart';
+import '../widget/ExpandedCardView.dart';
+import '../widget/CollapsedCardView.dart';
 
 void main() {
   runApp(MyApp());
