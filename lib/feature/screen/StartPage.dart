@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class homeScreeen extends StatelessWidget {
+class Startpage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -8,7 +8,7 @@ class homeScreeen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: Padding(
-          padding: EdgeInsets.only(left:10, top: 20), // Image 주변에 margin을 적용
+          padding: EdgeInsets.only(left: 10, top: 20), // Image 주변에 margin을 적용
           child: Image.asset(
             'assets/logo.png',
             height: 100,
@@ -17,7 +17,6 @@ class homeScreeen extends StatelessWidget {
           ),
         ),
       ),
-
       body: Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -37,7 +36,8 @@ class homeScreeen extends StatelessWidget {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, '/signin'); // '/signin' 페이지로 이동
+                    Navigator.pushNamed(
+                        context, '/signin'); // '/signin' 페이지로 이동
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.black, // 버튼의 배경색을 검정색으로 설정

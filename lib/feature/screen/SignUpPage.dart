@@ -24,7 +24,7 @@ class SignUpDialog extends StatelessWidget {
       Navigator.pop(context); // 팝업 닫기
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => Signinpage()), // 로그인 페이지로 이동
+        MaterialPageRoute(builder: (context) => SignInPage()), // 로그인 페이지로 이동
       );
     });
 
@@ -122,12 +122,13 @@ class _SignUpPageState extends State<SignUpPage> {
           ),
         ),
       ),
-      body: SingleChildScrollView(  // 스크롤 가능하게 설정
+      body: SingleChildScrollView(
+        // 스크롤 가능하게 설정
         child: Padding(
           padding: const EdgeInsets.all(35.0),
           child: Column(
             children: [
-              const SizedBox(height: 80),  // 상단 여백 추가
+              const SizedBox(height: 80), // 상단 여백 추가
               Form(
                 key: _formKey,
                 child: Column(
@@ -135,23 +136,24 @@ class _SignUpPageState extends State<SignUpPage> {
                   children: [
                     // 역할 선택 필드
                     DropdownButtonFormField<String>(
-                      value: '학부생', // 기본값 설정
+                      value: '학부생',
+                      // 기본값 설정
                       decoration: InputDecoration(
                         labelText: '사용자 유형',
                         border: OutlineInputBorder(),
                       ),
                       items: ['학부생', '관리자']
                           .map((value) => DropdownMenuItem(
-                        child: Text(value),
-                        value: value,
-                      )).toList(),
+                                child: Text(value),
+                                value: value,
+                              ))
+                          .toList(),
                       onChanged: (value) {
                         setState(() {
                           _selectedRole = value;
                         });
                       },
-                      validator: (value) =>
-                      value == null ? '사용자 유형' : null,
+                      validator: (value) => value == null ? '사용자 유형' : null,
                     ),
                     const SizedBox(height: 20),
 
@@ -170,9 +172,9 @@ class _SignUpPageState extends State<SignUpPage> {
                         '메타버스&게임학과'
                       ]
                           .map((value) => DropdownMenuItem(
-                        child: Text(value),
-                        value: value,
-                      ))
+                                child: Text(value),
+                                value: value,
+                              ))
                           .toList(),
                       onChanged: (value) {
                         setState(() {
@@ -193,7 +195,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         _name = value;
                       },
                       validator: (value) =>
-                      value == null || value.isEmpty ? '이름을 입력하세요' : null,
+                          value == null || value.isEmpty ? '이름을 입력하세요' : null,
                     ),
                     const SizedBox(height: 20),
 
@@ -207,7 +209,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         _studentId = value;
                       },
                       validator: (value) =>
-                      value == null || value.isEmpty ? '학번을 입력하세요' : null,
+                          value == null || value.isEmpty ? '학번을 입력하세요' : null,
                       keyboardType: TextInputType.number,
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly, // 숫자만 입력 가능
@@ -224,16 +226,16 @@ class _SignUpPageState extends State<SignUpPage> {
                       onSaved: (value) {
                         _password = value;
                       },
-                      obscureText: true, // 비밀번호 가리기
+                      obscureText: true,
+                      // 비밀번호 가리기
                       validator: (value) =>
-                      value == null || value.isEmpty ? '생년월일을 입력하세요' : null,
+                          value == null || value.isEmpty ? '생년월일을 입력하세요' : null,
                       keyboardType: TextInputType.number,
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly, // 숫자만 입력 가능
                       ],
                     ),
                     const SizedBox(height: 20),
-
 
                     // 전화번호 입력 필드 (선택 사항)
                     TextFormField(
@@ -252,7 +254,8 @@ class _SignUpPageState extends State<SignUpPage> {
                     const SizedBox(height: 40),
 
                     // 회원가입 버튼
-                    Center( // 버튼을 화면 중앙에 배치
+                    Center(
+                      // 버튼을 화면 중앙에 배치
                       child: ElevatedButton(
                         onPressed: () {
                           _submitForm(context); // 회원가입 처리 로직 호출
@@ -263,12 +266,12 @@ class _SignUpPageState extends State<SignUpPage> {
                           foregroundColor: Colors.white, // 버튼 텍스트 색상을 하얀색으로 설정
                           minimumSize: Size(200, 50), // 버튼 크기 설정
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10), // 버튼 모서리 둥글게
+                            borderRadius:
+                                BorderRadius.circular(10), // 버튼 모서리 둥글게
                           ),
                         ),
                       ),
                     )
-
                   ],
                 ),
               ),

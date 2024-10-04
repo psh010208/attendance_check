@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'CardScreen.dart'; // CardScreen을 import
+import 'student/MainCardScreen.dart'; // MainCardScreen import
 import 'SignUpPage.dart';
-class Signinpage extends StatelessWidget {
+
+class SignInPage extends StatelessWidget {
   final TextEditingController _studentIdController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   String? _selectedRole = '학부생'; // 기본값으로 '학부생' 설정
@@ -37,7 +38,8 @@ class Signinpage extends StatelessWidget {
           );
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => CardScreen()), // CardScreen으로 이동
+            MaterialPageRoute(
+                builder: (context) => MainCardScreen()), // CardScreen으로 이동
           );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -59,7 +61,8 @@ class Signinpage extends StatelessWidget {
           );
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => CardScreen()), // CardScreen으로 이동
+            MaterialPageRoute(
+                builder: (context) => MainCardScreen()), // CardScreen으로 이동
           );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -108,9 +111,9 @@ class Signinpage extends StatelessWidget {
                   value: _selectedRole,
                   items: ['학부생', '교수(관리자)']
                       .map((value) => DropdownMenuItem(
-                    child: Text(value),
-                    value: value,
-                  ))
+                            child: Text(value),
+                            value: value,
+                          ))
                       .toList(),
                   onChanged: (value) {
                     _selectedRole = value;

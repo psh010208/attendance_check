@@ -63,7 +63,8 @@ class _CardScreenState extends State<CardScreen> {
                     return ListView(
                       children: events.map((event) {
                         String title = event['eventName'];
-                        String time = "${event['startTime']} ~ ${event['endTime']}";
+                        String time =
+                            "${event['startTime']} ~ ${event['endTime']}";
                         String location = event['eventLocation'];
 
                         return buildScheduleCard(title, time, location);

@@ -1,8 +1,9 @@
-import 'package:attendance_check/feature/home/homeScreen.dart';
+import 'package:attendance_check/feature/screen/StartPage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'feature/screen/SignInPage.dart';  // 로그인 페이지 import
 import 'feature/screen/SignUpPage.dart';  // 회원가입 페이지 import
+import 'feature/screen/student/MainCardScreen.dart';  // 학생 메인 페이지 import
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,10 +23,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: homeScreeen(), // 메인 페이지 설정
+      home: Startpage(), // 메인 페이지 설정
       routes: {
-        '/signin': (context) => Signinpage(), // 로그인 페이지 경로 등록
+        '/signin': (context) => SignInPage(), // 로그인 페이지 경로 등록
         '/signup': (context) => SignUpPage(), // 회원가입 페이지 경로 등록
+        '/stmain': (context) => MainCardScreen(), // 회원가입 페이지 경로 등록
       },
     );
   }

@@ -1,26 +1,13 @@
 import 'package:flutter/material.dart';
-import '../widget/ExpandedCardView.dart';
-import '../widget/CollapsedCardView.dart';
+import 'ExpandedCardView.dart';
+import 'CollapsedCardView.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
+class MainCardScreen extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: ScheduleScreen(),
-    );
-  }
+  _MainCardScreenState createState() => _MainCardScreenState();
 }
 
-class ScheduleScreen extends StatefulWidget {
-  @override
-  _ScheduleScreenState createState() => _ScheduleScreenState();
-}
-
-class _ScheduleScreenState extends State<ScheduleScreen> {
+class _MainCardScreenState extends State<MainCardScreen> {
   int currentProgress = 3;
   bool isExpanded = false;
 

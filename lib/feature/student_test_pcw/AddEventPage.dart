@@ -66,13 +66,15 @@ class _AddEventPageState extends State<AddEventPage> {
     );
     if (pickedDate != null) {
       setState(() {
-        eventDateController.text = "${pickedDate.toLocal()}".split(' ')[0]; // 날짜 업데이트
+        eventDateController.text =
+            "${pickedDate.toLocal()}".split(' ')[0]; // 날짜 업데이트
       });
     }
   }
 
   // 시간 선택기
-  Future<void> _selectTime(BuildContext context, TextEditingController controller) async {
+  Future<void> _selectTime(
+      BuildContext context, TextEditingController controller) async {
     TimeOfDay? pickedTime = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
