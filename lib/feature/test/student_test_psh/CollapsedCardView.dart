@@ -1,10 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart'; // 권한 얻어오는 패키지
 
 class CollapsedCardView extends StatelessWidget {
   final List<Map<String, String>> schedules;
   final List<Color> barColors;
   final int currentProgress;
   final VoidCallback onExpand;
+
+  getPermission() async {
+    var status = await Permission.camera.status;
+
+    if (status.isPermanentlyDenied) {
+      openAppSettings();
+    }
+
+    if (status.isGranted) {
+      print('카메라 권한 허용됨');
+    } else if (status.isDenied) {
+      print('카메라 권한 거절됨');
+      Permission.camera.request();
+    }
+  }
 
   CollapsedCardView(
       {required this.currentProgress,
@@ -37,7 +53,7 @@ class CollapsedCardView extends StatelessWidget {
         SizedBox(height: 30), // 버튼과 위의 내용 간격
         IconButton(
           onPressed: () {
-            // QR 코드 인식 기능을 추가하는 부분
+            getPermission();
           },
           icon: Icon(
             Icons.qr_code_2_rounded,
