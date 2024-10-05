@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'ExpandedCardView.dart';
 import 'CollapsedCardView.dart';
-
+import 'package:attendance_check/feature/screen/MyPage.dart';
 class MainCardScreen extends StatefulWidget {
   @override
   _MainCardScreenState createState() => _MainCardScreenState();
@@ -213,6 +213,8 @@ class _MainCardScreenState extends State<MainCardScreen> {
           ],
         ),
       ),
+      endDrawer: Mypage(),
+
       body: StreamBuilder<List<Map<String, String>>>(
         stream: _fetchEvents(),
         builder: (context, snapshot) {
