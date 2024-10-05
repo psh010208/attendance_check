@@ -8,9 +8,9 @@ class CollapsedCardView extends StatelessWidget {
 
   CollapsedCardView(
       {required this.currentProgress,
-      required this.schedules,
-      required this.barColors,
-      required this.onExpand});
+        required this.schedules,
+        required this.barColors,
+        required this.onExpand});
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +54,9 @@ class CollapsedCardView extends StatelessWidget {
   }
 
   Widget buildScheduleCard(
-      String title, String time, String location, Color barColor) {
+      String title, String time, String location, int index) {
+    Color barColor =
+    barColors.length > index ? barColors[index] : Colors.grey; // 기본 색상 처리
     return Card(
       elevation: 15, // 그림자 효과 추가
       shape: RoundedRectangleBorder(
@@ -104,36 +106,30 @@ class CollapsedCardView extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          children: [
-                            IconButton(
-                              icon: Icon(
-                                Icons.check_circle_outline,
-                                size: 30,
-                              ),
-                              onPressed: () {
-                                // 체크 아이콘 눌렀을 때 동작
-                              },
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              '$location',
-                              style: TextStyle(fontSize: 15),
-                            ),
-                            SizedBox(width: 10),
-                            IconButton(
-                              icon: Icon(
-                                Icons.alarm,
-                                size: 30,
-                              ),
-                              onPressed: () {
-                                // 알림 아이콘 눌렀을 때 동작
-                              },
-                            ),
-                          ],
-                        )
+                        IconButton(
+                          icon: Icon(
+                            Icons.check_circle_outline,
+                            size: 30,
+                          ),
+                          onPressed: () {
+                            // 체크 아이콘 눌렀을 때 동작
+                          },
+                        ),
+                        SizedBox(width: 10),
+                        Text(
+                          '$location',
+                          style: TextStyle(fontSize: 15),
+                        ),
+                        SizedBox(width: 10),
+                        IconButton(
+                          icon: Icon(
+                            Icons.alarm,
+                            size: 30,
+                          ),
+                          onPressed: () {
+                            // 알림 아이콘 눌렀을 때 동작
+                          },
+                        ),
                       ],
                     ),
                   ),
@@ -160,7 +156,7 @@ class CollapsedCardView extends StatelessWidget {
             left: 0,
             right: 0,
             child: buildScheduleCard(schedule["title"]!, schedule["time"]!,
-                schedule["location"]!, barColors[4 - index]),
+                schedule["location"]!, index),
           );
         }).toList(),
       ),

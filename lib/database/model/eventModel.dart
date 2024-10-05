@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class EventModel {
   final String eventId;
   final String eventName;
@@ -22,8 +24,8 @@ class EventModel {
     return {
       'eventId': eventId,
       'eventName': eventName,
-      'startTime': startTime.toIso8601String(),  // DateTime을 문자열로 변환
-      'endTime': endTime.toIso8601String(),      // DateTime을 문자열로 변환
+      'startTime': startTime,  // DateTime을 저장
+      'endTime': endTime,      // DateTime을 저장
       'eventLocation': eventLocation,
       'eventDate': eventDate,
       'barcode': barcode,
@@ -35,8 +37,8 @@ class EventModel {
     return EventModel(
       eventId: map['eventId'],
       eventName: map['eventName'],
-      startTime: DateTime.parse(map['startTime']),  // 문자열을 DateTime으로 변환
-      endTime: DateTime.parse(map['endTime']),      // 문자열을 DateTime으로 변환
+      startTime: (map['startTime'] as Timestamp).toDate(),  // Timestamp를 DateTime으로 변환
+      endTime: (map['endTime'] as Timestamp).toDate(),      // Timestamp를 DateTime으로 변환
       eventLocation: map['eventLocation'],
       eventDate: map['eventDate'],
       barcode: map['barcode'],

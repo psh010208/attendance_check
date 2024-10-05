@@ -8,22 +8,22 @@ class AddEventPage extends StatefulWidget {
 }
 
 class _AddEventPageState extends State<AddEventPage> {
-  final TextEditingController eventNameController = TextEditingController();
-  final TextEditingController eventLocationController = TextEditingController();
-  final TextEditingController eventDateController = TextEditingController();
-  final TextEditingController startTimeController = TextEditingController();
-  final TextEditingController endTimeController = TextEditingController();
+  final TextEditingController eventName = TextEditingController();
+  final TextEditingController eventLocation = TextEditingController();
+  final TextEditingController eventDate = TextEditingController();
+  final TextEditingController startTime = TextEditingController();
+  final TextEditingController endTime = TextEditingController();
 
   String qrData = ''; // QR 코드에 저장할 데이터
 
   // Firestore에 이벤트 저장 함수
   Future<void> addEventToFirestore() async {
     // 입력 폼 검증
-    if (eventNameController.text.isEmpty ||
-        eventLocationController.text.isEmpty ||
-        eventDateController.text.isEmpty ||
-        startTimeController.text.isEmpty ||
-        endTimeController.text.isEmpty) {
+    if (eventName.text.isEmpty ||
+        eventLocation.text.isEmpty ||
+        eventDate.text.isEmpty ||
+        startTime.text.isEmpty ||
+        startTime.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('모든 필드를 채워주세요.')),
       );
@@ -33,15 +33,15 @@ class _AddEventPageState extends State<AddEventPage> {
     String eventId = DateTime.now().millisecondsSinceEpoch.toString();
 
     // QR 코드 데이터를 이벤트 이름과 ID를 조합하여 생성
-    qrData = '${eventNameController.text}_$eventId';
+    qrData = '${eventName.text}_$eventId';
 
     // Firestore에 이벤트와 QR 코드 저장
-    await FirebaseFirestore.instance.collection('events').add({
-      'eventName': eventNameController.text,
-      'eventLocation': eventLocationController.text,
-      'eventDate': eventDateController.text,
-      'startTime': startTimeController.text,
-      'endTime': endTimeController.text,
+    await FirebaseFirestore.instance.collection('event').add({
+      'eventName': eventName.text,
+      'eventLocation': eventLocation.text,
+      'eventDate': eventDate.text,
+      'startTime': startTime.text,
+      'endTime': endTime.text,
       'barcode': qrData,
       'eventId': eventId,
     });
@@ -66,7 +66,7 @@ class _AddEventPageState extends State<AddEventPage> {
     );
     if (pickedDate != null) {
       setState(() {
-        eventDateController.text =
+        eventDate.text =
             "${pickedDate.toLocal()}".split(' ')[0]; // 날짜 업데이트
       });
     }
@@ -98,21 +98,21 @@ class _AddEventPageState extends State<AddEventPage> {
           children: [
             // 이벤트 이름 입력 필드
             TextField(
-              controller: eventNameController,
+              controller: eventName,
               decoration: InputDecoration(labelText: '이벤트 이름'),
             ),
             SizedBox(height: 10),
 
             // 이벤트 장소 입력 필드
             TextField(
-              controller: eventLocationController,
+              controller: eventLocation,
               decoration: InputDecoration(labelText: '이벤트 장소'),
             ),
             SizedBox(height: 10),
 
             // 이벤트 날짜 선택 버튼
             TextField(
-              controller: eventDateController,
+              controller: eventDate,
               readOnly: true,
               decoration: InputDecoration(
                 labelText: '이벤트 날짜',
@@ -126,13 +126,13 @@ class _AddEventPageState extends State<AddEventPage> {
 
             // 시작 시간 선택 버튼
             TextField(
-              controller: startTimeController,
+              controller: startTime,
               readOnly: true,
               decoration: InputDecoration(
                 labelText: '시작 시간',
                 suffixIcon: IconButton(
                   icon: Icon(Icons.access_time),
-                  onPressed: () => _selectTime(context, startTimeController),
+                  onPressed: () => _selectTime(context, startTime),
                 ),
               ),
             ),
@@ -140,13 +140,13 @@ class _AddEventPageState extends State<AddEventPage> {
 
             // 종료 시간 선택 버튼
             TextField(
-              controller: endTimeController,
+              controller: endTime,
               readOnly: true,
               decoration: InputDecoration(
                 labelText: '종료 시간',
                 suffixIcon: IconButton(
                   icon: Icon(Icons.access_time),
-                  onPressed: () => _selectTime(context, endTimeController),
+                  onPressed: () => _selectTime(context, endTime),
                 ),
               ),
             ),
