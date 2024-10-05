@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../MyPage.dart';
 
 class MainAdminScreen extends StatefulWidget {
   @override
@@ -15,11 +16,10 @@ class _MainAdminScreen extends State<MainAdminScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Image.asset('assets/logo.png', width: 150, height: 30),
-            Spacer(),
-            IconButton(onPressed: () {}, icon: Icon(Icons.menu)),
           ],
         ),
       ),
+      endDrawer: Mypage(),
       body: Scaffold(),
     );
   }

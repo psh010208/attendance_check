@@ -128,7 +128,7 @@ class _SignUpPageState extends State<SignUpPage> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         title: Padding(
-          padding: EdgeInsets.only(left: 10, top: 20),
+          padding: const EdgeInsets.all(35.0),
           child: Image.asset(
             'assets/logo.png',
             height: 100,

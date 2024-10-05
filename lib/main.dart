@@ -28,8 +28,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/signin': (context) => SignInPage(), // 로그인 페이지 경로 등록
         '/signup': (context) => SignUpPage(), // 회원가입 페이지 경로 등록
-        '/stmain': (context) => MainCardScreen(), // 회원가입 페이지 경로 등록
-        '/admain': (context) => MainAdminScreen(), // 회원가입 페이지 경로 등록
+        '/stmain': (context) => MainCardScreen(), // 학생 메인 페이지 경로 등록
+        '/admain': (context) => MainAdminScreen(), // 관리자 메인 페이지 경로 등록
       },
     );
   }

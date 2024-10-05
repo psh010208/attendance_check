@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'ExpandedCardView.dart';
 import 'CollapsedCardView.dart';
+import 'MyPage.dart';
 
 void main() {
   runApp(MyApp());
@@ -49,11 +50,10 @@ class _MainCardScreenState extends State<MainCardScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Image.asset('assets/logo.png', width: 150, height: 30),
-            Spacer(),
-            IconButton(onPressed: () {}, icon: Icon(Icons.menu)),
           ],
         ),
       ),
+      endDrawer: Mypage(),
       body: GestureDetector(
         onVerticalDragEnd: (details) {
           setState(() {
