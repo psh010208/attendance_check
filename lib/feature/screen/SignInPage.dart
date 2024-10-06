@@ -11,6 +11,40 @@ class SignInPage extends StatelessWidget {
   // Firestore 인스턴스
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
+  // 승인 대기 팝업
+  void _showApprovalPendingDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Center(
+            child: Text(
+              "승인 대기 중",
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+          ),
+          content: Text(
+            "관리자 승인이 필요합니다. \n승인이 완료될 때까지 기다려주세요.",
+            style: TextStyle(fontSize: 16), // 글씨 크기 조정
+            textAlign: TextAlign.center, // 텍스트 가운데 정렬
+          ),
+
+          actions: [
+            Center( // 확인 버튼을 가운데 배치
+              child: TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text("확인"),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   // 로그인 처리 함수
   Future<void> _login(BuildContext context) async {
     String studentId = _studentIdController.text.trim();
@@ -56,14 +90,20 @@ class SignInPage extends StatelessWidget {
             .get();
 
         if (snapshot.docs.isNotEmpty) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('로그인 성공!')),
-          );
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) => MainCardScreen()), // CardScreen으로 이동
-          );
+          var managerData = snapshot.docs.first.data();
+          if (managerData['isApproved'] == true) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('로그인 성공!')),
+            );
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => MainCardScreen()), // CardScreen으로 이동
+            );
+          } else {
+            // 관리자가 승인되지 않은 상태라면 승인 대기 중 팝업 표시
+            _showApprovalPendingDialog(context);
+          }
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('ID 또는 비밀번호가 잘못되었습니다.')),
@@ -111,9 +151,9 @@ class SignInPage extends StatelessWidget {
                   value: _selectedRole,
                   items: ['학부생', '교수(관리자)']
                       .map((value) => DropdownMenuItem(
-                            child: Text(value),
-                            value: value,
-                          ))
+                    child: Text(value),
+                    value: value,
+                  ))
                       .toList(),
                   onChanged: (value) {
                     _selectedRole = value;

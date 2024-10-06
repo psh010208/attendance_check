@@ -10,9 +10,36 @@ import 'package:attendance_check/feature/screen/SignInPage.dart';
 // 회원가입 완료 후 보여주는 다이얼로그
 class SignUpDialog extends StatelessWidget {
   final String message;
-  String? _selectedRole = '학부생';  // 초기값을 '학부생'으로 설정
 
   SignUpDialog({required this.message});
+
+  @override
+  Widget build(BuildContext context) {
+    Future.delayed(Duration(seconds: 1), () {
+      Navigator.pop(context); // 팝업 닫기
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => SignInPage()), // 로그인 페이지로 이동
+      );
+    });
+
+    return AlertDialog(
+      content: Row(
+        children: [
+          CircularProgressIndicator(),
+          SizedBox(width: 20),
+          Expanded(child: Text(message)),
+        ],
+      ),
+    );
+  }
+}
+
+// 관리자 회원가입 시 팝업
+class _showApprovalPendingDialog extends StatelessWidget {
+  final String message;
+
+  _showApprovalPendingDialog({required this.message});
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +76,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final ManagerRepository _managerRepository = ManagerRepository();
 
   // 입력 필드 값 저장
-  String? _selectedRole='학부생';
+  String? _selectedRole = '학부생';
   String? _department;
   String? _name;
   String? _studentId;
@@ -95,6 +122,14 @@ class _SignUpPageState extends State<SignUpPage> {
           );
           await _studentRepository.addStudent(student);
 
+          // 회원가입 성공 시 팝업 띄우고 로그인 페이지로 이동
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return SignUpDialog(message: "회원가입 완료! 로그인 화면으로 이동합니다.");
+            },
+          );
         } else if (_selectedRole == '관리자') {
           final manager = ManagerModel(
             managerId: _studentId!,
@@ -103,16 +138,16 @@ class _SignUpPageState extends State<SignUpPage> {
             password: _password!,
           );
           await _managerRepository.addManager(manager);
-        }
 
-        // 회원가입 성공 시 팝업 띄우고 로그인 페이지로 이동
-        showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (BuildContext context) {
-            return SignUpDialog(message: "회원가입 완료! 로그인 화면으로 이동합니다.");
-          },
-        );
+          // 관리자 등록 후 승인 대기 팝업 표시
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return _showApprovalPendingDialog(message: "회원가입 완료! 관리자 승인 후 로그인이 가능합니다.");
+            },
+          );
+        }
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('회원가입 중 오류가 발생했습니다. 다시 시도하세요.')),
@@ -149,8 +184,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     DropdownButtonFormField<String>(
-                      value: _selectedRole,  // 여기에서 _selectedRole 사용
-
+                      value: _selectedRole, // 여기에서 _selectedRole 사용
                       decoration: InputDecoration(
                         labelText: '사용자 유형',
                         border: OutlineInputBorder(),
@@ -166,8 +200,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           _selectedRole = value;
                         });
                       },
-                      validator: (value) =>
-                      value == null ? '사용자 유형을 선택하세요' : null,
+                      validator: (value) => value == null ? '사용자 유형을 선택하세요' : null,
                     ),
                     const SizedBox(height: 20),
 
@@ -194,8 +227,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           _department = value;
                         });
                       },
-                      validator: (value) =>
-                      value == null ? '학과를 선택하세요' : null,
+                      validator: (value) => value == null ? '학과를 선택하세요' : null,
                     ),
                     const SizedBox(height: 20),
 
@@ -207,8 +239,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       onSaved: (value) {
                         _name = value;
                       },
-                      validator: (value) =>
-                      value == null || value.isEmpty ? '이름을 입력하세요' : null,
+                      validator: (value) => value == null || value.isEmpty ? '이름을 입력하세요' : null,
                     ),
                     const SizedBox(height: 20),
 
@@ -220,8 +251,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       onSaved: (value) {
                         _studentId = value;
                       },
-                      validator: (value) =>
-                      value == null || value.isEmpty ? '학번을 입력하세요' : null,
+                      validator: (value) => value == null || value.isEmpty ? '학번을 입력하세요' : null,
                       keyboardType: TextInputType.number,
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,
@@ -238,8 +268,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         _password = value;
                       },
                       obscureText: true,
-                      validator: (value) =>
-                      value == null || value.isEmpty ? '생년월일을 입력하세요' : null,
+                      validator: (value) => value == null || value.isEmpty ? '생년월일을 입력하세요' : null,
                       keyboardType: TextInputType.number,
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,
@@ -277,7 +306,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           ),
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
