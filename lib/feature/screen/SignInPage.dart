@@ -4,12 +4,12 @@ import 'student/MainCardScreen.dart'; // MainCardScreen import
 import 'SignUpPage.dart';
 import 'package:attendance_check/database/Repository/ManagerRepository.dart';
 import 'package:attendance_check/database/model/ManagerModel.dart';
+import 'package:attendance_check/feature/screen/manager/MainAdminScreen.dart';
 
 class SignInPage extends StatelessWidget {
-  final TextEditingController _studentIdController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  String? _selectedRole = '학부생'; // 기본값으로 '학부생' 설정
-
+  final TextEditingController IdController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  String? _selectedRole ; // 기본값으로 '학부생' 설정
   // Firestore 인스턴스
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
@@ -46,81 +46,80 @@ class SignInPage extends StatelessWidget {
     );
   }
 
-  // 로그인 처리 함수
-  Future<void> _login(BuildContext context) async {
-    String studentId = _studentIdController.text.trim();
-    String password = _passwordController.text.trim();
 
-    if (studentId.isEmpty || password.isEmpty || _selectedRole == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('모든 필드를 입력하세요.')),
-      );
-      return;
-    }
+  @override
+  Widget build(BuildContext context) {
+    Future<void> _login(BuildContext context) async {
+      String id = IdController.text.trim();
+      String password = passwordController.text.trim();
 
-    try {
-      // 학부생일 경우
-      if (_selectedRole == '학부생') {
-        var snapshot = await firestore
-            .collection('student')
-            .where('studentId', isEqualTo: studentId)
-            .where('password', isEqualTo: password)
-            .get();
-
-        if (snapshot.docs.isNotEmpty) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('로그인 성공!')),
-          );
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-                builder: (context) => MainCardScreen()),
-          );
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('학번 또는 비밀번호가 잘못되었습니다.')),
-          );
-        }
+      if (id.isEmpty || password.isEmpty || _selectedRole == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('모든 필드를 입력하세요.')),
+        );
+        return;
       }
-      // 관리자일 경우
-      else if (_selectedRole == '교수(관리자)') {
-        var snapshot = await firestore
-            .collection('manager')
-            .where('managerId', isEqualTo: studentId)
-            .where('password', isEqualTo: password)
-            .get();
 
-        if (snapshot.docs.isNotEmpty) {
-          var managerData = snapshot.docs.first.data();
+      try {
+        // 학부생일 경우
+        if (_selectedRole == '학부생') {
+          var snapshot = await firestore
+              .collection('student')
+              .where('studentId', isEqualTo: id) // studentId로 검색
+              .where('password', isEqualTo: password)
+              .get();
 
-          // 승인된 관리자만 로그인 허용
-          if (managerData['isApprove'] == true) {
+          if (snapshot.docs.isNotEmpty) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text('로그인 성공!')),
             );
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => MainCardScreen()), // 관리자 페이지로 이동
+              MaterialPageRoute(
+                builder: (context) => MainCardScreen(id: id),  // studentId 전달
+              ),
             );
           } else {
-            // IsApprove가 False일 경우 승인 대기 팝업 표시
-            _showApprovalPendingDialog(context);
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('학번 또는 비밀번호가 잘못되었습니다.')),
+            );
           }
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('관리자 ID 또는 비밀번호가 잘못되었습니다.')),
-          );
         }
+        // 관리자일 경우
+        else if (_selectedRole == '교수(관리자)') {
+          ManagerRepository managerRepo = ManagerRepository();
+          ManagerModel? manager = await managerRepo.fetchManagerById(id); // managerId로 매니저 검색
+          print(manager);
+          if (manager != null && manager.password == password) {
+            // 승인된 관리자만 로그인 허용
+            if (manager.isApprove == true) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('로그인 성공!')),
+              );
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MainAdminScreen(id: id),  // MainAdminScreen으로 이동
+                ),
+              );
+            } else {
+              // isApprove가 False일 경우 승인 대기 팝업 표시
+              _showApprovalPendingDialog(context);
+            }
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('관리자 ID 또는 비밀번호가 잘못되었습니다.')),
+            );
+          }
+        }
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('로그인 중 오류가 발생했습니다. 다시 시도하세요.')),
+        );
       }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('로그인 중 오류가 발생했습니다. 다시 시도하세요.')),
-      );
     }
-  }
 
-  @override
-  Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -165,7 +164,7 @@ class SignInPage extends StatelessWidget {
             ),
             const SizedBox(height: 15),
             TextField(
-              controller: _studentIdController,
+              controller: IdController,
               decoration: InputDecoration(
                 labelText: '아이디(학번 또는 관리자 ID)',
                 border: OutlineInputBorder(),
@@ -173,7 +172,7 @@ class SignInPage extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             TextField(
-              controller: _passwordController,
+              controller: passwordController,
               decoration: InputDecoration(
                 labelText: '비밀번호(생년월일 6자리)',
                 border: OutlineInputBorder(),
@@ -184,6 +183,7 @@ class SignInPage extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 _login(context);
+                print(_selectedRole);
               },
               child: Text('로그인'),
               style: ElevatedButton.styleFrom(
@@ -199,8 +199,8 @@ class SignInPage extends StatelessWidget {
             GestureDetector(
               onTap: () {
                 Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SignUpPage()),
+                  context, MaterialPageRoute(builder: (context) => SignUpPage(),
+                ),
                 );
               },
               child: Text(

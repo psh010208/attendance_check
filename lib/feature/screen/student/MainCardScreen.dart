@@ -3,7 +3,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'ExpandedCardView.dart';
 import 'CollapsedCardView.dart';
 import 'package:attendance_check/feature/screen/MyPage.dart';
+
 class MainCardScreen extends StatefulWidget {
+  final String id;  // 로그인 시 전달된 studentId
+
+  MainCardScreen({required this.id});
+
   @override
   _MainCardScreenState createState() => _MainCardScreenState();
 }
@@ -30,19 +35,18 @@ class _MainCardScreenState extends State<MainCardScreen> {
         Timestamp endTime = data['endTime'] is Timestamp ? data['endTime'] : Timestamp.now();
 
         return {
-          "title": data['eventName'].toString(),  // dynamic을 String으로 변환
+          "title": data['eventName'].toString(),
           "time": "${startTime.toDate().hour}:${startTime.toDate().minute} ~ ${endTime.toDate().hour}:${endTime.toDate().minute}",
-          "location": data['eventLocation'].toString(),  // dynamic을 String으로 변환
+          "location": data['eventLocation'].toString(),
         };
       }).toList();
     });
   }
 
-  // 이벤트 추가 다이얼로그
+  // 이벤트 추가 다이얼로그 정의
   void _showAddEventDialog(BuildContext context) {
     String eventName = '';
     String eventLocation = '';
-    String barcode = '';
     DateTime? selectedDate;
     TimeOfDay? startTime;
     TimeOfDay? endTime;
@@ -138,12 +142,6 @@ class _MainCardScreenState extends State<MainCardScreen> {
                         eventLocation = value;
                       },
                     ),
-                    TextFormField(
-                      decoration: InputDecoration(labelText: '바코드'),
-                      onChanged: (value) {
-                        barcode = value;
-                      },
-                    ),
                   ],
                 ),
               ),
@@ -157,32 +155,28 @@ class _MainCardScreenState extends State<MainCardScreen> {
                 TextButton(
                   child: Text('추가'),
                   onPressed: () {
-                    if (eventName.isNotEmpty &&
-                        selectedDate != null &&
-                        startTime != null &&
-                        endTime != null &&
-                        eventLocation.isNotEmpty &&
-                        barcode.isNotEmpty) {
+                    if (eventName.isNotEmpty && selectedDate != null && startTime != null && endTime != null && eventLocation.isNotEmpty) {
                       final startDateTime = DateTime(
-                          selectedDate!.year,
-                          selectedDate!.month,
-                          selectedDate!.day,
-                          startTime!.hour,
-                          startTime!.minute);
+                        selectedDate!.year,
+                        selectedDate!.month,
+                        selectedDate!.day,
+                        startTime!.hour,
+                        startTime!.minute,
+                      );
                       final endDateTime = DateTime(
-                          selectedDate!.year,
-                          selectedDate!.month,
-                          selectedDate!.day,
-                          endTime!.hour,
-                          endTime!.minute);
+                        selectedDate!.year,
+                        selectedDate!.month,
+                        selectedDate!.day,
+                        endTime!.hour,
+                        endTime!.minute,
+                      );
 
                       // Firestore에 이벤트 추가
                       FirebaseFirestore.instance.collection('event').add({
                         'eventName': eventName,
-                        'startTime': Timestamp.fromDate(startDateTime),  // DateTime을 Timestamp로 변환
-                        'endTime': Timestamp.fromDate(endDateTime),      // DateTime을 Timestamp로 변환
+                        'startTime': Timestamp.fromDate(startDateTime),
+                        'endTime': Timestamp.fromDate(endDateTime),
                         'eventLocation': eventLocation,
-                        'barcode': barcode,
                       });
                       Navigator.of(context).pop();
                     }
@@ -213,25 +207,20 @@ class _MainCardScreenState extends State<MainCardScreen> {
           ],
         ),
       ),
-      endDrawer: Mypage(),
-
+      endDrawer: Mypage(id: widget.id, role: '학부생'), // 역할 정보 전달
       body: StreamBuilder<List<Map<String, String>>>(
         stream: _fetchEvents(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            // 로딩 상태일 때
             return Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            // 오류가 있을 때
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            // 데이터가 없을 때
             return Center(child: Text('No events available'));
           }
 
           final events = snapshot.data!;
 
-          // GestureDetector를 반환
           return GestureDetector(
             onVerticalDragEnd: (details) {
               setState(() {
@@ -243,20 +232,17 @@ class _MainCardScreenState extends State<MainCardScreen> {
               child: isExpanded
                   ? ExpandedCardView(
                 schedules: events,
-                barColors: barColors.length >= events.length
-                    ? barColors.sublist(0, events.length)
-                    : barColors, // 색상 리스트가 짧으면 전체 사용
+                barColors: barColors.length >= events.length ? barColors.sublist(0, events.length) : barColors,
                 onCollapse: () {
                   setState(() {
                     isExpanded = false;
                   });
                 },
-              ): CollapsedCardView(
+              )
+                  : CollapsedCardView(
                 currentProgress: events.length,
                 schedules: events,
-                barColors: barColors.length >= events.length
-                    ? barColors.sublist(0, events.length)
-                    : barColors, // 색상 리스트가 짧으면 전체 사용
+                barColors: barColors.length >= events.length ? barColors.sublist(0, events.length) : barColors,
                 onExpand: () {
                   setState(() {
                     isExpanded = true;
@@ -267,7 +253,6 @@ class _MainCardScreenState extends State<MainCardScreen> {
           );
         },
       ),
-
     );
   }
 }

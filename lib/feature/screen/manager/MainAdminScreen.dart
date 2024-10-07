@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
-import '../MyPage.dart';
+import 'package:attendance_check/feature/screen/MyPage.dart';
 
 class MainAdminScreen extends StatefulWidget {
+  final String id; // 관리자 ID를 전달받음
+
+  MainAdminScreen({required this.id}); // 생성자에서 managerId 전달
+
   @override
   _MainAdminScreen createState() => _MainAdminScreen();
 }
@@ -19,7 +23,8 @@ class _MainAdminScreen extends State<MainAdminScreen> {
           ],
         ),
       ),
-      endDrawer: Mypage(),
+      // Mypage에 managerId 전달, role 정보도 전달
+      endDrawer: Mypage(id: widget.id, role: '교수(관리자)'), // 역할 정보 전달
       body: Scaffold(),
     );
   }

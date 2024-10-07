@@ -1,4 +1,7 @@
+import 'package:attendance_check/feature/screen/SignInPage.dart';
 import 'package:flutter/material.dart';
+
+import 'SignUpPage.dart';
 
 class Startpage extends StatelessWidget {
   @override
@@ -36,8 +39,10 @@ class Startpage extends StatelessWidget {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.pushNamed(
-                        context, '/signin'); // '/signin' 페이지로 이동
+                    Navigator.push(
+                        context, MaterialPageRoute(builder: (context) => SignInPage(),
+                    ),
+                    );// '/signin' 페이지로 이동
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.black, // 버튼의 배경색을 검정색으로 설정
@@ -52,8 +57,10 @@ class Startpage extends StatelessWidget {
                 Padding(padding: EdgeInsets.all(7.0)),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.pushNamed(
-                        context, '/signup'); // '/signup' 페이지로 이동
+                    Navigator.push(
+                      context, MaterialPageRoute(builder: (context) => SignUpPage(),
+                    ),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.black, // 버튼의 배경색을 검정색으로 설정

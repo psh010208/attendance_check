@@ -38,17 +38,21 @@ class ManagerRepository {
     }
   }
 
-  // 특정 ID로 매니저 데이터 조회
   Future<ManagerModel?> fetchManagerById(String managerId) async {
     try {
-      Map<String, dynamic>? managerData =
-      await _dbService.getDocumentById('manager', managerId);
-      if (managerData != null) {
-        return ManagerModel.fromMap(managerData);
+      var snapshot = await FirebaseFirestore.instance
+          .collection('manager') // Ensure this is the correct collection name
+          .where('managerId', isEqualTo: managerId) // Ensure this field exists in Firestore
+          .get();
+
+      if (snapshot.docs.isNotEmpty) {
+        return ManagerModel.fromMap(snapshot.docs.first.data());
+      } else {
+        return null; // Return null if no matching manager is found
       }
     } catch (e) {
       print('Error fetching manager by ID: $e');
+      return null; // Handle and return null if an error occurs
     }
-    return null;
   }
 }
