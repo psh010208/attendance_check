@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'student/MainCardScreen.dart'; // MainCardScreen import
 import 'SignUpPage.dart';
+import 'package:attendance_check/database/Repository/ManagerRepository.dart';
+import 'package:attendance_check/database/model/ManagerModel.dart';
 
 class SignInPage extends StatelessWidget {
   final TextEditingController _studentIdController = TextEditingController();
@@ -29,7 +31,6 @@ class SignInPage extends StatelessWidget {
             style: TextStyle(fontSize: 16), // 글씨 크기 조정
             textAlign: TextAlign.center, // 텍스트 가운데 정렬
           ),
-
           actions: [
             Center( // 확인 버튼을 가운데 배치
               child: TextButton(
@@ -73,7 +74,7 @@ class SignInPage extends StatelessWidget {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-                builder: (context) => MainCardScreen()), // CardScreen으로 이동
+                builder: (context) => MainCardScreen()),
           );
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -91,22 +92,23 @@ class SignInPage extends StatelessWidget {
 
         if (snapshot.docs.isNotEmpty) {
           var managerData = snapshot.docs.first.data();
-          if (managerData['isApproved'] == true) {
+
+          // 승인된 관리자만 로그인 허용
+          if (managerData['isApprove'] == true) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text('로그인 성공!')),
             );
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(
-                  builder: (context) => MainCardScreen()), // CardScreen으로 이동
+              MaterialPageRoute(builder: (context) => MainCardScreen()), // 관리자 페이지로 이동
             );
           } else {
-            // 관리자가 승인되지 않은 상태라면 승인 대기 중 팝업 표시
+            // IsApprove가 False일 경우 승인 대기 팝업 표시
             _showApprovalPendingDialog(context);
           }
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('ID 또는 비밀번호가 잘못되었습니다.')),
+            SnackBar(content: Text('관리자 ID 또는 비밀번호가 잘못되었습니다.')),
           );
         }
       }

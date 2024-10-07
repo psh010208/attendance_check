@@ -97,7 +97,7 @@ class _SignUpPageState extends State<SignUpPage> {
     }
   }
 
-  // 회원가입 처리 함수
+  // 관리자 회원가입 처리 로직
   Future<void> _submitForm(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save(); // 입력된 값을 저장
@@ -130,12 +130,13 @@ class _SignUpPageState extends State<SignUpPage> {
               return SignUpDialog(message: "회원가입 완료! 로그인 화면으로 이동합니다.");
             },
           );
-        } else if (_selectedRole == '관리자') {
+        }else if (_selectedRole == '관리자') {
           final manager = ManagerModel(
             managerId: _studentId!,
             department: _department!,
             name: _name!,
             password: _password!,
+            isApprove: false,
           );
           await _managerRepository.addManager(manager);
 

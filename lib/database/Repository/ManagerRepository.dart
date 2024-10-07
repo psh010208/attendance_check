@@ -1,8 +1,22 @@
-import 'package:attendance_check/database/db_query/db_service.dart';
-import 'package:attendance_check/database/model/ManagerModel.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import '../db_query/db_service.dart';
+import '../model/ManagerModel.dart';
 
 class ManagerRepository {
   final DbService _dbService = DbService();
+
+  // 관리자 승인 상태 업데이트
+  Future<void> approveManager(String managerId) async {
+    try {
+      await _dbService.update(
+        'manager',
+        managerId,
+        {'isApprove': true},
+      );
+    } catch (e) {
+      print('Error approving manager: $e');
+    }
+  }
 
   // 새로운 매니저 추가
   Future<void> addManager(ManagerModel manager) async {
@@ -24,28 +38,11 @@ class ManagerRepository {
     }
   }
 
-  // 특정 매니저 데이터 업데이트
-  Future<void> updateManager(String docId, ManagerModel manager) async {
-    try {
-      await _dbService.update('manager', docId, manager.toMap());
-    } catch (e) {
-      print('Error updating manager: $e');
-    }
-  }
-
-  // 특정 매니저 데이터 삭제
-  Future<void> deleteManager(String docId) async {
-    try {
-      await _dbService.delete('manager', docId);
-    } catch (e) {
-      print('Error deleting manager: $e');
-    }
-  }
-
   // 특정 ID로 매니저 데이터 조회
-  Future<ManagerModel?> fetchManagerById(String docId) async {
+  Future<ManagerModel?> fetchManagerById(String managerId) async {
     try {
-      Map<String, dynamic>? managerData = await _dbService.getDocumentById('manager', docId);
+      Map<String, dynamic>? managerData =
+      await _dbService.getDocumentById('manager', managerId);
       if (managerData != null) {
         return ManagerModel.fromMap(managerData);
       }
