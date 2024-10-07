@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:attendance_check/qr_code_scanner/qr_code_scanner.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 // QR 코드 스캐너 화면 구현
 class QrScanner extends StatefulWidget {
