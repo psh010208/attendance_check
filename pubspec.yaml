@@ -33,6 +33,7 @@ dependencies:
   qr_flutter: ^4.0.0
 
 
+  flex_color_scheme: ^7.2.0
 
   cloud_firestore: ^5.4.3  # 최신 버전으로 업데이트
   firebase_core: ^3.6.0    # 최신 버전으로 업데이트
@@ -83,11 +84,13 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
+  fonts:
+    - family: soonchunhyang
+      fonts:
+      - asset: assets/font/soonchunhyang.ttf
+    - family: Abel-Regular
+      fonts:
+        - asset: assets/font/Abel-Regular.ttf
   #         style: italic
   #   - family: Trajan Pro
   #     fonts:

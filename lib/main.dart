@@ -1,6 +1,8 @@
 import 'package:attendance_check/feature/screen/StartPage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flex_color_scheme/flex_color_scheme.dart';
+
 import 'feature/screen/SignInPage.dart';  // 로그인 페이지 import
 import 'feature/screen/SignUpPage.dart';  // 회원가입 페이지 import
 import 'feature/screen/student/MainCardScreen.dart';  // 학생 메인 페이지 import
@@ -20,16 +22,18 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+  final FlexScheme usedScheme = FlexScheme.blueM3;
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Startpage(), // 메인 페이지 설정
-      routes: {
-
-        '/stmain': (context) => MainCardScreen(id: 'StudentId'),
-        '/admain': (context) => MainAdminScreen(id: 'ManagerId'),
-      },
+      theme: FlexThemeData.light(
+        scheme: usedScheme,
+        textTheme: const TextTheme(
+            titleLarge: TextStyle(fontFamily: "soonchunhyang"),
+            titleSmall: TextStyle(fontFamily: "Abel-Regular",fontSize: 32)),
+      ),
     );
   }
 }
