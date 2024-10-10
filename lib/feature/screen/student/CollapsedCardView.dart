@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../QrScanner.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class CollapsedCardView extends StatelessWidget {
   final List<Map<String, String>> schedules;
@@ -11,6 +13,30 @@ class CollapsedCardView extends StatelessWidget {
         required this.schedules,
         required this.barColors,
         required this.onExpand});
+
+  openCamera(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => QrScanner()),
+    ); // QR 스캐너 화면으로 이동
+  }
+
+  getPermission(BuildContext context) async {
+    var status = await Permission.camera.status;
+
+    if (status.isPermanentlyDenied) {
+      openAppSettings();
+    }
+
+    if (status.isGranted) {
+      print('카메라 권한 허용됨');
+      openCamera(context);
+    } else if (status.isDenied) {
+      print('카메라 권한 거절됨');
+      await Permission.camera.request();
+      openCamera(context);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +63,7 @@ class CollapsedCardView extends StatelessWidget {
         SizedBox(height: 30), // 버튼과 위의 내용 간격
         IconButton(
           onPressed: () {
-            // QR 코드 인식 기능을 추가하는 부분
+            getPermission(context);
           },
           icon: Icon(
             Icons.qr_code_2_rounded,
