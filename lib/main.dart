@@ -32,6 +32,7 @@ class MyApp extends StatelessWidget {
         scheme: usedScheme,
         textTheme: const TextTheme(
             titleLarge: TextStyle(fontFamily: "soonchunhyang"),
+            titleMedium: TextStyle(fontFamily: "soonchunhyang"),
             titleSmall: TextStyle(fontFamily: "Abel-Regular",fontSize: 32)),
       ),
     );
