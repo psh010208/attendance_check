@@ -3,7 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:attendance_check/feature/screen/manager/PrizeDrawPage.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
@@ -18,9 +18,7 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   final FlexScheme usedScheme = FlexScheme.blueM3;
-
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -29,7 +27,7 @@ class MyApp extends StatelessWidget {
       designSize: const Size(390, 844),
       builder: (context, child) {
         return MaterialApp(
-          home: MainCardScreen(id: "id"), // 메인 페이지 설정
+          home: PrizeDrawPage(), // 메인 페이지 설정
           theme: FlexThemeData.light(
             scheme: usedScheme,
             textTheme:  TextTheme(
