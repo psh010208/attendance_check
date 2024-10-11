@@ -221,7 +221,6 @@ class _MainAdminScreenState extends State<MainAdminScreen> {
         ),
       ),
       endDrawer: Drawer(
-        backgroundColor: Color(0xFF0C3C73),
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
