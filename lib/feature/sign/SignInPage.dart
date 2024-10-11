@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'student/MainCardScreen.dart'; // MainCardScreen import
-import 'SignUpPage.dart';
+import 'package:attendance_check/feature/screen/student/MainCardScreen.dart'; // MainCardScreen import
+import 'package:attendance_check/feature/sign/SignUpPage.dart';
 import 'package:attendance_check/database/Repository/ManagerRepository.dart';
 import 'package:attendance_check/database/model/ManagerModel.dart';
 import 'package:attendance_check/feature/screen/manager/MainAdminScreen.dart';

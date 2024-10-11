@@ -5,7 +5,7 @@ import 'package:attendance_check/database/Repository/StudentRepository.dart';
 import 'package:attendance_check/database/Repository/ManagerRepository.dart';
 import 'package:attendance_check/database/model/studentModel.dart';
 import 'package:attendance_check/database/model/ManagerModel.dart';
-import 'package:attendance_check/feature/screen/SignInPage.dart';
+import 'package:attendance_check/feature/sign//SignInPage.dart';
 
 // 회원가입 완료 후 보여주는 다이얼로그
 class SignUpDialog extends StatelessWidget {

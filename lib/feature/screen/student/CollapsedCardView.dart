@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../QrScanner.dart';
+import 'package:attendance_check/feature//QRService/QrScanner.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class CollapsedCardView extends StatelessWidget {

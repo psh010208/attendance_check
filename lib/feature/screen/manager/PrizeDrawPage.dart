@@ -1,23 +1,102 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
+import 'LotteryData.dart';
 
 class PrizeDrawPage extends StatelessWidget {
-  final List<Map<String, String>> students = [
-    {'department': '의료IT공학과', 'name': '홍길동', 'id': '12341234', 'grade': '9'},
-    {'department': '의료IT공학과', 'name': '홍길동', 'id': '12341234', 'grade': '9'},
-    {'department': '의료IT공학과', 'name': '홍길동', 'id': '12341234', 'grade': '9'},
-  ];
+  // final List<Map<String, String>> students = [
+  //   {'department': '의료IT공학과', 'name': '홍길동', 'id': '12341234', 'grade': '9'},
+  //   {'department': '의료IT공학과', 'name': '홍길동', 'id': '12341234', 'grade': '9'},
+  //   {'department': '의료IT공학과', 'name': '홍길동', 'id': '12341234', 'grade': '9'},
+  // ];
+  //
+  // // 텍스트 정보 표시 위젯
+  // Widget studentInfo(BuildContext context, String text) {
+  //   return Text(
+  //     text,
+  //     style: Theme.of(context).textTheme.titleSmall?.copyWith(
+  //       fontSize: 19.sp, // 폰트 크기 설정
+  //       overflow: TextOverflow.ellipsis, // 넘치는 텍스트 생략 처리
+  //     ),
+  //   );
+  // }
 
-  // 텍스트 정보 표시 위젯
-  Widget studentInfo(BuildContext context, String text) {
-    return Text(
-      text,
-      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-        fontSize: 19.sp, // 폰트 크기 설정
-        overflow: TextOverflow.ellipsis, // 넘치는 텍스트 생략 처리
+  List<LotteryStudent> data = List.from(l_students); // 진짜 리스트
+  List<LotteryStudent> data_empty = List.from(l_students_empty); // 비어있는 리스트
+
+  //표 제목
+  List<DataColumn> createColumns() {
+    return [
+      DataColumn(
+        label: Text(
+          "학과",
+          style: TextStyle(
+            fontSize: 19.sp, // 내용과 동일한 크기
+            fontWeight: FontWeight.bold, // 굵기만 설정
+          ),
+        ),
       ),
-    );
+      DataColumn(
+        label: Text(
+          "학번",
+          style: TextStyle(
+            fontSize: 19.sp, // 내용과 동일한 크기
+            fontWeight: FontWeight.bold, // 굵기만 설정
+          ),
+        ),
+      ),
+      DataColumn(
+        label: Text(
+          "이름",
+          style: TextStyle(
+            fontSize: 19.sp, // 내용과 동일한 크기
+            fontWeight: FontWeight.bold, // 굵기만 설정
+          ),
+        ),
+      ),
+      DataColumn(
+        label: Text(
+          "참여 횟수",
+          style: TextStyle(
+            fontSize: 19.sp, // 내용과 동일한 크기
+            fontWeight: FontWeight.bold, // 굵기만 설정
+          ),
+        ),
+      ),
+    ];
+  }
+
+  // 표 내용
+  List<DataRow> createRows() {
+    // data가 비어있지 않으면 data를 사용하고, 비어있으면 data_empty를 사용
+    List<LotteryStudent> displayData = data.isNotEmpty ? data : data_empty;
+
+    return displayData.map((e) {
+      return DataRow(
+        cells: [
+          DataCell(
+            Text(
+              e.dept,
+            ),
+          ),
+          DataCell(
+            Text(
+              e.num,
+            ),
+          ),
+          DataCell(
+            Text(
+              e.name,
+            ),
+          ),
+          DataCell(
+            Text(
+              e.count,
+            ),
+          ),
+        ],
+      );
+    }).toList();
   }
 
   @override
@@ -30,6 +109,7 @@ class PrizeDrawPage extends StatelessWidget {
             style: Theme.of(context).textTheme.titleLarge,
           ),
         ),
+        elevation: 4,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
@@ -44,6 +124,12 @@ class PrizeDrawPage extends StatelessWidget {
             },
           ),
         ],
+        shape: Border(
+          bottom: BorderSide(
+            color: Colors.grey,
+            width: 1.w,
+          ),
+        ),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -53,7 +139,7 @@ class PrizeDrawPage extends StatelessWidget {
             decoration: BoxDecoration(
               border: Border.all(
                 color: Color(0xff26539C),
-                width: 5.0.w, // ScreenUtil 사용
+                width: 5.w, // ScreenUtil 사용
               ),
               boxShadow: [
                 BoxShadow(
@@ -74,48 +160,17 @@ class PrizeDrawPage extends StatelessWidget {
 
           // 학생 리스트 표시 부분
           Container(
-            height: students.isEmpty ? 0.h : (students.length > 3 ? 180.h : students.length * 60.h), // ScreenUtil 사용
-            child: students.isNotEmpty
-                ? ListView.builder(
-              itemCount: students.length,
-              itemBuilder: (context, i) {
-                var student = students[i];
-                return Card(
-                  child: ListTile(
-                    leading: Icon(CupertinoIcons.person_crop_circle),
-                    trailing: IconButton(
-                        onPressed: () {}, // 삭제 기능 만들 예정
-                        icon: Icon(CupertinoIcons.delete)),
-                    iconColor: Colors.black,
-                    title: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal, // 가로 스크롤 가능하게 설정
-                      child: Row(
-                        children: [
-                          // 학과명
-                          studentInfo(context, student['department']!),
-
-                          SizedBox(width: 8.w), // 간격 추가
-
-                          // 이름
-                          studentInfo(context, student['name']!),
-
-                          SizedBox(width: 8.w), // 간격 추가
-
-                          // ID
-                          studentInfo(context, student['id']!),
-
-                          SizedBox(width: 8.w), // 간격 추가
-
-                          // 학년
-                          studentInfo(context, student['grade']!),
-                        ],
-                      ),
-                    ),
+            height: 170.h,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: DataTable(
+                      columns: createColumns(),
+                      rows: createRows(),
                   ),
-                );
-              },
-            )
-                : Container(), // 리스트가 비어있을 때는 빈 컨테이너
+                ),
+              ),
           ),
 
           // 상품 추첨하기 버튼
