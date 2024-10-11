@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:attendance_check/feature/screen/manager/MainAdminScreen.dart';
 
 class CollapsedCardView_admin extends StatelessWidget {
   final List<Map<String, String>> schedules;
@@ -11,6 +12,7 @@ class CollapsedCardView_admin extends StatelessWidget {
         required this.schedules,
         required this.barColors,
         required this.onExpand});
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -19,41 +21,22 @@ class CollapsedCardView_admin extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            ElevatedButton.icon(
-              onPressed: () {
-                // 여기에 참여 명단 보기 로직을 추가하세요.
-              },
-              icon: Icon(Icons.list), // 참여 명단을 나타낼 아이콘
-              label: Text(
-                '참여 명단 보기',
-                style: TextStyle(
-                  fontSize: 17, // 텍스트 크기
-                  fontWeight: FontWeight.bold, // 텍스트 굵기
-                ),
-              ), // 버튼에 표시할 텍스트
-              style: ElevatedButton.styleFrom(
-                iconColor: Colors.blue,  // 버튼 배경색
+            Expanded(
+              child: Stack(
+                children: [
+                  buildOverlappingCards(), // 카드들이 겹쳐 보이도록
+                ],
               ),
             ),
+            TextButton(
+              onPressed: onExpand,
+              child: Text("밀어서 펼치기",
+                  style: TextStyle(decoration: TextDecoration.underline)),
+            ),
+            SizedBox(height: 30), // 버튼과 위의 내용 간격
           ],
         ),
-        SizedBox(height: 50),
-        Expanded(
-          child: Stack(
-            children: [
-              buildOverlappingCards(), // 카드들이 겹쳐 보이도록
-            ],
-          ),
-        ),
-        TextButton(
-          onPressed: onExpand,
-          child: Text("밀어서 펼치기",
-              style: TextStyle(decoration: TextDecoration.underline)),
-        ),
-        SizedBox(height: 30), // 버튼과 위의 내용 간격
-
-        SizedBox(height: 16), // 버튼과 화면 아래 간격
-      ],
+      ]
     );
   }
 

@@ -99,7 +99,7 @@ class SignInPage extends StatelessWidget {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => MainAdminScreen(id: id),  // MainAdminScreen으로 이동
+                  builder: (context) => MainAdminScreen(id: id, role: _selectedRole!),  // MainAdminScreen으로 이동
                 ),
               );
             } else {
