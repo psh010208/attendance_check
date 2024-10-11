@@ -44,16 +44,16 @@ class MyApp extends StatelessWidget {
                 titleLarge: TextStyle(fontFamily: "soonchunhyang"),
                 titleSmall: TextStyle(fontFamily: "Abel-Regular")),
             colorScheme: ColorScheme.light(
-              background: Theme.of(context).colorScheme.surface,
-               surface: Theme.of(context).colorScheme.surface
+                background: Theme.of(context).colorScheme.surface,
+                surface: Theme.of(context).colorScheme.surface
             ),
           ),
           darkTheme: FlexThemeData.dark(
             scheme: FlexScheme.blueM3,
             useMaterial3: true,
             colorScheme: ColorScheme.dark(
-              background: Theme.of(context).colorScheme.onSurface,
-              surface:Theme.of(context).colorScheme.onSurface
+                background: Theme.of(context).colorScheme.onSurface,
+                surface:Theme.of(context).colorScheme.onSurface
             ),
           ),
           themeMode: ThemeMode.system,
