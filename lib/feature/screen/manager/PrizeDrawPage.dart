@@ -9,7 +9,6 @@ class PrizeDrawPage extends StatelessWidget {
     {'department': '의료IT공학과', 'name': '홍길동', 'id': '12341234', 'grade': '9'},
   ];
 
-  // 텍스트 정보 표시 위젯
   Widget studentInfo(BuildContext context, String text) {
     return Text(
       text,
@@ -27,7 +26,7 @@ class PrizeDrawPage extends StatelessWidget {
         title: Center(
           child: Text(
             '상품 추첨하기',
-            style: Theme.of(context).textTheme.titleLarge,
+            style: Theme.of(context).textTheme.titleSmall,
           ),
         ),
         leading: IconButton(
