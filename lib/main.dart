@@ -1,4 +1,4 @@
-import 'package:attendance_check/feature/screen/student/MainCardScreen.dart';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
@@ -30,19 +30,21 @@ class MyApp extends StatelessWidget {
         return MaterialApp(
           home: SplashScreen(), // 메인 페이지 설정
           theme: FlexThemeData.light(
-            scheme: usedScheme,
-            useMaterial3: true,
+            scheme: FlexScheme.blueM3,
+            textTheme: const TextTheme(
+                titleLarge: TextStyle(fontFamily: "soonchunhyang"),
+                titleSmall: TextStyle(fontFamily: "Abel-Regular")),
             colorScheme: ColorScheme.light(
-              background: Color(0xFFF8FAFD), // 배경색
-              surface: Color(0xFFF8FAFD), // surface색
+              background: Theme.of(context).colorScheme.surface,
+               surface: Theme.of(context).colorScheme.surface
             ),
           ),
           darkTheme: FlexThemeData.dark(
-            scheme: usedScheme,
+            scheme: FlexScheme.blueM3,
             useMaterial3: true,
             colorScheme: ColorScheme.dark(
-              background: Color(0xFFF8FAFD),//다크모드에서의 배경색
-              surface:Color(0xFFF8FAFD),//다크모드에서의 surface색
+              background: Theme.of(context).colorScheme.onSurface,
+              surface:Theme.of(context).colorScheme.onSurface
             ),
           ),
           themeMode: ThemeMode.system,

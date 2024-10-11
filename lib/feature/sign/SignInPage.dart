@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:attendance_check/feature/screen/student/MainCardScreen.dart'; // MainCardScreen import
 import 'package:attendance_check/feature/sign/SignUpPage.dart';
 import 'package:attendance_check/database/Repository/ManagerRepository.dart';
 import 'package:attendance_check/database/model/ManagerModel.dart';
-import 'package:attendance_check/feature/screen/manager/MainAdminScreen.dart';
-
+import 'package:attendance_check/feature/screen/manager/PrizeDrawPage.dart';
 class SignInPage extends StatelessWidget {
   final TextEditingController IdController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -76,7 +74,7 @@ class SignInPage extends StatelessWidget {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => MainCardScreen(id: id),  // studentId 전달
+                builder: (context) => PrizeDrawPage(),  // studentId 전달
               ),
             );
           } else {
@@ -99,7 +97,7 @@ class SignInPage extends StatelessWidget {
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => MainAdminScreen(id: id),  // MainAdminScreen으로 이동
+                  builder: (context) => PrizeDrawPage(),  // MainAdminScreen으로 이동
                 ),
               );
             } else {
