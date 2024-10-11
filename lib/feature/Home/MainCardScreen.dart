@@ -1,8 +1,11 @@
-import 'package:flutter/material.dart';
+import 'package:attendance_check/feature/Home/ExpandedCardView.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'ExpandedCardView.dart';
+
+import 'package:attendance_check/feature/Drawer/MyPage.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+
 import 'CollapsedCardView.dart';
-import 'package:attendance_check/feature/screen/MyPage.dart';
 
 class MainCardScreen extends StatefulWidget {
   final String id;  // 로그인 시 전달된 studentId

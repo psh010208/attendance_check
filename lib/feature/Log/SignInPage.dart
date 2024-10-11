@@ -1,16 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:attendance_check/feature/screen/student/MainCardScreen.dart'; // MainCardScreen import
-import 'package:attendance_check/feature/sign/SignUpPage.dart';
 import 'package:attendance_check/database/Repository/ManagerRepository.dart';
 import 'package:attendance_check/database/model/ManagerModel.dart';
-import 'package:attendance_check/feature/screen/manager/MainAdminScreen.dart';
+import '../Drawer/MainAdminScreen.dart';
+import '../Home/MainCardScreen.dart';
+import 'SignUpPage.dart';
 
-class SignInPage extends StatelessWidget {
-  final TextEditingController IdController = TextEditingController();
+class SignInPage extends StatefulWidget {
+
+  SignInPage({super.key});
+
+  @override
+  State<SignInPage> createState() => _SignInPageState();
+}
+
+class _SignInPageState extends State<SignInPage> {
+  TextEditingController get IdController => TextEditingController();
+
   final TextEditingController passwordController = TextEditingController();
-  String? _selectedRole ; // 기본값으로 '학부생' 설정
-  // Firestore 인스턴스
+
+  String? _selectedRole ;
+ // 기본값으로 '학부생' 설정
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   // 승인 대기 팝업
@@ -46,7 +56,6 @@ class SignInPage extends StatelessWidget {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     Future<void> _login(BuildContext context) async {
@@ -76,7 +85,7 @@ class SignInPage extends StatelessWidget {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => MainCardScreen(id: id),  // studentId 전달
+                builder: (context) => MainCardScreen(id: '12'),  // studentId 전달
               ),
             );
           } else {

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'CollapsedCardView_admin.dart';
-import 'ExpandedCardView_admin.dart';
-import 'package:attendance_check/feature/screen/MyPage.dart';
-import 'package:attendance_check/feature/sign/SignInPage.dart';
+
+import 'package:attendance_check/feature/Drawer/MyPage.dart';
+
+import '../Home/CollapsedCardView_admin.dart';
+import '../Home/ExpandedCardView_admin.dart';
+import '../Log/SignInPage.dart';
+
 class MainAdminScreen extends StatefulWidget {
   final String id;  // id 필드 추가
   final String role;

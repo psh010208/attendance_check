@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:attendance_check/feature/screen/manager/PrizeDrawPage.dart';
+import 'package:attendance_check/feature/Lottery/PrizeDrawPage.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SplashScreen extends StatelessWidget {

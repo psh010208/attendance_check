@@ -1,0 +1,1 @@
+//lotteryList로 가는 버튼
