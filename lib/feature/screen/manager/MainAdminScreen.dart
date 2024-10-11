@@ -4,7 +4,6 @@ import 'CollapsedCardView_admin.dart';
 import 'ExpandedCardView_admin.dart';
 import 'package:attendance_check/feature/screen/MyPage.dart';
 import 'package:attendance_check/feature/sign/SignInPage.dart';
-
 class MainAdminScreen extends StatefulWidget {
   final String id;  // id 필드 추가
   final String role;
@@ -372,133 +371,9 @@ class _MainAdminScreenState extends State<MainAdminScreen> {
           ],
         ),
       ),
-<<<<<<< HEAD
-      endDrawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center, // 왼쪽 정렬
-                children: [
-                  CircleAvatar(
-                    radius: 30, // 아이콘 크기
-                    child: Icon(Icons.account_circle, size: 60), // 계정 아이콘
-                  ),
-                  SizedBox(height: 13), // 아이콘과 텍스트 간격
-                  Text(
-                    '컴퓨터공학과', // 학과
-                    style: TextStyle(
-                      color: Colors.white, // 텍스트 색상
-                      fontSize: 23,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    '홍길동', // 학생 이름
-                    style: TextStyle(
-                      color: Colors.white, // 텍스트 색상
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Divider(
-              color: Colors.grey,
-              thickness: 1,
-              height: 1,
-            ),
-            SizedBox(height: 10),
-            // Drawer의 다른 항목들
-            ListTile(
-              leading: Icon(
-                  Icons.task_alt,
-                size: 33,
-                color: Colors.white,
-              ),
-              title: Text(
-                  '참여 학생 현황',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                ),
-              ),
-              onTap: () {
-                // Home으로 이동하는 로직
-              },
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.redeem,
-                size: 33,
-                color: Colors.white,
-              ),
-              title: Text(
-                '상품 추첨',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                ),
-              ),
-              onTap: () {
-                // Home으로 이동하는 로직
-              },
-            ),
-            ListTile(
-              leading: Icon(
-                Icons.list_alt,
-                size: 33,
-                color: Colors.white,
-              ),
-              title: Text(
-                '추첨 결과',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                ),
-              ),
-              onTap: () {
-                // Home으로 이동하는 로직
-              },
-            ),
-            SizedBox(height: 250),
-            Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  // 로그아웃 로직을 여기에 추가하세요.
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.transparent, // 버튼 배경색을 투명하게 설정
-                  shadowColor: Colors.transparent, // 그림자 색상 투명하게
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10), // 패딩 조정
-                ),
-                child: Row( // 아이콘과 텍스트를 나란히 배치
-                  mainAxisSize: MainAxisSize.min, // 버튼 크기를 최소화
-                  children: [
-                    Icon(
-                      Icons.logout, // 로그아웃 아이콘
-                      color: Colors.white, // 아이콘 색상 (필요에 따라 변경)
-                      size: 33,
-                    ),
-                    SizedBox(width: 8), // 아이콘과 텍스트 간의 간격
-                    Text(
-                      '로그아웃',
-                      style: TextStyle(fontSize: 20), // 텍스트 크기 조정
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(height: 25),
-            Image.asset('assets/simple_logo.png', width: 150, height: 30),
-          ],
-        ),
-      ),
-=======
+
+
       endDrawer: CustomDrawer(id: widget.id, role: widget.role),
->>>>>>> e8172dc72da2715bc4a173b5cef8c027a583ecdc
 
       body: StreamBuilder<List<Map<String, String>>>(
         stream: _fetchEvents(),

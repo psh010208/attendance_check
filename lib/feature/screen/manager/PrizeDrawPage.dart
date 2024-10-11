@@ -4,22 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'LotteryData.dart';
 
 class PrizeDrawPage extends StatelessWidget {
-  // final List<Map<String, String>> students = [
-  //   {'department': '의료IT공학과', 'name': '홍길동', 'id': '12341234', 'grade': '9'},
-  //   {'department': '의료IT공학과', 'name': '홍길동', 'id': '12341234', 'grade': '9'},
-  //   {'department': '의료IT공학과', 'name': '홍길동', 'id': '12341234', 'grade': '9'},
-  // ];
-  //
-  // // 텍스트 정보 표시 위젯
-  // Widget studentInfo(BuildContext context, String text) {
-  //   return Text(
-  //     text,
-  //     style: Theme.of(context).textTheme.titleSmall?.copyWith(
-  //       fontSize: 19.sp, // 폰트 크기 설정
-  //       overflow: TextOverflow.ellipsis, // 넘치는 텍스트 생략 처리
-  //     ),
-  //   );
-  // }
+
 
   List<LotteryStudent> data = List.from(l_students); // 진짜 리스트
   List<LotteryStudent> data_empty = List.from(l_students_empty); // 비어있는 리스트
@@ -180,7 +165,6 @@ class PrizeDrawPage extends StatelessWidget {
             },
             child: Text('상품 추첨하기', style: TextStyle(fontSize: 16.sp)), // 반응형 텍스트 크기
             style: ElevatedButton.styleFrom(
-              backgroundColor: Color(0xff2C2C2C),
               foregroundColor: Colors.white,
               minimumSize: Size(200.w, 40.h), // 반응형 버튼 크기
               elevation: 6,

@@ -1,4 +1,5 @@
 
+import 'package:attendance_check/feature/Splash/SplashScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
@@ -10,6 +11,8 @@ import 'feature/sign/SigninPage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Future.delayed(Duration(seconds: 3));  // 앱 로딩 시 스플래시 화면을 3초 보여줍니다.
+
   try {
     await Firebase.initializeApp();
     runApp(const MyApp());
@@ -22,6 +25,7 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
   final FlexScheme usedScheme = FlexScheme.blueM3;
   @override
   Widget build(BuildContext context) {
@@ -31,7 +35,7 @@ class MyApp extends StatelessWidget {
       designSize: const Size(390, 844),
       builder: (context, child) {
         return MaterialApp(
-          home: SignInPage(), // 메인 페이지 설정
+          home: MainAdminScreen(id: 'id', role: 'role'), // 메인 페이지 설정
           theme: FlexThemeData.light(
             scheme: FlexScheme.blueM3,
             textTheme: const TextTheme(

@@ -9,7 +9,7 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // 타이머를 설정하여 3초 후에 다음 화면으로 이동
-    Timer(Duration(seconds: 100000), () {
+    Timer(Duration(seconds: 1), () {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => PrizeDrawPage()), // 메인 화면으로 이동
       );
