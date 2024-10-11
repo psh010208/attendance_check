@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
       designSize: const Size(390, 844),
       builder: (context, child) {
         return MaterialApp(
-          home: SplashScreen(), // 메인 페이지 설정
+          home: PrizeDrawPage(), // 메인 페이지 설정
           theme: FlexThemeData.light(
             scheme: usedScheme,
             background: FlexColor.lightSurface,

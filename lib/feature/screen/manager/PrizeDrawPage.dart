@@ -3,36 +3,25 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'LotteryData.dart';
 
-class PrizeDrawPage extends StatelessWidget {
-  // final List<Map<String, String>> students = [
-  //   {'department': '의료IT공학과', 'name': '홍길동', 'id': '12341234', 'grade': '9'},
-  //   {'department': '의료IT공학과', 'name': '홍길동', 'id': '12341234', 'grade': '9'},
-  //   {'department': '의료IT공학과', 'name': '홍길동', 'id': '12341234', 'grade': '9'},
-  // ];
-  //
-  // // 텍스트 정보 표시 위젯
-  // Widget studentInfo(BuildContext context, String text) {
-  //   return Text(
-  //     text,
-  //     style: Theme.of(context).textTheme.titleSmall?.copyWith(
-  //       fontSize: 19.sp, // 폰트 크기 설정
-  //       overflow: TextOverflow.ellipsis, // 넘치는 텍스트 생략 처리
-  //     ),
-  //   );
-  // }
+class PrizeDrawPage extends StatefulWidget {
+  @override
+  _PrizeDrawPageState createState() => _PrizeDrawPageState();
+}
 
+class _PrizeDrawPageState extends State<PrizeDrawPage> {
   List<LotteryStudent> data = List.from(l_students); // 진짜 리스트
   List<LotteryStudent> data_empty = List.from(l_students_empty); // 비어있는 리스트
+  bool isLoading = false; // 로딩 상태 관리
 
-  //표 제목
+  // 표 제목
   List<DataColumn> createColumns() {
     return [
       DataColumn(
         label: Text(
           "학과",
           style: TextStyle(
-            fontSize: 19.sp, // 내용과 동일한 크기
-            fontWeight: FontWeight.bold, // 굵기만 설정
+            fontSize: 19.sp,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),
@@ -40,8 +29,8 @@ class PrizeDrawPage extends StatelessWidget {
         label: Text(
           "학번",
           style: TextStyle(
-            fontSize: 19.sp, // 내용과 동일한 크기
-            fontWeight: FontWeight.bold, // 굵기만 설정
+            fontSize: 19.sp,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),
@@ -49,8 +38,8 @@ class PrizeDrawPage extends StatelessWidget {
         label: Text(
           "이름",
           style: TextStyle(
-            fontSize: 19.sp, // 내용과 동일한 크기
-            fontWeight: FontWeight.bold, // 굵기만 설정
+            fontSize: 19.sp,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),
@@ -58,8 +47,8 @@ class PrizeDrawPage extends StatelessWidget {
         label: Text(
           "참여 횟수",
           style: TextStyle(
-            fontSize: 19.sp, // 내용과 동일한 크기
-            fontWeight: FontWeight.bold, // 굵기만 설정
+            fontSize: 19.sp,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),
@@ -68,47 +57,59 @@ class PrizeDrawPage extends StatelessWidget {
 
   // 표 내용
   List<DataRow> createRows() {
-    // data가 비어있지 않으면 data를 사용하고, 비어있으면 data_empty를 사용
     List<LotteryStudent> displayData = data.isNotEmpty ? data : data_empty;
 
     return displayData.map((e) {
       return DataRow(
         cells: [
           DataCell(
-            Text(
-              e.dept,
+            Row(
+              children: [
+                Icon(CupertinoIcons.person_crop_circle), // 아이콘 추가
+                SizedBox(width: 8.w), // 아이콘과 텍스트 사이 간격
+                Text(e.dept), // 학과명 텍스트
+              ],
             ),
           ),
-          DataCell(
-            Text(
-              e.num,
-            ),
-          ),
-          DataCell(
-            Text(
-              e.name,
-            ),
-          ),
-          DataCell(
-            Text(
-              e.count,
-            ),
-          ),
+          DataCell(Text(e.num)),
+          DataCell(Text(e.name)),
+          DataCell(Text(e.count)),
         ],
       );
     }).toList();
+  }
+
+  // 상품 추첨 로직 (임시)
+  Future<void> drawLottery() async {
+    await Future.delayed(Duration(milliseconds: 3900)); // 3.9초 대기
+
+    // 알림 창 표시
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('추첨 완료'),
+          content: Text('상품 추첨이 완료되었습니다!'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // 다이얼로그 닫기
+              },
+              child: Text('확인'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(
-          child: Text(
-            '상품 추첨하기',
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
-        ),
+        title: Text('상품 추첨하기', style: Theme.of(context).textTheme.titleLarge),
+        centerTitle: true,
+        // iOS에서 제목 중앙 정렬
         elevation: 4,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
@@ -139,54 +140,73 @@ class PrizeDrawPage extends StatelessWidget {
             decoration: BoxDecoration(
               border: Border.all(
                 color: Color(0xff26539C),
-                width: 5.w, // ScreenUtil 사용
+                width: 5.w,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.grey.withOpacity(1),
-                  spreadRadius: 1.w,
-                  blurRadius: 6.w,
+                  color: Colors.grey.withOpacity(0.5), // 그림자 투명도 줄이기
+                  spreadRadius: 0.5, // 퍼짐 정도 줄이기
+                  blurRadius: 5.w,
                   offset: Offset(0, 3.h),
                 ),
               ],
             ),
             width: 300.w,
             height: 200.h,
-            child: Image.asset(
-              'assets/surprise.gif',
-              fit: BoxFit.fill,
-            ),
+            child: isLoading
+                ? Image.asset(
+                    // isLoading이 true일 경우 gif 활성화
+                    'assets/surprise.gif',
+                    fit: BoxFit.fill,
+                  )
+                : Image.asset(
+                    // isLoading이 false일 경우 png 활성화
+                    'assets/surprise.png',
+                    fit: BoxFit.fill,
+                  ),
           ),
 
           // 학생 리스트 표시 부분
           Container(
             height: 170.h,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
               child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: DataTable(
-                      columns: createColumns(),
-                      rows: createRows(),
-                  ),
+                scrollDirection: Axis.vertical,
+                child: DataTable(
+                  columns: createColumns(),
+                  rows: createRows(),
                 ),
               ),
+            ),
           ),
 
           // 상품 추첨하기 버튼
           ElevatedButton(
-            onPressed: () {
-              // 상품 추첨 버튼 동작 추가
-            },
-            child: Text('상품 추첨하기', style: TextStyle(fontSize: 16.sp)), // 반응형 텍스트 크기
+            onPressed: isLoading
+                ? null // isLoading이 true일 경우 버튼을 비활성화
+                : () async {
+                    setState(() {
+                      isLoading = true; // 로딩 시작
+                    });
+                    await drawLottery(); // 추첨 로직 호출
+                    setState(() {
+                      isLoading = false; // 로딩 끝
+                    });
+                  },
+            child: isLoading
+                ? CircularProgressIndicator(
+                    color: Colors.white,
+                  ) // 로딩 중에는 로딩 버튼으로 바뀜
+                : Text('상품 추첨하기', style: TextStyle(fontSize: 16.sp)),
             style: ElevatedButton.styleFrom(
               backgroundColor: Color(0xff2C2C2C),
               foregroundColor: Colors.white,
-              minimumSize: Size(200.w, 40.h), // 반응형 버튼 크기
+              minimumSize: Size(200.w, 40.h),
               elevation: 6,
               shadowColor: Colors.grey.withOpacity(1),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.r), // 반응형 모서리
+                borderRadius: BorderRadius.circular(10.r),
               ),
             ),
           ),
@@ -194,5 +214,4 @@ class PrizeDrawPage extends StatelessWidget {
       ),
     );
   }
-
 }
