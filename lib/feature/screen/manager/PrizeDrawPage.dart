@@ -4,25 +4,25 @@ import 'package:flutter/cupertino.dart';
 import 'LotteryData.dart';
 
 class PrizeDrawPage extends StatelessWidget {
-  final List<Map<String, String>> students = [
-    {'department': '의료IT공학과', 'name': '홍길동', 'id': '12341234', 'grade': '9'},
-    {'department': '의료IT공학과', 'name': '홍길동', 'id': '12341234', 'grade': '9'},
-    {'department': '의료IT공학과', 'name': '홍길동', 'id': '12341234', 'grade': '9'},
-  ];
+  // final List<Map<String, String>> students = [
+  //   {'department': '의료IT공학과', 'name': '홍길동', 'id': '12341234', 'grade': '9'},
+  //   {'department': '의료IT공학과', 'name': '홍길동', 'id': '12341234', 'grade': '9'},
+  //   {'department': '의료IT공학과', 'name': '홍길동', 'id': '12341234', 'grade': '9'},
+  // ];
+  //
+  // // 텍스트 정보 표시 위젯
+  // Widget studentInfo(BuildContext context, String text) {
+  //   return Text(
+  //     text,
+  //     style: Theme.of(context).textTheme.titleSmall?.copyWith(
+  //       fontSize: 19.sp, // 폰트 크기 설정
+  //       overflow: TextOverflow.ellipsis, // 넘치는 텍스트 생략 처리
+  //     ),
+  //   );
+  // }
 
-  // 텍스트 정보 표시 위젯
-  Widget studentInfo(BuildContext context, String text) {
-    return Text(
-      text,
-      style: Theme.of(context).textTheme.titleSmall?.copyWith(
-        fontSize: 19.sp, // 폰트 크기 설정
-        overflow: TextOverflow.ellipsis, // 넘치는 텍스트 생략 처리
-      ),
-    );
-  }
-
-  List<LotteryStudent> data = List.from(l_students);
-  List<LotteryStudent> data_empty = List.from(l_students_empty);
+  List<LotteryStudent> data = List.from(l_students); // 진짜 리스트
+  List<LotteryStudent> data_empty = List.from(l_students_empty); // 비어있는 리스트
 
   //표 제목
   List<DataColumn> createColumns() {
@@ -66,7 +66,7 @@ class PrizeDrawPage extends StatelessWidget {
     ];
   }
 
-
+  // 표 내용
   List<DataRow> createRows() {
     // data가 비어있지 않으면 data를 사용하고, 비어있으면 data_empty를 사용
     List<LotteryStudent> displayData = data.isNotEmpty ? data : data_empty;
@@ -81,7 +81,7 @@ class PrizeDrawPage extends StatelessWidget {
           ),
           DataCell(
             Text(
-              e.num.toString(),
+              e.num,
             ),
           ),
           DataCell(
@@ -91,7 +91,7 @@ class PrizeDrawPage extends StatelessWidget {
           ),
           DataCell(
             Text(
-              e.count.toString(),
+              e.count,
             ),
           ),
         ],
