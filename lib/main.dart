@@ -5,6 +5,8 @@ import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:attendance_check/feature/screen/manager/PrizeDrawPage.dart';
 import 'package:attendance_check/feature/screen/manager/MainAdminScreen.dart';
+import 'package:attendance_check/feature/screen/MyPage.dart';
+import 'feature/sign/SigninPage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,7 +31,7 @@ class MyApp extends StatelessWidget {
       designSize: const Size(390, 844),
       builder: (context, child) {
         return MaterialApp(
-          home: MainAdminScreen(id: '김형은'), // 메인 페이지 설정
+          home: SignInPage(), // 메인 페이지 설정
           theme: FlexThemeData.light(
             scheme: FlexScheme.blueM3,
             textTheme: const TextTheme(
