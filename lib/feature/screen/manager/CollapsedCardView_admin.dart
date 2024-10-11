@@ -1,82 +1,42 @@
 import 'package:flutter/material.dart';
-import 'package:attendance_check/feature//QRService/QrScanner.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:attendance_check/feature/screen/manager/MainAdminScreen.dart';
 
-class CollapsedCardView extends StatelessWidget {
+class CollapsedCardView_admin extends StatelessWidget {
   final List<Map<String, String>> schedules;
   final List<Color> barColors;
   final int currentProgress;
   final VoidCallback onExpand;
 
-  CollapsedCardView(
+  CollapsedCardView_admin(
       {required this.currentProgress,
         required this.schedules,
         required this.barColors,
         required this.onExpand});
 
-  openCamera(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => QrScanner()),
-    ); // QR 스캐너 화면으로 이동
-  }
-
-  getPermission(BuildContext context) async {
-    var status = await Permission.camera.status;
-
-    if (status.isPermanentlyDenied) {
-      openAppSettings();
-    }
-
-    if (status.isGranted) {
-      print('카메라 권한 허용됨');
-      openCamera(context);
-    } else if (status.isDenied) {
-      print('카메라 권한 거절됨');
-      await Permission.camera.request();
-      openCamera(context);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(height: 20),
-        Text('참여 상황: $currentProgress / 9', style: TextStyle(fontSize: 18)),
-        SizedBox(height: 10),
-        // 커스텀 막대
-        buildCustomProgressBar(currentProgress),
-        SizedBox(height: 20),
-        Expanded(
-          child: Stack(
-            children: [
-              buildOverlappingCards(), // 카드들이 겹쳐 보이도록
-            ],
-          ),
+        SizedBox(height: 30),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Expanded(
+              child: Stack(
+                children: [
+                  buildOverlappingCards(), // 카드들이 겹쳐 보이도록
+                ],
+              ),
+            ),
+            TextButton(
+              onPressed: onExpand,
+              child: Text("밀어서 펼치기",
+                  style: TextStyle(decoration: TextDecoration.underline)),
+            ),
+            SizedBox(height: 30), // 버튼과 위의 내용 간격
+          ],
         ),
-        TextButton(
-          onPressed: onExpand,
-          child: Text("밀어서 펼치기",
-              style: Theme.of(context).textTheme.titleLarge),
-        ),
-
-        SizedBox(height: 30), // 버튼과 위의 내용 간격
-        IconButton(
-          onPressed: () {
-            getPermission(context);
-          },
-          icon: Icon(
-            Icons.qr_code_2_rounded,
-            size: 35,
-          ),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.transparent, // 배경색을 투명하게 설정
-            shadowColor: Colors.transparent, // 그림자 색상도 투명하게 설정
-          ),
-        ),
-        SizedBox(height: 16), // 버튼과 화면 아래 간격
-      ],
+      ]
     );
   }
 
@@ -133,30 +93,12 @@ class CollapsedCardView extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        IconButton(
-                          icon: Icon(
-                            Icons.check_circle_outline,
-                            size: 30,
-                          ),
-                          onPressed: () {
-                            // 체크 아이콘 눌렀을 때 동작
-                          },
-                        ),
                         SizedBox(width: 10),
                         Text(
                           '$location',
                           style: TextStyle(fontSize: 15),
                         ),
                         SizedBox(width: 10),
-                        IconButton(
-                          icon: Icon(
-                            Icons.alarm,
-                            size: 30,
-                          ),
-                          onPressed: () {
-                            // 알림 아이콘 눌렀을 때 동작
-                          },
-                        ),
                       ],
                     ),
                   ),

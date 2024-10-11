@@ -81,7 +81,7 @@ class _PrizeDrawPageState extends State<PrizeDrawPage> {
 
   // 상품 추첨 로직 (임시)
   Future<void> drawLottery() async {
-    await Future.delayed(Duration(milliseconds: 3900)); // 3.9초 대기
+    await Future.delayed(Duration(milliseconds: 3800)); // 초 대기
 
     // 알림 창 표시
     showDialog(
@@ -102,6 +102,7 @@ class _PrizeDrawPageState extends State<PrizeDrawPage> {
       },
     );
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -144,9 +145,9 @@ class _PrizeDrawPageState extends State<PrizeDrawPage> {
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.grey.withOpacity(0.5), // 그림자 투명도 줄이기
-                  spreadRadius: 0.5, // 퍼짐 정도 줄이기
-                  blurRadius: 5.w,
+                  color: Colors.grey.withOpacity(1),
+                  spreadRadius: 1.w,
+                  blurRadius: 6.w,
                   offset: Offset(0, 3.h),
                 ),
               ],
@@ -154,16 +155,14 @@ class _PrizeDrawPageState extends State<PrizeDrawPage> {
             width: 300.w,
             height: 200.h,
             child: isLoading
-                ? Image.asset(
-                    // isLoading이 true일 경우 gif 활성화
-                    'assets/surprise.gif',
-                    fit: BoxFit.fill,
-                  )
-                : Image.asset(
-                    // isLoading이 false일 경우 png 활성화
-                    'assets/surprise.png',
-                    fit: BoxFit.fill,
-                  ),
+                ? Image.asset( // isLoading이 true일 경우 gif 활성화
+              'assets/surprise.gif',
+              fit: BoxFit.fill,
+            )
+                : Image.asset( // isLoading이 false일 경우 png 활성화
+              'assets/surprise.png',
+              fit: BoxFit.fill,
+            ),
           ),
 
           // 학생 리스트 표시 부분
@@ -186,18 +185,18 @@ class _PrizeDrawPageState extends State<PrizeDrawPage> {
             onPressed: isLoading
                 ? null // isLoading이 true일 경우 버튼을 비활성화
                 : () async {
-                    setState(() {
-                      isLoading = true; // 로딩 시작
-                    });
-                    await drawLottery(); // 추첨 로직 호출
-                    setState(() {
-                      isLoading = false; // 로딩 끝
-                    });
-                  },
+              setState(() {
+                isLoading = true; // 로딩 시작
+              });
+              await drawLottery(); // 추첨 로직 호출
+              setState(() {
+                isLoading = false; // 로딩 끝
+              });
+            },
             child: isLoading
                 ? CircularProgressIndicator(
-                    color: Colors.white,
-                  ) // 로딩 중에는 로딩 버튼으로 바뀜
+              color: Colors.white,
+            ) // 로딩 중에는 로딩 버튼으로 바뀜
                 : Text('상품 추첨하기', style: TextStyle(fontSize: 16.sp)),
             style: ElevatedButton.styleFrom(
               backgroundColor: Color(0xff2C2C2C),
