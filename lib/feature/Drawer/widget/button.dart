@@ -1,8 +1,8 @@
 //매니저 버튼 2개 (참여 학생 현황, 상품 추천)
 //로그아웃 버튼
 
+import 'package:attendance_check/feature/Log/logPage.dart';
 import 'package:flutter/material.dart';
-import '../../Log/SignInPage.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 
@@ -136,7 +136,7 @@ class LogOutButton extends StatelessWidget {
               // 로그아웃 후 SignInPage로 이동
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => SignInPage()),
+                MaterialPageRoute(builder: (context) => logPage(isLogin: false)),
               );
             },
             style: ElevatedButton.styleFrom(
