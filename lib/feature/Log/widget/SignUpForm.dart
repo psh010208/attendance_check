@@ -30,91 +30,84 @@ class _SignUpFormState extends State<SignUpForm> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Stack(
-          children: [
-            SoonCheckWidget(bottom: 600.h, left: -25.w), // Use ScreenUtil for positioning
-            Padding(
-              padding: EdgeInsets.only(top: 150.h), // Adjust top padding responsively
-              child: SingleChildScrollView( // To handle scrolling for smaller devices
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 30.w), // Responsive horizontal padding
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start, // Align form at the top
-                    crossAxisAlignment: CrossAxisAlignment.stretch, // Stretch form fields to full width
-                    children: [
-                      // 사용자 유형 Dropdown
-                      CustomDropdownFormField(
-                        labelText: '사용자 유형',
-                        value: _selectedRole,
-                        items: ['학부생', '관리자'],
-                        onChanged: (value) {
-                          setState(() {
-                            _selectedRole = value;
-                          });
-                        },
-                        validator: (value) => value == null ? '사용자 유형을 선택하세요' : null,
-                      ),
-                      SizedBox(height: 30.h), // Responsive spacing
-
-                      // 학부생을 선택한 경우에만 학과 선택 필드를 보여줌
-                      Visibility(
-                        visible: _selectedRole == '학부생', // Show only if 학부생 is selected
-                        child: Column(
-                          children: [
-                            CustomDropdownFormField(
-                              labelText: '학과를 선택하세요',
-                              value: _department,
-                              items: [
-                                '의료IT공학과',
-                                '컴퓨터소프트웨어공학과',
-                                '정보보호학과',
-                                'AI빅데이터학과',
-                                '사물인터넷학과',
-                                '메타버스&게임학과'
-                              ],
-                              onChanged: (value) {
-                                setState(() {
-                                  _department = value;
-                                });
-                              },
-                              validator: (value) => value == null ? '학과를 선택하세요' : null,
-                            ),
-                            SizedBox(height: 30.h), // Responsive spacing
-                          ],
-                        ),
-                      ),
-
-                      // 이름 TextField
-                      buildCustomTextField('이름', TextInputType.text, false,
-                              (value) => _name = value, '이름을 입력하세요'),
-                      SizedBox(height: 30.h), // Responsive spacing
-
-                      // 학번 TextField
-                      buildCustomTextField('학번', TextInputType.number, false,
-                              (value) => _studentId = value, '학번을 입력하세요', FilteringTextInputFormatter.digitsOnly),
-
-                      // 학부생일 때는 위에 학과 선택 필드가 보이기 때문에 더 넓은 간격 추가
-                      SizedBox(height: _selectedRole == '관리자' ? 80.h : 100.h), // Responsive spacing
-
-                      // 회원가입 Button
-                      Center(
-                        child: SizedBox(
-                          width: 200.w, // Adjust width for responsiveness
-                          child: LogUpButton(
-                            onPressed: () => _submitForm(context),
-                            text: '회원가입',
-                          ),
-                        ),
-                      ),
-                    ],
+    return Scaffold(
+      body: Stack(
+        children: [
+          SoonCheckWidget(bottom: 600.h, left: -25.w), // Use ScreenUtil to make responsive
+          Padding(
+            padding: EdgeInsets.only(top: 250.h), // Responsive padding
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 30.w), // Responsive horizontal padding
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start, // Align form at the top
+                crossAxisAlignment: CrossAxisAlignment.stretch, // Stretch form fields to full width
+                children: [
+                  // 사용자 유형 Dropdown
+                  CustomDropdownFormField(
+                    labelText: '사용자 유형',
+                    value: _selectedRole,
+                    items: ['학부생', '관리자'],
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedRole = value;
+                      });
+                    },
+                    validator: (value) => value == null ? '사용자 유형을 선택하세요' : null,
                   ),
-                ),
+                  SizedBox(height: 30.h), // Responsive spacing
+
+                  // 학부생을 선택한 경우에만 학과 선택 필드를 보여줌
+                  Visibility(
+                    visible: _selectedRole == '학부생', // Show only if 학부생 is selected
+                    child: Column(
+                      children: [
+                        CustomDropdownFormField(
+                          labelText: '학과를 선택하세요',
+                          value: _department,
+                          items: [
+                            '의료IT공학과',
+                            '컴퓨터소프트웨어공학과',
+                            '정보보호학과',
+                            'AI빅데이터학과',
+                            '사물인터넷학과',
+                            '메타버스&게임학과'
+                          ],
+                          onChanged: (value) {
+                            setState(() {
+                              _department = value;
+                            });
+                          },
+                          validator: (value) => value == null ? '학과를 선택하세요' : null,
+                        ),
+                        SizedBox(height: 30.h), // Responsive spacing
+                      ],
+                    ),
+                  ),
+
+                  // 이름 TextField
+                  buildCustomTextField('이름', TextInputType.text, false,
+                          (value) => _name = value, '이름을 입력하세요'),
+                  SizedBox(height: 30.h), // Responsive spacing
+
+                  // 학번 TextField
+                  buildCustomTextField('학번', TextInputType.number, false,
+                          (value) => _studentId = value, '학번을 입력하세요', FilteringTextInputFormatter.digitsOnly),
+
+                  // 학부생일 때는 위에 학과 선택 필드가 보이기 때문에 더 넓은 간격 추가
+                  SizedBox(height: _selectedRole == '관리자' ? 80.h : 100.h), // Responsive spacing
+
+                  // 회원가입 Button
+                  Center(
+                    child: LogUpButton(
+                      onPressed: () => _submitForm(context),
+                      text: '회원가입',
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
