@@ -1,5 +1,6 @@
 // drawer 모든 기능 통합 페이지
 
+import 'package:attendance_check/feature/Drawer/widget/IdText.dart';
 import 'package:attendance_check/feature/Drawer/widget/button.dart';
 import 'package:attendance_check/feature/Drawer/widget/currentBar.dart';
 import 'package:flutter/material.dart';
@@ -31,22 +32,12 @@ class drawerScreen extends StatelessWidget {
                     child: Icon(Icons.account_circle, size: 60), // 계정 아이콘
                   ),
                   SizedBox(height: 13),
-                  Text(
-                    role, // 역할 표시
-                    style: TextStyle(
-                      color: Colors.white, // 텍스트 색상
-                      fontSize: 23, // 텍스트 크기
-                      fontWeight: FontWeight.bold, // 굵게
-                    ),
+                  CustomText(
+                    id: role,  // 역할 표시
                   ),
                   SizedBox(height: 7),
-                  Text(
-                    id, // 아이디 표시
-                    style: TextStyle(
-                      color: Colors.white, // 텍스트 색상
-                      fontSize: 20, // 텍스트 크기
-                      fontWeight: FontWeight.bold, // 굵게
-                    ),
+                  CustomText(
+                    id: id,  // 아이디 표시
                   ),
                 ],
               ),

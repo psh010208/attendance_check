@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:attendance_check/feature/Lottery/PrizeDrawPage.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../Drawer/drawerScreen.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
@@ -11,9 +12,9 @@ class SplashScreen extends StatelessWidget {
     print('qweqwe');
     print(Theme.of(context).primaryColor.value);
     // 타이머를 설정하여 3초 후에 다음 화면으로 이동
-    Timer(Duration(seconds: 1000), () {
+    Timer(Duration(seconds: 3), () {
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => PrizeDrawPage()), // 메인 화면으로 이동
+        MaterialPageRoute(builder: (context) =>drawerScreen(role: '관리자', id: '20225493') ), // 메인 화면으로 이동
       );
     });
 
@@ -23,8 +24,8 @@ class SplashScreen extends StatelessWidget {
           children: [
             // 로고 이미지
             Positioned(
-              top: 300.h, // 반응형 높이 설정
-              left: 130.w, // 반응형 너비 설정
+              top: 250.h, // 반응형 높이 설정
+              left: 120.w, // 반응형 너비 설정
               child: Image.asset(
                 'assets/appLogo.png', // 로고 파일 경로
                 width: 150.w, // 반응형 너비 설정
@@ -38,7 +39,7 @@ class SplashScreen extends StatelessWidget {
                 // 첫 번째 텍스트 (외곽선)
                 Positioned(
                   bottom: 300.h, // 반응형 위치 설정
-                  left: 80.w, // 반응형 위치 설정
+                  left: 85.w, // 반응형 위치 설정
                   child: Text(
                     'Soon CHeck',
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
@@ -61,7 +62,7 @@ class SplashScreen extends StatelessWidget {
                 // 두 번째 텍스트 (채우기 색상)
                 Positioned(
                   bottom: 300.h, // 반응형 위치 설정
-                  left: 80.w, // 반응형 위치 설정
+                  left: 85.w, // 반응형 위치 설정
                   child: Text(
                     'Soon CHeck',
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
@@ -74,7 +75,7 @@ class SplashScreen extends StatelessWidget {
                 // 가운데 일부 텍스트
                 Positioned(
                   bottom: 300.h, // 반응형 위치 설정
-                  left: 82.8.w, // 반응형 위치 설정
+                  left: 87.8.w, // 반응형 위치 설정
                   child: Text(
                     '  oon',
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(
@@ -87,7 +88,7 @@ class SplashScreen extends StatelessWidget {
                 // 오른쪽 일부 텍스트
                 Positioned(
                   bottom: 300.h, // 반응형 위치 설정
-                  left: 54.2.w, // 반응형 위치 설정
+                  left: 59.2.w, // 반응형 위치 설정
                   child: Text(
                     '                eck',
                     style: Theme.of(context).textTheme.titleSmall?.copyWith(

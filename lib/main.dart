@@ -1,11 +1,11 @@
 
 
 
+import 'package:attendance_check/feature/Drawer/drawerScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:attendance_check/feature/Lottery/PrizeDrawPage.dart';
 
 import 'package:attendance_check/feature/Drawer/MyPage.dart';
 import 'feature/Drawer/MainAdminScreen.dart';
@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
       designSize: const Size(390, 844),
       builder: (context, child) {
         return MaterialApp(
-          home: SplashScreen(), // 메인 페이지 설정
+          home: drawerScreen(role: '학부생', id: 'id'), // 메인 페이지 설정
           theme: FlexThemeData.light(
             scheme: FlexScheme.blueM3, // M3 Blue Delight 테마 선택
             useMaterial3: false,
@@ -66,7 +66,7 @@ class MyApp extends StatelessWidget {
             background: Colors.black, // 다크 모드 배경색
             surface: Colors.grey[900]!, // 다크 모드 서피스 색상
           ),
-          themeMode: ThemeMode.dark,
+          themeMode: ThemeMode.light,
         );
       },
     );
