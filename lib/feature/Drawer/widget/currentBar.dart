@@ -1,5 +1,6 @@
 // 학생 참여 현황 바
 
+import 'package:attendance_check/feature/Drawer/widget/IdText.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -15,10 +16,15 @@ class CurrentBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      top: 290.h, // y축 위치 조정
+      top: 255.h, // y축 위치 조정
       left: 30.w, // x축 위치 조정
       child: Column(
-        children: [ // children 속성에 리스트 형태로 전달
+        children: [
+          CustomText(
+              id: '      :    $currentProgress / 9',
+            size: 23,
+          ),
+          SizedBox(height: 20,),// children 속성에 리스트 형태로 전달
           buildCustomProgressBar(currentProgress),
         ],
       ),
@@ -34,7 +40,7 @@ Widget buildCustomProgressBar(int progress) {
     children: List.generate(totalSteps, (index) {
       return Container(
         width: 25,
-        height: 10,
+        height: 15,
         margin: EdgeInsets.symmetric(horizontal: 2),
         decoration: BoxDecoration(
           color: index < progress ? Colors.white : Colors.black,
