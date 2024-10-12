@@ -28,16 +28,18 @@ class _SignUpFormState extends State<SignUpForm> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 30.w), // 좌우 여백을 고정
+          padding: EdgeInsets.symmetric(horizontal: 30.w), // 좌우 여백 고정
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start, // 위쪽에 배치
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+            crossAxisAlignment: CrossAxisAlignment.stretch, // Stretching elements
             children: [
-              SizedBox(height: 40.h), // 상단에 빈 공간 추가
               Flexible(
-                child: SoonCheckWidget(bottom: -10.h, left: -50.w), // 반응형 위치 설정
+                child: SoonCheckWidget(bottom: -5.h, left: -50.w), // 반응형 위치 설정
               ),
-              SizedBox(height: 40.h), // 간격 유지
+
+              // "사용자 유형"과 "이름" 사이 간격 설정 (관리자 선택 시 40, 학부생 선택 시 20)
+              SizedBox(height: _selectedRole == '관리자' ? 70.h : 70.h),
+
+              // 사용자 유형 Dropdown
               CustomDropdownFormField(
                 labelText: '사용자 유형',
                 value: _selectedRole,
@@ -48,8 +50,10 @@ class _SignUpFormState extends State<SignUpForm> {
                   });
                 },
               ),
-              SizedBox(height: 20.h), // 간격 유지
-              if (_selectedRole == '학부생')
+
+              // 학부생일 때만 "학과 선택" 필드 표시
+              if (_selectedRole == '학부생') ...[
+                SizedBox(height: 20.h), // 간격 유지
                 CustomDropdownFormField(
                   labelText: '학과를 선택하세요',
                   value: _department,
@@ -67,11 +71,21 @@ class _SignUpFormState extends State<SignUpForm> {
                     });
                   },
                 ),
-              SizedBox(height: 20.h), // 간격 유지
+              ],
+
+              // 관리자 선택 시 "이름"과 "학번" 사이 간격 조정
+              SizedBox(height: _selectedRole == '관리자' ? 20.h : 20.h),
+
+              // 이름 TextField
               buildCustomTextField('이름', TextInputType.text, false, (value) => _name = value),
-              SizedBox(height: 20.h),
+
+              SizedBox(height: 20.h), // "이름"과 "학번" 사이 간격 (일관성 유지)
+
+              // 학번 TextField
               buildCustomTextField('학번', TextInputType.number, false, (value) => _studentId = value),
+
               Spacer(), // 남은 공간을 밀어주기 위해 사용
+
               Flexible(
                 child: Center(
                   child: LogUpButton(
@@ -80,6 +94,7 @@ class _SignUpFormState extends State<SignUpForm> {
                   ),
                 ),
               ),
+
               SizedBox(height: 130.h), // 버튼 아래 여백 추가
             ],
           ),
