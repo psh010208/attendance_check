@@ -2,7 +2,7 @@
 //로그아웃 버튼
 
 import 'package:flutter/material.dart';
-import '../../Log/SignInPage.dart';
+import 'package:attendance_check/feature/Log/widget/SignInForm.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 
@@ -32,7 +32,7 @@ class ParticipationButton extends StatelessWidget {
               color: Colors.white, // 아이콘 색상
               size: 33,
             ),
-            SizedBox(width: 8), // 아이콘과 텍스트 간의 간격
+            SizedBox(width: 10), // 아이콘과 텍스트 간의 간격
             Text(
               '참여 학생 현황',
               style: TextStyle(fontSize: 20), // 텍스트 크기 조정
@@ -70,7 +70,7 @@ class RaffleButton extends StatelessWidget {
               color: Colors.white, // 아이콘 색상
               size: 33,
             ),
-            SizedBox(width: 8), // 아이콘과 텍스트 간의 간격
+            SizedBox(width: 10), // 아이콘과 텍스트 간의 간격
             Text(
               '상품 추첨',
               style: TextStyle(fontSize: 20), // 텍스트 크기 조정
@@ -103,7 +103,7 @@ class CurrentButton extends StatelessWidget {
         child: Row( // 아이콘과 텍스트를 나란히 배치
           mainAxisSize: MainAxisSize.min, // 버튼 크기를 최소화
           children: [
-            SizedBox(width: 8), // 아이콘과 텍스트 간의 간격
+            SizedBox(width: 10), // 아이콘과 텍스트 간의 간격
             Text(
               '출석 현황',
               style: TextStyle(fontSize: 20), // 텍스트 크기 조정
@@ -124,8 +124,8 @@ class LogOutButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      top: 650.h, // y축 위치 조정
-      left: 110.w, // x축 위치 조정
+      top: 680.h, // y축 위치 조정
+      left: 75.w, // x축 위치 조정
       child: Column(
         mainAxisSize: MainAxisSize.min, // 버튼 크기를 최소화
         children: [
@@ -136,7 +136,7 @@ class LogOutButton extends StatelessWidget {
               // 로그아웃 후 SignInPage로 이동
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => SignInPage()),
+                MaterialPageRoute(builder: (context) => SignInForm(),)
               );
             },
             style: ElevatedButton.styleFrom(
@@ -150,12 +150,12 @@ class LogOutButton extends StatelessWidget {
                 Icon(
                   Icons.logout, // 로그아웃 아이콘
                   color: Colors.white, // 아이콘 색상
-                  size: 33,
+                  size: 23,
                 ),
-                SizedBox(width: 8), // 아이콘과 텍스트 간의 간격
+                SizedBox(width: 10), // 아이콘과 텍스트 간의 간격
                 Text(
                   '로그아웃',
-                  style: TextStyle(fontSize: 20), // 텍스트 크기 조정
+                  style: TextStyle(fontSize: 15), // 텍스트 크기 조정
                 ),
               ],
             ),
