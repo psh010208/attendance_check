@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:attendance_check/database/Repository/StudentRepository.dart';
 import 'package:attendance_check/database/Repository/ManagerRepository.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart'; // Use existing ScreenUtil
 import '../../Home/widget/SoonCheck.dart'; // SoonCheck import
 import 'CustomTextFormField.dart';
 import 'LogUpButton.dart';
-import 'CustomDropdownFormField.dart'; // 새로운 CustomDropdownFormField import
+import 'CustomDropdownFormField.dart'; // CustomDropdownFormField import
 
 class SignUpForm extends StatefulWidget {
   @override
@@ -32,14 +33,14 @@ class _SignUpFormState extends State<SignUpForm> {
     return Scaffold(
       body: Stack(
         children: [
-          SoonCheckWidget(bottom: 658, left: -25),
+          SoonCheckWidget(bottom: 600.h, left: -25.w), // Use ScreenUtil to make responsive
           Padding(
-            padding: const EdgeInsets.only(top: 250), // 폼 필드를 더 아래로 밀기
+            padding: EdgeInsets.only(top: 250.h), // Responsive padding
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30), // Horizontal padding
+              padding: EdgeInsets.symmetric(horizontal: 30.w), // Responsive horizontal padding
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start, // 위에서 시작하도록 설정
-                crossAxisAlignment: CrossAxisAlignment.stretch, // Full width form fields
+                mainAxisAlignment: MainAxisAlignment.start, // Align form at the top
+                crossAxisAlignment: CrossAxisAlignment.stretch, // Stretch form fields to full width
                 children: [
                   // 사용자 유형 Dropdown
                   CustomDropdownFormField(
@@ -53,11 +54,11 @@ class _SignUpFormState extends State<SignUpForm> {
                     },
                     validator: (value) => value == null ? '사용자 유형을 선택하세요' : null,
                   ),
-                  const SizedBox(height: 30),
+                  SizedBox(height: 30.h), // Responsive spacing
 
                   // 학부생을 선택한 경우에만 학과 선택 필드를 보여줌
                   Visibility(
-                    visible: _selectedRole == '학부생', // 학부생일 때만 보이도록 설정
+                    visible: _selectedRole == '학부생', // Show only if 학부생 is selected
                     child: Column(
                       children: [
                         CustomDropdownFormField(
@@ -78,7 +79,7 @@ class _SignUpFormState extends State<SignUpForm> {
                           },
                           validator: (value) => value == null ? '학과를 선택하세요' : null,
                         ),
-                        const SizedBox(height: 30),
+                        SizedBox(height: 30.h), // Responsive spacing
                       ],
                     ),
                   ),
@@ -86,14 +87,14 @@ class _SignUpFormState extends State<SignUpForm> {
                   // 이름 TextField
                   buildCustomTextField('이름', TextInputType.text, false,
                           (value) => _name = value, '이름을 입력하세요'),
-                  const SizedBox(height: 30),
+                  SizedBox(height: 30.h), // Responsive spacing
 
                   // 학번 TextField
                   buildCustomTextField('학번', TextInputType.number, false,
                           (value) => _studentId = value, '학번을 입력하세요', FilteringTextInputFormatter.digitsOnly),
 
                   // 학부생일 때는 위에 학과 선택 필드가 보이기 때문에 더 넓은 간격 추가
-                  SizedBox(height: _selectedRole == '관리자' ? 80 : 100),
+                  SizedBox(height: _selectedRole == '관리자' ? 80.h : 100.h), // Responsive spacing
 
                   // 회원가입 Button
                   Center(
@@ -111,7 +112,7 @@ class _SignUpFormState extends State<SignUpForm> {
     );
   }
 
-  // Rename the function to avoid conflict with the widget
+  // Custom TextField widget to avoid conflicts
   Widget buildCustomTextField(
       String labelText,
       TextInputType keyboardType,
@@ -126,8 +127,7 @@ class _SignUpFormState extends State<SignUpForm> {
       obscureText: obscureText,
       inputFormatters: inputFormatter != null ? [inputFormatter] : null,
       onSaved: onSaved,
-      validator: (value) =>
-      value == null || value.isEmpty ? validatorMessage : null,
+      validator: (value) => value == null || value.isEmpty ? validatorMessage : null,
     );
   }
 }

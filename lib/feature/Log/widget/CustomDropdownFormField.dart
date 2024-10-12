@@ -30,7 +30,7 @@ class CustomDropdownFormField extends StatelessWidget {
           borderRadius: BorderRadius.circular(10.0), // 둥근 테두리
           borderSide: BorderSide(
             color: Theme.of(context).colorScheme.primary,
-            width: 2.0, // 테두리 두께
+            width: 2.0.w, // 테두리 두께
           ),
         ),
       ),
