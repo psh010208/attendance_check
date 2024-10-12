@@ -8,8 +8,10 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('qweqwe');
+    print(Theme.of(context).primaryColor.value);
     // 타이머를 설정하여 3초 후에 다음 화면으로 이동
-    Timer(Duration(seconds: 10), () {
+    Timer(Duration(seconds: 1000), () {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => PrizeDrawPage()), // 메인 화면으로 이동
       );
@@ -45,12 +47,12 @@ class SplashScreen extends StatelessWidget {
                         ..style = PaintingStyle.stroke
                         ..strokeWidth = 6.w // 반응형 외곽선 두께
                         ..color = Theme.of(context).shadowColor,
-                      shadows: const <Shadow>[
+                      shadows:  <Shadow>[
                         Shadow(
+
                           offset: Offset(0, 10),
                           blurRadius: 10,
-                          color: Colors.grey,
-                        ),
+                            color: Theme.of(context).colorScheme.outlineVariant                     ),
                       ],
                     ),
                   ),
