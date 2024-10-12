@@ -29,7 +29,7 @@ class drawerScreen extends StatelessWidget {
                   children: [
                     Positioned(
                       top: 5.h, // 반응형 높이 설정
-                      left: 155.w,
+                      left: 110.w,
                       child: CircleAvatar(
                         radius: 30,
                         child: Icon(Icons.account_circle, size: 60),
@@ -37,14 +37,14 @@ class drawerScreen extends StatelessWidget {
                     ),
                     Positioned(
                       top: 80.h, // 반응형 높이 설정
-                      left: 155.w,
+                      left: 85.w,
                       child: CustomText(
                         id: role,  // 역할 표시
                       ),
                     ),
                     Positioned(
                       top: 115.h, // 반응형 높이 설정
-                      left: 175.w,
+                      left: 105.w,
                       child: CustomText(
                         id: id,  // 아이디 표시
                       ),
