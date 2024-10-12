@@ -37,7 +37,7 @@ class InfoTextField extends StatelessWidget {
 
           borderSide: BorderSide(
             color: Theme.of(context).colorScheme.primary, // 테두리 색상
-            width: 2.0, // 테두리 두께
+            width: 2.0.w, // 테두리 두께
           ),
         ),
       ),
