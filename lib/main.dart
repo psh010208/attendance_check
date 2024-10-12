@@ -9,11 +9,11 @@ import 'package:attendance_check/feature/Lottery/PrizeDrawPage.dart';
 
 import 'package:attendance_check/feature/Drawer/MyPage.dart';
 import 'feature/Drawer/MainAdminScreen.dart';
+import 'feature/Home/Load/SplashScreen.dart';
 
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Future.delayed(Duration(seconds: 3));  // 앱 로딩 시 스플래시 화면을 3초 보여줍니다.
 
   try {
     await Firebase.initializeApp();
@@ -37,26 +37,36 @@ class MyApp extends StatelessWidget {
       designSize: const Size(390, 844),
       builder: (context, child) {
         return MaterialApp(
-          home: MainAdminScreen(id: 'id', role: 'role'), // 메인 페이지 설정
+          home: SplashScreen(), // 메인 페이지 설정
           theme: FlexThemeData.light(
-            scheme: FlexScheme.blueM3,
+            scheme: FlexScheme.blueM3, // M3 Blue Delight 테마 선택
+            useMaterial3: false,
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: Colors.blue[800]!,  // Applying Colors.blue[800]
+            ),
             textTheme: const TextTheme(
                 titleLarge: TextStyle(fontFamily: "soonchunhyang"),
                 titleSmall: TextStyle(fontFamily: "Abel-Regular")),
-            colorScheme: ColorScheme.light(
-                background: Theme.of(context).colorScheme.surface,
-                surface: Theme.of(context).colorScheme.surface
-            ),
+              background: Theme.of(context).colorScheme.surface,
+              surface: Theme.of(context).colorScheme.surface
+
           ),
           darkTheme: FlexThemeData.dark(
-            scheme: FlexScheme.blueM3,
-            useMaterial3: true,
-            colorScheme: ColorScheme.dark(
-                background: Theme.of(context).colorScheme.onSurface,
-                surface:Theme.of(context).colorScheme.onSurface
+            scheme: FlexScheme.blueM3, // M3 Blue Delight 테마 선택
+            useMaterial3: false,
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: Colors.blue[800]!,  // Applying Colors.blue[800] in dark mode
+              brightness: Brightness.dark,   // 다크 모드 적용
             ),
+            textTheme: const TextTheme(
+              titleLarge: TextStyle(fontFamily: "soonchunhyang"),
+              titleSmall: TextStyle(fontFamily: "Abel-Regular"),
+            ),
+            // 다크 모드에서 배경 및 서피스 색상 설정
+            background: Colors.black, // 다크 모드 배경색
+            surface: Colors.grey[900]!, // 다크 모드 서피스 색상
           ),
-          themeMode: ThemeMode.system,
+          themeMode: ThemeMode.dark,
         );
       },
     );
