@@ -1,6 +1,4 @@
-
-
-
+import 'package:attendance_check/feature/Drawer/drawerScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
@@ -37,7 +35,7 @@ class MyApp extends StatelessWidget {
       designSize: const Size(390, 844),
       builder: (context, child) {
         return MaterialApp(
-          home: MainAdminScreen(id: 'id', role: 'role'), // 메인 페이지 설정
+          home: drawerScreen(id: 'id', role: '학부생'), // 메인 페이지 설정
           theme: FlexThemeData.light(
             scheme: FlexScheme.blueM3,
             textTheme: const TextTheme(

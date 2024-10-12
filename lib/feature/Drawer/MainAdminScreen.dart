@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
-import 'package:attendance_check/feature/Drawer/MyPage.dart';
-
+import 'package:attendance_check/feature/Drawer/widget/info.dart';
 import '../Home/CollapsedCardView_admin.dart';
 import '../Home/ExpandedCardView_admin.dart';
 import '../Log/SignInPage.dart';
