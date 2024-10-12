@@ -1,15 +1,8 @@
-
-
-
-import 'package:attendance_check/feature/Drawer/drawerScreen.dart';
-import 'package:attendance_check/feature/Home/Load/SplashScreen.dart';
-import 'package:attendance_check/feature/Log/logPage.dart';
+import 'package:attendance_check/feature/Drawer/MainAdminScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -36,7 +29,7 @@ class MyApp extends StatelessWidget {
       designSize: const Size(390, 844),
       builder: (context, child) {
         return MaterialApp(
-          home: SplashScreen(), // 메인 페이지 설정
+          home: MainAdminScreen(), // 메인 페이지 설정
           theme: FlexThemeData.light(
             scheme: FlexScheme.blueM3, // M3 Blue Delight 테마 선택
             useMaterial3: false,
@@ -62,8 +55,8 @@ class MyApp extends StatelessWidget {
               titleSmall: TextStyle(fontFamily: "Abel-Regular"),
             ),
             // 다크 모드에서 배경 및 서피스 색상 설정
-            background: Theme.of(context).colorScheme.surface, // 다크 모드 배경색
-            surface: Theme.of(context).colorScheme.surface, // 다크 모드 서피스 색상
+            background: Colors.black, // 다크 모드 배경색
+            surface: Colors.grey[900]!, // 다크 모드 서피스 색상
           ),
           themeMode: ThemeMode.light,
         );

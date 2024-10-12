@@ -27,28 +27,46 @@ class drawerScreen extends StatelessWidget {
               child: Center(
                 child: Stack(
                   children: [
-                    Positioned(
-                      top: 5.h, // 반응형 높이 설정
-                      left: 155.w,
-                      child: CircleAvatar(
-                        radius: 30,
-                        child: Icon(Icons.account_circle, size: 60),
+                      Positioned(
+                        top: 0.h, // 반응형 높이 설정
+                        left: 105.w,
+                        child: CircleAvatar(
+                          radius: 30,
+                          child: Icon(Icons.account_circle, size: 70),
+                        ),
                       ),
-                    ),
-                    Positioned(
-                      top: 80.h, // 반응형 높이 설정
-                      left: 155.w,
-                      child: CustomText(
-                        id: role,  // 역할 표시
+                    if(role != '교수(관리자)' && role!='학부생')
+                      Positioned(
+                        top: 95.h, // 반응형 높이 설정
+                        left: 88.w,
+                        child: CustomText(
+                          id: '정보없음'
+                              , size: 30,  // 역할 표시
+                        ),
                       ),
-                    ),
-                    Positioned(
-                      top: 115.h, // 반응형 높이 설정
-                      left: 175.w,
-                      child: CustomText(
-                        id: id,  // 아이디 표시
+                    if(role == '교수(관리자)')
+                      Positioned(
+                        top: 75.h, // 반응형 높이 설정
+                        left: 65.w,
+                        child: CustomText(
+                          id: role, size: 30,  // 역할 표시
+                        ),
+                      )else if(role=='학부생')
+                      Positioned(
+                        top: 75.h, // 반응형 높이 설정
+                        left: 100.w,
+                        child: CustomText(
+                          id: role, size: 30,  // 역할 표시
+                        ),
                       ),
-                    ),
+                    if(role == '교수(관리자)' || role=='학부생')
+                      Positioned(
+                        top: 123.h, // 반응형 높이 설정
+                        left: 113.w,
+                        child: CustomText(
+                          id: id,size: 20,   // 아이디 표시
+                        ),
+                      ),
                   ],
                 ),
               ),
@@ -58,7 +76,7 @@ class drawerScreen extends StatelessWidget {
             ),
           // Divider와 버튼들을 Stack의 두 번째 자식으로 추가
           Positioned(
-            top: 205.h, // 첫 번째 버튼의 위치를 조정
+            top: 220.h, // 첫 번째 버튼의 위치를 조정
             left: 0,
             right: 0,
             child: Divider(
@@ -80,8 +98,13 @@ class drawerScreen extends StatelessWidget {
               onPressed: () {},
             ),
             CurrentBar(currentProgress: 5),
-          ],  //학생
-          LogOutButton(onPressed: (){})
+          ]else ...[
+            LogInButton(onPressed: (){}),
+            JoinButton(onPressed: (){}),
+          ],
+          if(role == '교수(관리자)' || role=='학부생')
+            LogOutButton(onPressed: (){}),
+          Logo(onPressed: (){}),
         ],
       ),
     );
