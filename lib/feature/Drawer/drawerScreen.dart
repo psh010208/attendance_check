@@ -12,7 +12,6 @@ class drawerScreen extends StatelessWidget {
   final String role;
   final String id;
   //final String current
-
   drawerScreen(
       {required this.role,
         required this.id,
