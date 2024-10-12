@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'model.dart';
+import '../model/model.dart';
 
 class ViewModel {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
