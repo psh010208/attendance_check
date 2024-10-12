@@ -1,13 +1,17 @@
-import 'package:attendance_check/feature/screen/student/MainCardScreen.dart';
+
+
+
+import 'package:attendance_check/feature/Drawer/drawerScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:attendance_check/feature/screen/manager/PrizeDrawPage.dart';
-import 'package:attendance_check/feature/screen/manager/MainAdminScreen.dart';
+
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   try {
     await Firebase.initializeApp();
     runApp(const MyApp());
@@ -20,6 +24,7 @@ void main() async {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
   final FlexScheme usedScheme = FlexScheme.blueM3;
   @override
   Widget build(BuildContext context) {
@@ -29,15 +34,36 @@ class MyApp extends StatelessWidget {
       designSize: const Size(390, 844),
       builder: (context, child) {
         return MaterialApp(
-          home: MainAdminScreen(id: '김형은'), // 메인 페이지 설정
+          home: drawerScreen(role: '교수(관리자)', id: 'id'), // 메인 페이지 설정
           theme: FlexThemeData.light(
-            scheme: usedScheme,
-            textTheme:  TextTheme(
-              //, color: Theme.of(context).primaryColor
-              titleLarge: TextStyle(fontFamily: "soonchunhyang",),
-              titleSmall: TextStyle(fontFamily: "Abel-Regular", fontSize: 32),
+            scheme: FlexScheme.blueM3, // M3 Blue Delight 테마 선택
+            useMaterial3: false,
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: Colors.blue[800]!,  // Applying Colors.blue[800]
             ),
+            textTheme: const TextTheme(
+                titleLarge: TextStyle(fontFamily: "soonchunhyang"),
+                titleSmall: TextStyle(fontFamily: "Abel-Regular")),
+              background: Theme.of(context).colorScheme.surface,
+              surface: Theme.of(context).colorScheme.surface
+
           ),
+          darkTheme: FlexThemeData.dark(
+            scheme: FlexScheme.blueM3, // M3 Blue Delight 테마 선택
+            useMaterial3: false,
+            colorScheme: ColorScheme.fromSeed(
+              seedColor: Colors.blue[800]!,  // Applying Colors.blue[800] in dark mode
+              brightness: Brightness.dark,   // 다크 모드 적용
+            ),
+            textTheme: const TextTheme(
+              titleLarge: TextStyle(fontFamily: "soonchunhyang"),
+              titleSmall: TextStyle(fontFamily: "Abel-Regular"),
+            ),
+            // 다크 모드에서 배경 및 서피스 색상 설정
+            background: Colors.black, // 다크 모드 배경색
+            surface: Colors.grey[900]!, // 다크 모드 서피스 색상
+          ),
+          themeMode: ThemeMode.light,
         );
       },
     );
