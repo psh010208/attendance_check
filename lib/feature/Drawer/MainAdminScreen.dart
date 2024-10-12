@@ -37,7 +37,7 @@ class _MainAdminScreenState extends State<MainAdminScreen> {
         ),
       ),
       endDrawer: drawerScreen(
-        role: '학부생', // 필요한 파라미터 전달
+        role: '', // 필요한 파라미터 전달
         id: '김형은',      ),
       body: Center(child: Text('Main content here')),
     );
