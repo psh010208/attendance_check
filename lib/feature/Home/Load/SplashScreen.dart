@@ -1,4 +1,5 @@
 import 'package:attendance_check/feature/Home/widget/SoonCheck.dart';
+import 'package:attendance_check/feature/Log/logPage.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,9 +12,9 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // 타이머를 설정하여 3초 후에 다음 화면으로 이동
-    Timer(Duration(seconds: 1), () {
+    Timer(Duration(seconds: 3), () {
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => drawerScreen(role: '관리자', id: '20225493')),
+        MaterialPageRoute(builder: (context) => logPage(isLogin: false)),
       );
     });
 
@@ -33,7 +34,7 @@ class SplashScreen extends StatelessWidget {
             ),
 
             // 재사용 가능한 SoonCHeckWidget
-            SoonCheckWidget(),
+            SoonCheckWidget(bottom:310.h,left:-4.w ),
           ],
         ),
       ),
