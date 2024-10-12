@@ -1,9 +1,9 @@
+import 'package:attendance_check/feature/Log/logPage.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:attendance_check/feature/Drawer/widget/info.dart';
 import '../Home/CollapsedCardView_admin.dart';
 import '../Home/ExpandedCardView_admin.dart';
-import '../Log/SignInPage.dart';
 
 class MainAdminScreen extends StatefulWidget {
   final String id;  // id 필드 추가
@@ -124,7 +124,7 @@ class CustomDrawer extends StatelessWidget {
                 // 로그아웃 후 SignInPage로 이동
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => SignInPage()),
+                  MaterialPageRoute(builder: (context) => logPage(isLogin: false)),
                 );
               },
               style: ElevatedButton.styleFrom(
