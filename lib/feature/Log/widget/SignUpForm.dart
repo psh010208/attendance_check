@@ -32,7 +32,7 @@ class _SignUpFormState extends State<SignUpForm> {
     return Scaffold(
       body: Stack(
         children: [
-          SoonCheckWidget(bottom: 675, left: -25),
+          SoonCheckWidget(bottom: 658, left: -25),
           Padding(
             padding: const EdgeInsets.only(top: 250), // 폼 필드를 더 아래로 밀기
             child: Padding(
