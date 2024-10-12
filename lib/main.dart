@@ -7,9 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'package:attendance_check/feature/Drawer/MyPage.dart';
-import 'feature/Drawer/MainAdminScreen.dart';
-import 'feature/Home/Load/SplashScreen.dart';
 
 
 void main() async {
@@ -37,7 +34,7 @@ class MyApp extends StatelessWidget {
       designSize: const Size(390, 844),
       builder: (context, child) {
         return MaterialApp(
-          home: drawerScreen(role: '학부생', id: 'id'), // 메인 페이지 설정
+          home: drawerScreen(role: '교수(관리자)', id: 'id'), // 메인 페이지 설정
           theme: FlexThemeData.light(
             scheme: FlexScheme.blueM3, // M3 Blue Delight 테마 선택
             useMaterial3: false,
