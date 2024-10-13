@@ -42,7 +42,7 @@ class _StudentDataTableState extends State<ParticipationStatusBody> {
           backgroundColor: Color(0xffF8FAFD),
           title: Text(
             '참여 학생 현황',
-            style: Theme.of(context).textTheme.titleLarge,
+            style: Theme.of(context).textTheme.titleMedium,
           ),
           centerTitle: true,
           // iOS에서 제목 중앙 정렬
