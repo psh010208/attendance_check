@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'LotteryData.dart';
+import 'widget/button/deleteButton.dart';
 import 'widget/button/dialogOkButton.dart';
+import 'widget/button/dialogRepickButton.dart';
 
 class PrizeDrawPage extends StatefulWidget {
   @override
@@ -79,13 +81,15 @@ class _PrizeDrawPageState extends State<PrizeDrawPage> {
               children: [
                 Text(e.count),
                 SizedBox(width: 10.w), // 아이콘과 텍스트 사이 간격
-                IconButton(
-                    onPressed: (){
-                      // 삭제 버튼 로직
-                    },
-                    icon: Icon(CupertinoIcons.delete))
+                DeleteButton( // DeleteButton 사용
+                  onPressed: () {
+                    setState(() {
+                      data.remove(e); // 해당 학생 삭제
+                    });
+                  },
+                ),
               ],
-            )
+            ),
           ),
         ],
       );
@@ -118,22 +122,13 @@ class _PrizeDrawPageState extends State<PrizeDrawPage> {
             ],
           ),
           actions: [
-            TextButton(
-              onPressed: () {
-                // 등록 버튼 로직
-                Navigator.of(context).pop(); // 다이얼로그 닫기
-                // 여기에 등록 관련 로직 추가 가능
-              },
-              child: Text('등록'),
-            ),
-            TextButton(
-              onPressed: () {
-                // 재추첨 버튼 로직
-                Navigator.of(context).pop(); // 다이얼로그 닫기
-                drawLottery(); // 재추첨 실행
-              },
-              child: Text('재추첨'),
-            ),
+            DialogOkButton(onPressed: () {
+              Navigator.of(context).pop(); // 다이얼로그 닫기
+            }),
+            DialogRepickButton(onPressed: () {
+              Navigator.of(context).pop(); // 다이얼로그 닫기
+              drawLottery(); // 재추첨 실행
+            }),
           ],
         );
       },
@@ -144,14 +139,12 @@ class _PrizeDrawPageState extends State<PrizeDrawPage> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('상품 추첨하기', style: Theme.of(context).textTheme.titleLarge),
         centerTitle: true,
-        // iOS에서 제목 중앙 정렬
         elevation: 4,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
@@ -163,7 +156,7 @@ class _PrizeDrawPageState extends State<PrizeDrawPage> {
           IconButton(
             icon: Icon(Icons.menu, color: Colors.black),
             onPressed: () {
-              // 마이페이지 완성 후 메뉴바 누르면 마이페이지 오픈!
+              // 메뉴바 로직
             },
           ),
         ],
@@ -224,7 +217,7 @@ class _PrizeDrawPageState extends State<PrizeDrawPage> {
           // 상품 추첨하기 버튼
           ElevatedButton(
             onPressed: isLoading
-                ? null // isLoading이 true일 경우 버튼을 비활성화
+                ? null // isLoading이 true일 경우 버튼 비활성화
                 : () async {
               await drawLottery(); // 추첨 로직 호출
             },
