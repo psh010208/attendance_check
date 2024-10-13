@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'ParticipationData.dart';
 
-void main() => runApp(ParticipationStatus());
-
 class ParticipationStatus extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
