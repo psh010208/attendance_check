@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'WaitingData.dart';
 
-void main() => runApp(ApproveWaitingList());
-
 class ApproveWaitingList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -28,7 +26,7 @@ class WaitingStatus extends StatefulWidget {
 class _WaitingStatusState extends State<WaitingStatus> {
   List<Waitinglist> _data = List.from(waitinglist);
   List<Waitinglist> _originalData = List.from(waitinglist); // 원본 데이터 저장(검색 기능 때문)
-  bool _isSortAsc = true; // 정렬 기능
+  bool _isSortAsc = true; // 정렬 기능(승인 여부에서 사용)
   String _searchStudentNum = ""; // 사번 검색 기능
   String _searchName = ""; // 이름 검색 기능
 
@@ -108,7 +106,7 @@ class _WaitingStatusState extends State<WaitingStatus> {
   // 표 제목
   List<DataColumn> _createColumns() {
     return [
-      DataColumn(
+      DataColumn( //아이콘 자리(빈 column)
         label: Container(
           width: 30.w,
           height: 30.h,
@@ -175,7 +173,7 @@ class _WaitingStatusState extends State<WaitingStatus> {
               ],
             ),
           ),
-        onSort: (columnIndex, _) {  // 학과 정렬
+        onSort: (columnIndex, _) {  //승인 여부 정렬(문자열 Y랑 N으로)
           setState(() {
             if (_isSortAsc) {
               _data.sort(
@@ -190,7 +188,7 @@ class _WaitingStatusState extends State<WaitingStatus> {
           });
         },
         ),
-      DataColumn(
+      DataColumn( //승인 버튼 자리(빈 column)
         label: Container(
           width: 20.w,
           height: 30.h,
@@ -252,7 +250,7 @@ class _WaitingStatusState extends State<WaitingStatus> {
         .map((e) {
       return DataRow(
         cells: [
-          DataCell(Row(children: [
+          DataCell(Row(children: [  //아이콘만
             Icon(Icons.person, size: 17.sp),
           ])),
           DataCell(Row(children: [
@@ -263,11 +261,11 @@ class _WaitingStatusState extends State<WaitingStatus> {
             SizedBox(width: 15.w),
             Text(e.name, style: TextStyle(fontSize: 15.sp)),
           ])),
-          DataCell(Row(children: [
+          DataCell(Row(children: [  //승인 여부를 문자열 Y와 N으로 출력
             SizedBox(width: 40.w),
             Text(e.approved ? 'Y' : 'N', style: TextStyle(fontSize: 15.sp)),
           ])),
-          DataCell(Row(children: [
+          DataCell(Row(children: [  //승인 버튼
             IconButton(
               icon: Icon(Icons.add_circle, color: Color(0xff26539C)),
               onPressed: () =>
@@ -291,18 +289,18 @@ class _WaitingStatusState extends State<WaitingStatus> {
             width: MediaQuery.of(context).size.width * 0.8, // 화면의 80% 너비
             child: Text(
               "관리자로 승인하시겠습니까?",
-              style: TextStyle(fontSize: 18, color: Colors.black),
+              style: TextStyle(fontSize: 18.sp, color: Colors.black),
             ),
           ),
           actions: [
             TextButton(
-              child: Text("아니요", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: Colors.black)),
+              child: Text("아니요", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.sp, color: Colors.black)),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
-            TextButton(
-              child: Text("예", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: Colors.black)),
+            TextButton( //"예"버튼 클릭하면 승인 처리(WaitingData.dart에 approved를 true로 바꿈)
+              child: Text("예", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.sp, color: Colors.black)),
               onPressed: () {
                 setState(() {
                   // 승인 처리 로직
@@ -318,7 +316,7 @@ class _WaitingStatusState extends State<WaitingStatus> {
   }
 
 
-  // 학생 승인 처리
+  // 학생 승인 처리(WaitingData.dart에 approved를 true로 바꿈)
   void _approveStudent(String studentNum) {
     // 승인 대기 목록에서 학생을 찾고 상태를 변경 후 목록에서 제거
     _data.removeWhere((student) {
