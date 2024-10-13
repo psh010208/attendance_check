@@ -28,12 +28,6 @@ class CollapsedCardView_admin extends StatelessWidget {
                 ],
               ),
             ),
-            TextButton(
-              onPressed: onExpand,
-              child: Text("밀어서 펼치기",
-                  style: TextStyle(decoration: TextDecoration.underline)),
-            ),
-            SizedBox(height: 30), // 버튼과 위의 내용 간격
           ],
         ),
       ]

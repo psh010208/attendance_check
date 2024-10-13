@@ -43,12 +43,6 @@ class CollapsedCardView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(height: 20),
-        Text('참여 상황: $currentProgress / 9', style: TextStyle(fontSize: 18)),
-        SizedBox(height: 10),
-        // 커스텀 막대
-        buildCustomProgressBar(currentProgress),
-        SizedBox(height: 20),
         Expanded(
           child: Stack(
             children: [
@@ -56,12 +50,6 @@ class CollapsedCardView extends StatelessWidget {
             ],
           ),
         ),
-        TextButton(
-          onPressed: onExpand,
-          child: Text("밀어서 펼치기",
-              style: Theme.of(context).textTheme.titleLarge),
-        ),
-
         SizedBox(height: 30), // 버튼과 위의 내용 간격
         IconButton(
           onPressed: () {
@@ -127,38 +115,6 @@ class CollapsedCardView extends StatelessWidget {
                       trailing: Text(time,
                           style: TextStyle(
                               fontSize: 16, fontWeight: FontWeight.bold)),
-                    ),
-                  ),
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        IconButton(
-                          icon: Icon(
-                            Icons.check_circle_outline,
-                            size: 30,
-                          ),
-                          onPressed: () {
-                            // 체크 아이콘 눌렀을 때 동작
-                          },
-                        ),
-                        SizedBox(width: 10),
-                        Text(
-                          '$location',
-                          style: TextStyle(fontSize: 15),
-                        ),
-                        SizedBox(width: 10),
-                        IconButton(
-                          icon: Icon(
-                            Icons.alarm,
-                            size: 30,
-                          ),
-                          onPressed: () {
-                            // 알림 아이콘 눌렀을 때 동작
-                          },
-                        ),
-                      ],
                     ),
                   ),
                 ],
