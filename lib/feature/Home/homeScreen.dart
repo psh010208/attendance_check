@@ -4,6 +4,15 @@ import 'package:attendance_check/feature/Home/widget/card.dart'; // 카드 디�
 import 'package:attendance_check/feature/Drawer/drawerScreen.dart';
 
 class HomeScreen extends StatelessWidget {
+  // 사용자 정보 받기
+  final String role;
+  final String id;
+  //final String current
+  HomeScreen(
+      {required this.role,
+        required this.id,
+      });
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,8 +51,8 @@ class HomeScreen extends StatelessWidget {
         ],
       ),
       endDrawer: drawerScreen(
-        role: '', // 필요한 파라미터 전달
-        id: '',
+        role: role, // 필요한 파라미터 전달
+        id: id,
       ),
       drawerScrimColor: Colors.black.withOpacity(0.5),
       body: SingleChildScrollView(

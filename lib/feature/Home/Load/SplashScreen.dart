@@ -15,7 +15,7 @@ class SplashScreen extends StatelessWidget {
     // 3초 후에 다음 화면으로 이동 (logPage로)
     Future.delayed(Duration(seconds: 3), () {
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => HomeScreen()),
+        MaterialPageRoute(builder: (context) => HomeScreen(role: '',id: '',)),
       );
     });
 
