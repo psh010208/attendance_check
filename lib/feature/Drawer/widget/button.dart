@@ -1,4 +1,5 @@
 import 'package:attendance_check/feature/Drawer/drawerScreen.dart';
+import 'package:attendance_check/feature/Log/widget/SignUpForm.dart';
 import 'package:flutter/material.dart';
 import 'package:attendance_check/feature/Log/logPage.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -46,7 +47,7 @@ class CommonButton extends StatelessWidget {
             SizedBox(width: 10),
             CustomText(
               id: text,
-              size: textSize,
+              size: textSize.sp,
             ),
           ],
         ),
@@ -72,8 +73,8 @@ class LogInButton extends StatelessWidget {
       },
       icon: Icons.login,
       text: '로그인',
-      iconSize: 25,
-      textSize: 25,
+      iconSize: 25.sp,
+      textSize: 23.sp,
       top: 250.h,
       left: 10.w,
     );
@@ -92,13 +93,13 @@ class JoinButton extends StatelessWidget {
       onPressed: () {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => drawerScreen(role: '', id: '')), // 회원가입 페이지로 이동
+          MaterialPageRoute(builder: (context) => SignUpForm()), // 회원가입 페이지로 이동
         );
       },
       icon: Icons.account_circle,
       text: '회원가입',
-      iconSize: 25,
-      textSize: 25,
+      iconSize: 25.sp,
+      textSize: 23.sp,
       top: 300.h,
       left: 10.w,
     );
@@ -119,8 +120,8 @@ class ParticipationButton extends StatelessWidget {
       },
       icon: Icons.task_alt,
       text: '참여 학생 현황',
-      iconSize: 33,
-      textSize: 23,
+      iconSize: 33.sp,
+      textSize: 23.sp,
       top: 250.h,
       left: 10.w,
     );
@@ -141,8 +142,8 @@ class RaffleButton extends StatelessWidget {
       },
       icon: Icons.redeem,
       text: '상품 추첨',
-      iconSize: 33,
-      textSize: 21,
+      iconSize: 33.sp,
+      textSize: 21.sp,
       top: 320.h,
       left: 10.w,
     );
@@ -163,8 +164,8 @@ class CurrentButton extends StatelessWidget {
       },
       icon: Icons.check_circle, // 출석 현황에 적합한 아이콘 추가
       text: '출석 현황',
-      iconSize: 20,
-      textSize: 20,
+      iconSize: 20.sp,
+      textSize: 20.sp,
       top: 240.h,
       left: 10.w,
     );
@@ -188,8 +189,8 @@ class LogOutButton extends StatelessWidget {
       },
       icon: Icons.logout,
       text: '로그아웃',
-      iconSize: 23,
-      textSize: 17,
+      iconSize: 23.sp,
+      textSize: 17.sp,
       top: 680.h,
       left: 75.w,
     );
@@ -211,8 +212,8 @@ class Logo extends StatelessWidget {
         onTap: onPressed,
         child: Image.asset(
           'assets/simple_logo.png',
-          width: 150,
-          height: 30,
+          width: 150.sp,
+          height: 30.sp,
         ),
       ),
     );

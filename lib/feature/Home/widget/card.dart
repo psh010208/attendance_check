@@ -1,150 +1,229 @@
 import 'package:flutter/material.dart';
 import 'package:attendance_check/feature/Home/model/homeModel.dart';
 import 'package:attendance_check/feature/Home/widget/IdText.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ScheduleCard extends StatelessWidget {
+class ScheduleCard extends StatefulWidget {
   final List<Schedule> schedules;
 
   ScheduleCard({required this.schedules});
 
-  // 왼쪽 바에 사용할 색상을 리스트로 정의
+  @override
+  _ScheduleCardState createState() => _ScheduleCardState();
+}
+
+class _ScheduleCardState extends State<ScheduleCard> {
+  late List<bool> isExpandedList;
+
+  @override
+  void initState() {
+    super.initState();
+    // 모든 카드를 기본적으로 접힌 상태로 초기화
+    isExpandedList = List.generate(widget.schedules.length, (index) => false);
+  }
+//backgroundColor: Theme.of(context).canvasColor,
   final List<Color> barColors = [
-    Color(0xFF3f51b5), // 일정 1
-    Color(0xFF7986CB), // 일정 2
-    Color(0xFF2962ff), // 일정 3
-    Color(0xff6ab0f6), // 일정 4
-    Color(0xFF0D47A1), // 일정 5
+    Color(0xFF3f51b5),
+    Color(0xFF7986CB),
+    Color(0xFF2962ff),
+    Color(0xff6ab0f6),
+    Color(0xFF0D47A1),
   ];
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Center(
+      child: Column(
         children: [
-          SizedBox(height: 30),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Expanded(
-                child: Stack(
-                  children: [
-                    buildOverlappingCards(context,schedules), // 카드들이 겹쳐 보이도록
-                  ],
-                ),
-              ),
-            ],
+          Container(
+            height: isExpandedList.contains(true)
+                ? MediaQuery.of(context).size.height * 0.05 // 펼쳤을 때 여백
+                : MediaQuery.of(context).size.height * 0.2, // 접었을 때 여백
           ),
-        ]
+          Stack(
+            alignment: Alignment.topCenter,
+            children: buildOverlappingCards(context, widget.schedules),
+          ),
+        ],
+      ),
     );
   }
 
-  Widget buildScheduleCard(BuildContext context, Schedule schedule, int index) {
-    // 화면 크기에 따라 카드의 크기를 설정
-    final screenSize = MediaQuery
-        .of(context)
-        .size;
-    final cardHeight = screenSize.height * 0.25; // 예: 화면 높이의 25%
-    final cardWidth = screenSize.width * 0.9; // 예: 화면 너비의 90%
+  List<Widget> buildOverlappingCards(BuildContext context,
+      List<Schedule> schedules) {
+    return schedules.asMap().entries.map((entry) {
+      int index = entry.key;
+      Schedule schedule = entry.value;
 
-    // 색상 리스트를 반복 사용
+      return buildDraggableCard(schedule, index);
+    }).toList();
+  }
+
+  Widget buildDraggableCard(Schedule schedule, int index) {
+    return GestureDetector(
+      onVerticalDragUpdate: (details) {
+        // 드래그할 때의 상태를 업데이트
+        if (details.delta.dy > 10) { // 위로 드래그
+          setState(() {
+            // 모든 카드를 펼치기
+            isExpandedList = List.filled(widget.schedules.length, true);
+          });
+        } else if (details.delta.dy < -10) { // 아래로 드래그
+          setState(() {
+            // 모든 카드를 접기
+            isExpandedList = List.filled(widget.schedules.length, false);
+          });
+        }
+      },
+      child: AnimatedContainer(
+        duration: Duration(milliseconds: 500), // 애니메이션 지속시간
+        curve: Curves.easeInOut,
+        margin: EdgeInsets.only(
+          top: isExpandedList[index] ? 200.0 * index : 40.0 * index, // 카드 간의 겹침
+        ),
+        child: buildScheduleCard(schedule, index, isExpandedList[index]), // Schedule 객체 전달
+      ),
+    );
+  }
+
+  Widget buildScheduleCard(Schedule schedule, int index, bool isExpanded) {
+    final screenSize = MediaQuery.of(context).size;
+    final cardHeight = screenSize.height * 0.25; // 예: 화면 높이의 25%
+    final cardWidth = screenSize.width * 0.86; // 예: 화면 너비의 90%
+
     Color barColor = barColors[index % barColors.length];
 
+    double borderRadiusValue = 6.0 + index * 3.0;
+
     return Container(
-        width: cardWidth, // 반응형 가로 길이
-        height: cardHeight, // 반응형 세로 길이
-        margin: EdgeInsets.symmetric(vertical: 10),
-        child: Card(
-          elevation: 15, // 그림자 효과 추가
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10), // 모서리 둥글게
-          ),
+      width: cardWidth, // 반응형 가로 길이
+      height: cardHeight,
+      margin: EdgeInsets.symmetric(vertical: 20), // 카드 간의 세로 간격
+      child: Card(
+        elevation: 15, // 그림자 효과 추가
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(borderRadiusValue), // 모서리 둥글게
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(borderRadiusValue),
           child: Row(
             children: [
-              // 왼쪽 바
-              Container(
-                width: 15, // 바의 고정 너비
-                decoration: BoxDecoration(
-                  color: barColor, // 왼쪽 바 색상
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10), // 위쪽 왼쪽 끝 둥글게
-                    bottomLeft: Radius.circular(10), // 아래쪽 왼쪽 끝 둥글게
-                  ),
-                ),
+            // 왼쪽 바
+            Container(
+            width: 15, // 바의 고정 너비
+            decoration: BoxDecoration(
+              color: barColor, // 왼쪽 바 색상
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(10), // 위쪽 왼쪽 끝 둥글게
+                bottomLeft: Radius.circular(10), // 아래쪽 왼쪽 끝 둥글게
               ),
-              Expanded(
-                child: Padding(
-                  padding: EdgeInsets.all(10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        height: 80,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: AssetImage('assets/cardLogo.png'),
-                            // 학교 마크 이미지 경로
-                            fit: BoxFit.cover,
-                            colorFilter: ColorFilter.mode(
-                              Colors.black.withOpacity(0.1),
-                              BlendMode.dstATop,
-                            ),
-                          ),
-                          borderRadius: BorderRadius.vertical(
-                            top: Radius.circular(10),
+            ),
+          ),
+            Expanded(
+              child: Column(
+                children: [
+                  // 상단 바 (제목과 시간)
+                  Container(
+                    height: 40, // 상단 바 높이
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    color: Theme.of(context).cardColor, // 상단 바 색상 지정
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Flexible(
+                          flex: 1, // 왼쪽 여백을 위한 비율
+                          child: Container(), // 빈 컨테이너로 여백 추가
+                        ),
+                        Flexible(
+                          flex: 3, // title이 차지하는 공간
+                          child: CustomText(
+                            id: schedule.title, // 강의 제목
+                            size: 16.sp,
+                            fontWeight: FontWeight.w900,
                           ),
                         ),
-                      ),
-                      SizedBox(height: 10,),
-                      CustomText(
-                        id: schedule.title,
-                        size: 12,
-                      ),
-                      SizedBox(height: 10,),
-                      CustomText(
-                        id: schedule.time,
-                        size: 12,
-                      ),
-                      SizedBox(height: 10,),
-                      CustomText(
-                        id: schedule.location,
-                        size: 12,
-                      ),
-                      SizedBox(height: 10,),
-                      CustomText(
-                        id: schedule.professor,
-                        size: 12,
-                      ),
-                    ],
+                        Flexible(
+                          flex: 5, // time이 차지하는 공간
+                          child: CustomText(
+                            id: schedule.time, // 강의 시간
+                            size: 16.sp,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Flexible(
+                          flex: 1, // 오른쪽 여백을 위한 비율
+                          child: Container(), // 빈 컨테이너로 여백 추가
+                        ),
+                      ],
+                    ),
                   ),
-                ),
+
+                  // 로고 이미지
+                  Expanded(
+                    child: Container(
+                      color: Theme.of(context).cardColor,
+                      height: MediaQuery.of(context).size.height * 0.17, // 화면 높이에 비례
+                      child: Stack(
+                        children: [
+                          // 로고 이미지를 직접 추가
+                          Positioned(
+                            top: 0,
+                            bottom: 20,
+                            left: 100,
+                            child: Image.asset(
+                              'assets/cardLogo.png',
+                              fit: BoxFit.cover, // 로고가 꽉 차도록
+                              color: Colors.black.withOpacity(0.11), // 블렌드 모드 설정
+                            ),
+                          ),
+                          // 텍스트 배치
+                          Positioned(
+                            top: MediaQuery.of(context).size.height * 0.025, // 원하는 위치 조정
+                            left: 85, // 원하는 위치 조정
+                            child: CustomText(
+                              id: schedule.location, // 강의실 번호
+                              size: 45.sp,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Positioned(
+                            top: MediaQuery.of(context).size.height * 0.055, // 원하는 위치 조정
+                            left: 190, // 원하는 위치 조정
+                            child: CustomText(
+                              id: '강의실', // 고정 텍스트
+                              size: 15.sp,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Positioned(
+                            top: MediaQuery.of(context).size.height * 0.100, // 원하는 위치 조정
+                            left: 100, // 원하는 위치 조정
+                            child: CustomText(
+                              id: schedule.professor, // 교수명
+                              size: 20.sp,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Positioned(
+                            top: MediaQuery.of(context).size.height * 0.100, // 원하는 위치 조정
+                            left: 160, // 원하는 위치 조정
+                            child: CustomText(
+                              id: '교수님', // 고정 텍스트
+                              size: 20.sp,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ], // 스케쥴 정보 기입란
-          ),
-        )
-    );
-  }
-
-
-  // 겹치는 카드들을 쌓아놓은 레이아웃을 구현
-  Widget buildOverlappingCards(BuildContext context,List<Schedule> schedules) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 10),
-      child: Stack(
-        children: schedules.reversed
-            .toList()
-            .asMap()
-            .entries
-            .map((entry) {
-          // 펼친 이후 맨 위에 일정 1이 오게 하려고 리스트를 리버스
-          int index = entry.key;
-          var schedule = entry.value;
-          return Positioned(
-            top: index * 50, // 카드 사이의 간격
-            left: 0,
-            right: 0,
-            child: buildScheduleCard(context, schedule, index), // Schedule 객체 전달
-          );
-        }).toList(),
+            ),
+          ],
+        ),
       ),
+      )
     );
   }
 }

@@ -8,7 +8,9 @@ class CustomText extends StatelessWidget {
   const CustomText({
     Key? key,
     required this.id,
-    this.size, // size는 선택적 매개변수로 변경
+    this.size,
+    required FontWeight fontWeight,
+    //required Color,
   }) : super(key: key);
 
   @override
@@ -16,7 +18,7 @@ class CustomText extends StatelessWidget {
     return Text(
       id,
       style: Theme.of(context).textTheme.titleSmall?.copyWith( // 굵게
-        color: Colors.white,
+        color: Colors.black,
         fontSize: size, // fontSize에 size 전달
       ),
     );

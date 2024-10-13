@@ -22,7 +22,7 @@ class CurrentBar extends StatelessWidget {
         children: [
           CustomText(
               id: '      :    $currentProgress / 9',
-            size: 23,
+            size: 23.sp,
           ),
           SizedBox(height: 20,),// children 속성에 리스트 형태로 전달
           buildCustomProgressBar(currentProgress),
@@ -39,8 +39,8 @@ Widget buildCustomProgressBar(int progress) {
     mainAxisAlignment: MainAxisAlignment.center,
     children: List.generate(totalSteps, (index) {
       return Container(
-        width: 25,
-        height: 15,
+        width: 25.sp,
+        height: 15.sp,
         margin: EdgeInsets.symmetric(horizontal: 2),
         decoration: BoxDecoration(
           color: index < progress ? Colors.white : Colors.black,

@@ -1,3 +1,4 @@
+import 'package:attendance_check/feature/Home/homeScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:attendance_check/feature/Log/widget/LogInButton.dart'; // LogInButton 임포트
@@ -40,10 +41,7 @@ class _SignInFormState extends State<SignInForm> {
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(
-        builder: (context) => drawerScreen(
-          role: _selectedRole!,
-          id: _studentId!,
-        ),
+        builder: (context) => HomeScreen(),
       ),
           (Route<dynamic> route) => false,
     );
