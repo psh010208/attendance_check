@@ -16,9 +16,7 @@ class ParticipationStatus extends StatelessWidget {
           centerTitle: true,
           elevation: 0.0,
           leading: IconButton(
-            onPressed: () {
-              Navigator.of(context).pop();  // 뒤로가기 버튼 동작: 이전 화면으로 이동
-            },
+            onPressed: () {},
             icon: Icon(Icons.arrow_back),
           ),
           actions: [
@@ -47,31 +45,17 @@ class StudentDataTable extends StatefulWidget {
 
 class _DataTableExampleState extends State<StudentDataTable> {
   List<ParticipationStudent> _data = List.from(p_students);
-  List<ParticipationStudent> _originalData = List.from(p_students); // 원본 데이터 저장
   bool _isSortAsc = true; // 정렬 기능
-  String _searchStudentNum = ""; // 학번 검색 문자열
-  String _searchName = ""; // 이름 검색 문자열
+  String _searchStudentNum = ""; // 학번 검색 기능
+  String _searchName = ""; // 이름 검색 기능
 
   @override
   Widget build(BuildContext context) {
-    // 화면 크기를 MediaQuery로 얻음
+// 화면 크기를 MediaQuery로 얻음
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text('학생 테이블'),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            setState(() {
-              _data = List.from(_originalData); // 검색 전 데이터로 돌아가기
-              _searchStudentNum = "";
-              _searchName = "";
-            });
-          },
-        ),
-      ),
       body: _buildUI(screenHeight, screenWidth),
     );
   }
@@ -90,7 +74,7 @@ class _DataTableExampleState extends State<StudentDataTable> {
     );
   }
 
-  // 표 제목
+// 표 제목
   List<DataColumn> _createColumns() {
     return [
       DataColumn(
@@ -108,7 +92,7 @@ class _DataTableExampleState extends State<StudentDataTable> {
             const Text("학과"),
           ]),
         ),
-        onSort: (columnIndex, _) { // 정렬
+        onSort: (columnIndex, _) {  // 학과 정렬
           setState(() {
             if (_isSortAsc) {
               _data.sort(
@@ -182,7 +166,7 @@ class _DataTableExampleState extends State<StudentDataTable> {
             ],
           ),
         ),
-        onSort: (columnIndex, _) { // 정렬
+        onSort: (columnIndex, _) {  //참여횟수 정렬
           setState(() {
             if (_isSortAsc) {
               _data.sort(
@@ -200,6 +184,7 @@ class _DataTableExampleState extends State<StudentDataTable> {
     ];
   }
 
+  //검색 기능
   void _showSearchDialog(String title) {
     String searchQuery = "";
 
@@ -210,7 +195,9 @@ class _DataTableExampleState extends State<StudentDataTable> {
           title: Text('$title 검색'),
           content: TextField(
             onChanged: (value) {
-              searchQuery = value;
+              setState(() {
+                searchQuery = value;
+              });
             },
             decoration: InputDecoration(hintText: '검색어를 입력하세요'),
           ),
@@ -218,7 +205,7 @@ class _DataTableExampleState extends State<StudentDataTable> {
             TextButton(
               child: Text('취소'),
               onPressed: () {
-                Navigator.of(context).pop(); // 다이얼로그 닫기
+                Navigator.of(context).pop();
               },
             ),
             TextButton(
@@ -230,9 +217,8 @@ class _DataTableExampleState extends State<StudentDataTable> {
                   } else if (title == '이름') {
                     _searchName = searchQuery; // 이름 검색 업데이트
                   }
-                  _data = _originalData.where((e) => e.num.contains(_searchStudentNum) && e.name.contains(_searchName)).toList();
                 });
-                Navigator.of(context).pop(); // 다이얼로그 닫기
+                Navigator.of(context).pop();
               },
             ),
           ],
@@ -241,9 +227,13 @@ class _DataTableExampleState extends State<StudentDataTable> {
     );
   }
 
-  // 표 내용(ParticipationData.dart에서 불러옴)
+// 표 내용(ParticipationData.dart에서 불러옴)
   List<DataRow> _createRows(double screenHeight, double screenWidth) {
+    // 필터링 추가
     return _data
+        .where((e) =>
+    e.num.contains(_searchStudentNum) &&
+        e.name.contains(_searchName))
         .map((e) {
       return DataRow(
         cells: [
