@@ -15,7 +15,7 @@ class ParticipationStudent {
 
 List<ParticipationStudent> p_students = [
   ParticipationStudent(
-      dept: '소프트웨어공학과',
+      dept: '컴퓨터소프트웨어공학과',
       num: '20225528',
       name: '민지희',
       count: '4'),

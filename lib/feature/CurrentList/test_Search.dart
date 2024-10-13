@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'ParticipationData.dart';
 
-//void main() => runApp(ParticipationStatus());
+void main() => runApp(ParticipationStatus());
 
 class ParticipationStatus extends StatelessWidget {
   @override
