@@ -16,7 +16,8 @@ class CustomText extends StatelessWidget {
     return Text(
       id,
       style: Theme.of(context).textTheme.titleSmall?.copyWith( // 굵게
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.onPrimary,
+        fontWeight: FontWeight.bold,
         fontSize: size, // fontSize에 size 전달
       ),
     );

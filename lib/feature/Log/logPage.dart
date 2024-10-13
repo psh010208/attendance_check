@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 
 class logPage extends StatelessWidget {
-  final bool isLogin; // true: 로그인, false: 회원가입
+  final bool isLogin; // true: 로그인, false: 회원가입이니까 참고해용!
 
   logPage({required this.isLogin});
 
