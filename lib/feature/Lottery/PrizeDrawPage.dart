@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
 import 'LotteryData.dart';
+import 'widget/button/dialogOkButton.dart';
 
 class PrizeDrawPage extends StatefulWidget {
   @override
@@ -73,15 +74,34 @@ class _PrizeDrawPageState extends State<PrizeDrawPage> {
           ),
           DataCell(Text(e.num)),
           DataCell(Text(e.name)),
-          DataCell(Text(e.count)),
+          DataCell(
+            Row(
+              children: [
+                Text(e.count),
+                SizedBox(width: 10.w), // 아이콘과 텍스트 사이 간격
+                IconButton(
+                    onPressed: (){
+                      // 삭제 버튼 로직
+                    },
+                    icon: Icon(CupertinoIcons.delete))
+              ],
+            )
+          ),
         ],
       );
     }).toList();
   }
 
-  // 상품 추첨 로직 (임시)
+  // 상품 추첨 로직 (수정됨)
   Future<void> drawLottery() async {
+    setState(() {
+      isLoading = true; // 로딩 시작
+    });
+
     await Future.delayed(Duration(milliseconds: 3800)); // 초 대기
+
+    // 임시로 당첨자를 추첨 (데모 목적)
+    LotteryStudent winner = data[0]; // 첫 번째 학생을 당첨자로 설정 (임의)
 
     // 알림 창 표시
     showDialog(
@@ -89,18 +109,39 @@ class _PrizeDrawPageState extends State<PrizeDrawPage> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('추첨 완료'),
-          content: Text('상품 추첨이 완료되었습니다!'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // 당첨자 정보
+              Text('${winner.dept}의 ${winner.name}님이 당첨되었습니다!'),
+              SizedBox(height: 16.h), // 여백 추가
+            ],
+          ),
           actions: [
             TextButton(
               onPressed: () {
+                // 등록 버튼 로직
                 Navigator.of(context).pop(); // 다이얼로그 닫기
+                // 여기에 등록 관련 로직 추가 가능
               },
-              child: Text('확인'),
+              child: Text('등록'),
+            ),
+            TextButton(
+              onPressed: () {
+                // 재추첨 버튼 로직
+                Navigator.of(context).pop(); // 다이얼로그 닫기
+                drawLottery(); // 재추첨 실행
+              },
+              child: Text('재추첨'),
             ),
           ],
         );
       },
     );
+
+    setState(() {
+      isLoading = false; // 로딩 끝
+    });
   }
 
 
@@ -185,13 +226,7 @@ class _PrizeDrawPageState extends State<PrizeDrawPage> {
             onPressed: isLoading
                 ? null // isLoading이 true일 경우 버튼을 비활성화
                 : () async {
-              setState(() {
-                isLoading = true; // 로딩 시작
-              });
               await drawLottery(); // 추첨 로직 호출
-              setState(() {
-                isLoading = false; // 로딩 끝
-              });
             },
             child: isLoading
                 ? CircularProgressIndicator(

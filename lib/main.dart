@@ -24,22 +24,26 @@ class MyApp extends StatelessWidget {
   final FlexScheme usedScheme = FlexScheme.blueM3;
   @override
   Widget build(BuildContext context) {
+    print('ScreenUtil 적용 확인');
+
     return ScreenUtilInit(
-      minTextAdapt: true,
-      splitScreenMode: true,
-      designSize: const Size(390, 844),
+
+      minTextAdapt: true, // 작은 화면에서 텍스트 크기를 자동으로 조정
+      splitScreenMode: true, // 화면 분할 시에도 적절하게 조정
+      designSize: const Size(390, 844), // 기준 해상도를 모바일에 맞춰 설정
       builder: (context, child) {
         return MaterialApp(
           home: SplashScreen(), // 메인 페이지 설정
           theme: FlexThemeData.light(
-            scheme: FlexScheme.blueM3, // M3 Blue Delight 테마 선택
-            useMaterial3: false,
-            colorScheme: ColorScheme.fromSeed(
-              seedColor: Colors.blue[800]!,  // Applying Colors.blue[800]
-            ),
-            textTheme: const TextTheme(
-                titleLarge: TextStyle(fontFamily: "soonchunhyang"),
-                titleSmall: TextStyle(fontFamily: "Abel-Regular")),
+
+              scheme: FlexScheme.blueM3, // M3 Blue Delight 테마 선택
+              useMaterial3: false,
+              colorScheme: ColorScheme.fromSeed(
+                seedColor: Colors.blue[800]!,  // Applying Colors.blue[800]
+              ),
+              textTheme: const TextTheme(
+                  titleLarge: TextStyle(fontFamily: "soonchunhyang"),
+                  titleSmall: TextStyle(fontFamily: "Abel-Regular")),
               background: Theme.of(context).colorScheme.surface,
               surface: Theme.of(context).colorScheme.surface
 
@@ -62,6 +66,8 @@ class MyApp extends StatelessWidget {
           themeMode: ThemeMode.light,
         );
       },
+
     );
+
   }
 }
