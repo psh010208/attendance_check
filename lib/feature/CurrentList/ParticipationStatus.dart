@@ -106,7 +106,7 @@ class _StudentDataTableState extends State<ParticipationStatusBody> {
 // 표 제목
   List<DataColumn> _createColumns() {
     return [
-      DataColumn(
+      DataColumn( //아이콘용 빈 column
         label: Container(
           width: 20.w,
           height: 30.h,
@@ -273,7 +273,7 @@ class _StudentDataTableState extends State<ParticipationStatusBody> {
         .map((e) {
       return DataRow(
         cells: [
-          DataCell(Row(children: [
+          DataCell(Row(children: [  //아이콘만
             Icon(Icons.person, size: 17.sp),
           ])),
           DataCell(Row(children: [
