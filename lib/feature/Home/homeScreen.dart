@@ -4,20 +4,19 @@ import 'package:attendance_check/feature/Home/widget/card.dart'; // 카드 디�
 import 'package:attendance_check/feature/Drawer/drawerScreen.dart';
 
 class HomeScreen extends StatelessWidget {
-  // 사용자 정보 받기
   final String role;
   final String id;
-  //final String current
-  HomeScreen(
-      {required this.role,
-        required this.id,
-      });
+
+  HomeScreen({
+    required this.role,
+    required this.id,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color(0xffFFF8FAFD), // AppBar 배경색
+        backgroundColor: Theme.of(context).colorScheme.surface, // AppBar 배경색
         iconTheme: IconThemeData(
           color: Colors.black, // AppBar 아이콘 색상 검정으로 설정
         ),
@@ -38,11 +37,12 @@ class HomeScreen extends StatelessWidget {
         // AppBar에서 드로어 버튼에 기능 연결
         actions: [
           Builder(
-            builder: (context) {
+            builder: (BuildContext context) {
               return IconButton(
                 icon: Icon(Icons.menu),
                 onPressed: () {
-                  Scaffold.of(context).openEndDrawer(); // 드로어 열기
+                  // 새로운 context에서 Scaffold의 endDrawer를 열기
+                  Scaffold.of(context).openEndDrawer();
                 },
                 color: Colors.black, // 개별 아이콘 색상 명시적으로 설정
               );
@@ -79,3 +79,10 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
+
+/*
+class LoginInfo {
+  static String role = role;
+  static String id = id;
+}*/
+

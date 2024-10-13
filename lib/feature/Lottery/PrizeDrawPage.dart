@@ -1,3 +1,4 @@
+import 'package:attendance_check/feature/Drawer/model/infoModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,8 +7,19 @@ import 'widget/button/deleteButton.dart';
 import 'widget/button/dialogOkButton.dart';
 import 'widget/button/dialogRepickButton.dart';
 import 'widget/button/pickButton.dart'; // PickButton import 추가
+import 'package:attendance_check/feature/Drawer/drawerScreen.dart';
+import 'package:attendance_check/feature/Drawer/model/infoModel.dart';
 
 class PrizeDrawPage extends StatefulWidget {
+  // 사용자 정보 받기
+  final String role;
+  final String id;
+  //final String current
+  PrizeDrawPage(
+      {required this.role,
+        required this.id,
+      });
+
   @override
   _PrizeDrawPageState createState() => _PrizeDrawPageState();
 }
@@ -144,6 +156,10 @@ class _PrizeDrawPageState extends State<PrizeDrawPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        iconTheme: IconThemeData(
+          color: Colors.black, // AppBar 아이콘 색상 검정으로 설정
+        ),
         title: Text('상품 추첨하기', style: Theme.of(context).textTheme.titleLarge),
         centerTitle: true,
         elevation: 4,
@@ -154,10 +170,16 @@ class _PrizeDrawPageState extends State<PrizeDrawPage> {
           },
         ),
         actions: [
-          IconButton(
-            icon: Icon(Icons.menu, color: Colors.black),
-            onPressed: () {
-              // 메뉴바 로직
+          Builder(
+            builder: (context) {
+              return IconButton(
+                icon: Icon(Icons.menu),
+                onPressed: () {
+                  // 드로어 열기
+                  Scaffold.of(context).openEndDrawer();
+                },
+                color: Colors.black, // 개별 아이콘 색상 명시적으로 설정
+              );
             },
           ),
         ],
@@ -167,6 +189,10 @@ class _PrizeDrawPageState extends State<PrizeDrawPage> {
             width: 1.w,
           ),
         ),
+      ),
+      endDrawer: drawerScreen(
+        role: InfoModel.role!, // 역할 전달
+        id: InfoModel.id!,     // ID 전달
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:attendance_check/feature/Log/widget/LogInButton.dart'; // LogInButton 임포트
 import 'package:attendance_check/feature/Log/ViewModel/logViewModel.dart'; // LogViewModel 임포트
 
-import '../../Drawer/drawerScreen.dart';
+import 'package:attendance_check/feature/Drawer/model/infoModel.dart';
 import '../../Home/widget/SoonCheck.dart';
 import '../Model/logModel.dart';
 import 'CustomDropdownFormField.dart';
@@ -49,19 +49,21 @@ class _SignInFormState extends State<SignInForm> {
     }
   }
 
-  // Navigator로 drawerScreen으로 이동하는 로직을 분리
   void _navigateToDrawerScreen() {
+    // InfoModel에 정보 저장
+    InfoModel.setUser(_selectedRole!, _studentId!);
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(
         builder: (context) => HomeScreen(
-          role: _selectedRole!,
-          id: _studentId!,
+          role: _selectedRole!, // 홈 화면으로 역할 전달
+          id: _studentId!,      // 홈 화면으로 ID 전달
         ),
       ),
           (Route<dynamic> route) => false,
     );
   }
+
 
   // 로그인 실패 시 에러 처리 함수
   Future<void> _handleLoginFailure(BuildContext context) async {

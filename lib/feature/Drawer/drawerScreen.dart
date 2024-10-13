@@ -47,7 +47,7 @@ class drawerScreen extends StatelessWidget {
                     if(role == '관리자')
                       Positioned(
                         top: 75.h, // 반응형 높이 설정
-                        left: 65.w,
+                        left: 98.w,
                         child: CustomText(
                           id: role, size: 30.sp,  // 역할 표시
                         ),
