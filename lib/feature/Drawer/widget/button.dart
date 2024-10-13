@@ -1,11 +1,12 @@
+import 'package:attendance_check/feature/Drawer/ApproveWaitingList.dart';
 import 'package:attendance_check/feature/Log/widget/SignUpForm.dart';
 import 'package:flutter/material.dart';
 import 'package:attendance_check/feature/Log/logPage.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:attendance_check/feature/Drawer/widget/IdText.dart';
 import 'package:attendance_check/feature/Lottery/PrizeDrawPage.dart';
-
-import '../model/InfoModel.dart';
+import 'package:attendance_check/feature/Drawer/model/infoModel.dart';
+import 'package:attendance_check/feature/Drawer/ApproveWaitingList.dart';
 
 class CommonButton extends StatelessWidget {
   final VoidCallback onPressed;
@@ -118,7 +119,10 @@ class ParticipationButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return CommonButton(
       onPressed: () {
-        // 참여 학생 현황 페이지로 이동하는 로직 추가
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => ApproveWaitingList()), // 회원가입 페이지로 이동
+        );
       },
       icon: Icons.task_alt,
       text: '참여 학생 현황',

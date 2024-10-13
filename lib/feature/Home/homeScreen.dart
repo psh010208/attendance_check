@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:attendance_check/feature/Home/model/homeModel.dart'; // Schedule 모델 임포트
 import 'package:attendance_check/feature/Home/widget/card.dart'; // 카드 디자인을 임포트합니다
 import 'package:attendance_check/feature/Drawer/drawerScreen.dart';
+import 'package:attendance_check/feature/Home/widget/SoonCheck.dart';
 
 class HomeScreen extends StatelessWidget {
   final String role;
@@ -55,13 +56,12 @@ class HomeScreen extends StatelessWidget {
         id: id,
       ),
       drawerScrimColor: Colors.black.withOpacity(0.5),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            // 카드를 만들기 위한 메서드 호출
-            buildScheduleCard(context),
-          ],
-        ),
+      body: Column( // SingleChildScrollView 제거
+        children: [
+          // 카드를 만들기 위한 메서드 호출
+          //SoonCheckWidget(bottom: 1, left: 1),
+          buildScheduleCard(context),
+        ],
       ),
     );
   }
@@ -72,6 +72,8 @@ class HomeScreen extends StatelessWidget {
       Schedule(title: '일정 1', time: '09:00 - 10:00', location: '1506', professor: '민세동'),
       Schedule(title: '일정 2', time: '10:00 - 11:00', location: '1507', professor: '김상대'),
       Schedule(title: '일정 3', time: '12:00 - 13:00', location: '1058', professor: '오동익'),
+      Schedule(title: '일정 4', time: '10:30 - 11:30', location: '1059', professor: '권춘기'),
+      Schedule(title: '일정 5', time: '10:30 - 11:30', location: '1059', professor: '권춘기'),
       // 추가적인 Schedule 객체를 여기에 추가하세요
     ];
     return ScheduleCard(
@@ -79,10 +81,3 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
-
-/*
-class LoginInfo {
-  static String role = role;
-  static String id = id;
-}*/
-

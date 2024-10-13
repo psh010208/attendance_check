@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'WaitingData.dart';
+import 'package:attendance_check/feature/Drawer/drawerScreen.dart';
+import 'package:attendance_check/feature/Drawer/model/infoModel.dart';
 
 class ApproveWaitingList extends StatelessWidget {
   @override
@@ -58,10 +60,16 @@ class _WaitingStatusState extends State<WaitingStatus> {
             },
           ),
           actions: [
-            IconButton(
-              icon: Icon(Icons.menu, color: Colors.black),
-              onPressed: () {
-                // 마이페이지 완성 후 메뉴바 누르면 마이페이지 오픈!
+            Builder(
+              builder: (context) {
+                return IconButton(
+                  icon: Icon(Icons.menu),
+                  onPressed: () {
+                    // 드로어 열기
+                    Scaffold.of(context).openEndDrawer();
+                  },
+                  color: Colors.black, // 개별 아이콘 색상 명시적으로 설정
+                );
               },
             ),
           ],
@@ -72,6 +80,10 @@ class _WaitingStatusState extends State<WaitingStatus> {
             ),
           ),
         ),
+      ),
+      endDrawer: drawerScreen(
+        role: InfoModel.role!, // 역할 전달
+        id: InfoModel.id!,     // ID 전달
       ),
       body: _buildUI(screenHeight, screenWidth),
     );

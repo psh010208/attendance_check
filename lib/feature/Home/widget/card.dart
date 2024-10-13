@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:attendance_check/feature/Home/model/homeModel.dart';
 import 'package:attendance_check/feature/Home/widget/IdText.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:attendance_check/feature/Home/widget/SoonCheck.dart';
 
 class ScheduleCard extends StatefulWidget {
   final List<Schedule> schedules;
@@ -216,7 +217,7 @@ class _ScheduleCardState extends State<ScheduleCard> {
                         ],
                       ),
                     ),
-                  ),
+                  ),// SoonCheck 위젯 추가
                 ],
               ),
             ),

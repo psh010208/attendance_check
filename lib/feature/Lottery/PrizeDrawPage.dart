@@ -1,51 +1,33 @@
+import 'package:attendance_check/feature/Drawer/model/infoModel.dart';
 import 'package:attendance_check/feature/Home/homeScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
-import '../Drawer/model/InfoModel.dart';
-import 'Model/model.dart';
-import 'ViewModel/viewModel.dart';
+import 'LotteryData.dart';
 import 'widget/button/deleteButton.dart';
 import 'widget/button/dialogOkButton.dart';
 import 'widget/button/dialogRepickButton.dart';
-import 'widget/button/pickButton.dart';
+import 'widget/button/pickButton.dart'; // PickButton import 추가
 import 'package:attendance_check/feature/Drawer/drawerScreen.dart';
-import 'package:attendance_check/feature/Lottery/ViewModel/viewModel.dart';
 
 class PrizeDrawPage extends StatefulWidget {
   // 사용자 정보 받기
   final String role;
   final String id;
-
-  PrizeDrawPage({required this.role, required this.id});
+  //final String current
+  PrizeDrawPage(
+      {required this.role,
+        required this.id,
+      });
 
   @override
   _PrizeDrawPageState createState() => _PrizeDrawPageState();
 }
 
 class _PrizeDrawPageState extends State<PrizeDrawPage> {
-  LotteryViewModel _lotteryViewModel = LotteryViewModel();
-  List<LotteryStudent> data = [];
+  List<LotteryStudent> data = List.from(l_students); // 진짜 리스트
+  List<LotteryStudent> data_empty = List.from(l_students_empty); // 비어있는 리스트
   bool isLoading = false; // 로딩 상태 관리
-
-  @override
-  void initState() {
-    super.initState();
-    _fetchData(); // Firestore에서 학생 데이터를 가져옴
-  }
-
-  // Firestore에서 데이터를 가져오는 함수
-  Future<void> _fetchData() async {
-    setState(() {
-      isLoading = true; // 데이터 로딩 시작
-    });
-
-    data = await _lotteryViewModel.getAllStudents(); // Firestore에서 데이터 가져오기
-
-    setState(() {
-      isLoading = false; // 데이터 로딩 완료
-    });
-  }
 
   // 표 제목
   List<DataColumn> createColumns() {
@@ -91,11 +73,9 @@ class _PrizeDrawPageState extends State<PrizeDrawPage> {
 
   // 표 내용
   List<DataRow> createRows() {
-    if (data.isEmpty) {
-      return [];
-    }
+    List<LotteryStudent> displayData = data.isNotEmpty ? data : data_empty;
 
-    return data.map((e) {
+    return displayData.map((e) {
       return DataRow(
         cells: [
           DataCell(
@@ -103,16 +83,16 @@ class _PrizeDrawPageState extends State<PrizeDrawPage> {
               children: [
                 Icon(CupertinoIcons.person_crop_circle), // 아이콘 추가
                 SizedBox(width: 8.w), // 아이콘과 텍스트 사이 간격
-                Text(e.department), // 학과명 텍스트
+                Text(e.dept), // 학과명 텍스트
               ],
             ),
           ),
-          DataCell(Text(e.studentId)),
+          DataCell(Text(e.num)),
           DataCell(Text(e.name)),
           DataCell(
             Row(
               children: [
-                Text(e.attendanceCount.toString()),
+                Text(e.count),
                 SizedBox(width: 10.w), // 아이콘과 텍스트 사이 간격
                 DeleteButton( // DeleteButton 사용
                   onPressed: () {
@@ -129,13 +109,16 @@ class _PrizeDrawPageState extends State<PrizeDrawPage> {
     }).toList();
   }
 
-  // 상품 추첨 로직
+  // 상품 추첨 로직 (수정됨)
   Future<void> drawLottery() async {
     setState(() {
       isLoading = true; // 로딩 시작
     });
 
-    LotteryStudent winner = await _lotteryViewModel.runLottery(); // 추첨 로직 실행
+    await Future.delayed(Duration(milliseconds: 3800)); // 초 대기
+
+    // 임시로 당첨자를 추첨 (데모 목적)
+    LotteryStudent winner = data[0]; // 첫 번째 학생을 당첨자로 설정 (임의)
 
     // 알림 창 표시
     showDialog(
@@ -147,14 +130,12 @@ class _PrizeDrawPageState extends State<PrizeDrawPage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               // 당첨자 정보
-              Text('${winner.department}의 ${winner.name}님이 당첨되었습니다!'),
+              Text('${winner.dept}의 ${winner.name}님이 당첨되었습니다!'),
               SizedBox(height: 16.h), // 여백 추가
             ],
           ),
           actions: [
-            DialogOkButton(onPressed: (
-
-                ) {
+            DialogOkButton(onPressed: () {
               Navigator.of(context).pop(); // 다이얼로그 닫기
             }),
             DialogRepickButton(onPressed: () {
@@ -187,7 +168,7 @@ class _PrizeDrawPageState extends State<PrizeDrawPage> {
           onPressed: () {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => HomeScreen(role: InfoModel.role!,id: InfoModel.id!,)), // 메인 페이지로 이동
+              MaterialPageRoute(builder: (context) => HomeScreen(role: InfoModel.role!,id: InfoModel.id!,)), // 회원가입 페이지로 이동
             );
           },
         ),
