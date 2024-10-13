@@ -1,3 +1,4 @@
+import 'package:attendance_check/feature/Drawer/drawerScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:attendance_check/feature/Log/logPage.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -91,7 +92,7 @@ class JoinButton extends StatelessWidget {
       onPressed: () {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => logPage(isLogin: false)), // 회원가입 페이지로 이동
+          MaterialPageRoute(builder: (context) => drawerScreen(role: '', id: '')), // 회원가입 페이지로 이동
         );
       },
       icon: Icons.account_circle,
