@@ -5,6 +5,7 @@ import 'LotteryData.dart';
 import 'widget/button/deleteButton.dart';
 import 'widget/button/dialogOkButton.dart';
 import 'widget/button/dialogRepickButton.dart';
+import 'widget/button/pickButton.dart'; // PickButton import 추가
 
 class PrizeDrawPage extends StatefulWidget {
   @override
@@ -215,27 +216,11 @@ class _PrizeDrawPageState extends State<PrizeDrawPage> {
           ),
 
           // 상품 추첨하기 버튼
-          ElevatedButton(
-            onPressed: isLoading
-                ? null // isLoading이 true일 경우 버튼 비활성화
-                : () async {
+          PickButton( // PickButton으로 변경
+            isLoading: isLoading,
+            onPressed: () async {
               await drawLottery(); // 추첨 로직 호출
             },
-            child: isLoading
-                ? CircularProgressIndicator(
-              color: Colors.white,
-            ) // 로딩 중에는 로딩 버튼으로 바뀜
-                : Text('상품 추첨하기', style: TextStyle(fontSize: 16.sp)),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Color(0xff2C2C2C),
-              foregroundColor: Colors.white,
-              minimumSize: Size(200.w, 40.h),
-              elevation: 6,
-              shadowColor: Colors.grey.withOpacity(1),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.r),
-              ),
-            ),
           ),
         ],
       ),

@@ -13,8 +13,14 @@ class DialogOkButton extends StatelessWidget {
       onPressed: onPressed,
       child: Text('등록', style: TextStyle(fontSize: 16.sp)),
       style: ElevatedButton.styleFrom(
+        backgroundColor: Color(0xff2C2C2C),
+        foregroundColor: Colors.white,
         minimumSize: Size(55.w, 40.h),
         elevation: 6,
+        shadowColor: Colors.grey.withOpacity(1),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.r),
+        ),
       ),
     );
   }
