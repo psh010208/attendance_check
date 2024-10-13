@@ -56,17 +56,19 @@ class HomeScreen extends StatelessWidget {
         id: id,
       ),
       drawerScrimColor: Colors.black.withOpacity(0.5),
-      body: Column( // SingleChildScrollView 제거
-        children: [
-          // 카드를 만들기 위한 메서드 호출
-          //SoonCheckWidget(bottom: 1, left: 1),
-          buildScheduleCard(context),
-        ],
-      ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              // 카드를 만들기 위한 메서드 호출
+              //SoonCheckWidget(bottom:1, left: 1),
+              buildScheduleCard(context),
+            ],
+          ),
+        ),
     );
   }
 
-  Widget buildScheduleCard(BuildContext context) {
+        Widget buildScheduleCard(BuildContext context) {
     // 샘플 Schedule 데이터 생성
     List<Schedule> schedules = [
       Schedule(title: '일정 1', time: '09:00 - 10:00', location: '1506', professor: '민세동'),

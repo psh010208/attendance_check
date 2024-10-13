@@ -3,7 +3,7 @@ import 'package:attendance_check/feature/Home/homeScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
-import 'LotteryData.dart';
+import 'Model/model.dart';
 import 'widget/button/deleteButton.dart';
 import 'widget/button/dialogOkButton.dart';
 import 'widget/button/dialogRepickButton.dart';

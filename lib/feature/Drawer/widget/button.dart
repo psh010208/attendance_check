@@ -119,9 +119,9 @@ class ParticipationButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return CommonButton(
       onPressed: () {
-        Navigator.pushReplacement(
+        Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => ApproveWaitingList()), // 회원가입 페이지로 이동
+          MaterialPageRoute(builder: (context) => ApproveWaitingList()), // push 사용
         );
       },
       icon: Icons.task_alt,
