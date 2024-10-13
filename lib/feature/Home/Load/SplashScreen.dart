@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../Home/widget/SoonCheck.dart';
 import '../../Log/logPage.dart'; // Log Page import
 import '../../Drawer/drawerScreen.dart'; // Drawer import
+import 'package:attendance_check/feature/Home/homeScreen.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
@@ -14,7 +15,7 @@ class SplashScreen extends StatelessWidget {
     // 3초 후에 다음 화면으로 이동 (logPage로)
     Future.delayed(Duration(seconds: 3), () {
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => drawerScreen(role: '',id: '',)),
+        MaterialPageRoute(builder: (context) => HomeScreen()),
       );
     });
 

@@ -1,6 +1,6 @@
-import 'package:attendance_check/feature/Drawer/MainAdminScreen.dart';
 import 'package:attendance_check/feature/Drawer/drawerScreen.dart';
 import 'package:attendance_check/feature/Home/Load/SplashScreen.dart';
+import 'package:attendance_check/feature/Home/homeScreen.dart';
 import 'package:attendance_check/feature/Log/widget/SignUpForm.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
       designSize: const Size(390, 844), // 기준 해상도를 모바일에 맞춰 설정
       builder: (context, child) {
         return MaterialApp(
-          home:  MainAdminScreen(), // 메인 페이지 설정
+          home:  SplashScreen(), // 메인 페이지 설정
           theme: FlexThemeData.light(
 
               scheme: FlexScheme.blueM3, // M3 Blue Delight 테마 선택
