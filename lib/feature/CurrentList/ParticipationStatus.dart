@@ -6,7 +6,7 @@ class ParticipationStatus extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      designSize: Size(310, 690), // 기본 디자인 사이즈 설정
+      designSize: Size(330, 690), // 기본 디자인 사이즈 설정
       builder: (context, child) {
         return MaterialApp(
           home: Scaffold(
@@ -86,7 +86,7 @@ class _StudentDataTableState extends State<ParticipationStatusBody> {
         child: FittedBox(
           fit: BoxFit.fitWidth,
           child: DataTable(
-            columnSpacing: 10.w, //열 사이 간격
+            columnSpacing: 8.w, //열 사이 간격
             columns: _createColumns(),
             rows: _createRows(screenHeight, screenWidth),
           ),
@@ -108,7 +108,16 @@ class _StudentDataTableState extends State<ParticipationStatusBody> {
     return [
       DataColumn(
         label: Container(
-          width: 170.w,
+          width: 20.w,
+          height: 30.h,
+          child: Row(
+            children: [],
+          ),
+        ),
+      ),
+      DataColumn(
+        label: Container(
+          width: 145.w,
           height: 30.h,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(4.r),
@@ -125,11 +134,11 @@ class _StudentDataTableState extends State<ParticipationStatusBody> {
           setState(() {
             if (_isSortAsc) {
               _data.sort(
-                    (a, b) => a.count.compareTo(b.count),
+                    (a, b) => a.dept.compareTo(b.dept),
               );
             } else {
               _data.sort(
-                    (a, b) => b.count.compareTo(a.count),
+                    (a, b) => b.dept.compareTo(a.dept),
               );
             }
             _isSortAsc = !_isSortAsc;
@@ -140,7 +149,7 @@ class _StudentDataTableState extends State<ParticipationStatusBody> {
         label: GestureDetector(
           onTap: () => _showSearchDialog('학번'), // 학번 검색 다이얼로그
           child: Container(
-            width: 85.w,
+            width: 80.w,
             height: 30.h,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(4.r),
@@ -161,7 +170,7 @@ class _StudentDataTableState extends State<ParticipationStatusBody> {
         label: GestureDetector(
           onTap: () => _showSearchDialog('이름'), // 이름 검색 다이얼로그
           child: Container(
-            width: 75.w,
+            width: 70.w,
             height: 30.h,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(4.r),
@@ -188,7 +197,7 @@ class _StudentDataTableState extends State<ParticipationStatusBody> {
           ),
           child: Row(
             children: [
-              SizedBox(width: 4.w),
+              SizedBox(width: 2.w),
               Icon(Icons.arrow_drop_down, size: 25.sp),
               SizedBox(width: 4.w),
               Text("참여횟수", style: TextStyle(fontSize: 15.sp)),
@@ -213,7 +222,7 @@ class _StudentDataTableState extends State<ParticipationStatusBody> {
     ];
   }
 
-  //학과, 이름 검색 기능
+  //학번, 이름 검색 기능
   void _showSearchDialog(String title) {
     String searchQuery = "";
     showDialog(
@@ -265,8 +274,10 @@ class _StudentDataTableState extends State<ParticipationStatusBody> {
       return DataRow(
         cells: [
           DataCell(Row(children: [
-            Icon(Icons.person, size: 20.sp), // 어디 넣어야 할 지 모르겠어서 일단 여기 넣음
-            SizedBox(width: 17.w),
+            Icon(Icons.person, size: 17.sp),
+          ])),
+          DataCell(Row(children: [
+            SizedBox(width: 5.w),
             Text(e.dept, style: TextStyle(fontSize: 13.sp)),
           ])),
           DataCell(Row(children: [
