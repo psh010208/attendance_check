@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../Home/widget/SoonCheck.dart';
+import '../Model/logModel.dart';
+import '../ViewModel/logViewModel.dart';
+import '../logPage.dart';
 import 'CustomDropdownFormField.dart';
 import 'CustomTextFormField.dart';
 import 'LogUpButton.dart';
@@ -12,15 +15,87 @@ class SignUpForm extends StatefulWidget {
 }
 
 class _SignUpFormState extends State<SignUpForm> {
+  final LogViewModel logViewModel = LogViewModel();
   final _formKey = GlobalKey<FormState>();
   String? _selectedRole = '학부생';
   String? _department = '의료IT공학과';
   String? _name, _studentId;
 
+  // 회원가입 폼 제출
   Future<void> _submitForm(BuildContext context) async {
-    if (!_formKey.currentState!.validate()) return;
+    if (!_formKey.currentState!.validate()) {
+      _showErrorDialog(context, '폼 검증 실패', '모든 필드를 올바르게 입력해주세요.');
+      return;
+    }
+
     _formKey.currentState!.save();
-    // Add your submit logic here
+
+    if (await _checkDuplicate()) return;
+
+    // 사용자 정보 Firestore에 저장
+    final newUser = LogModel(
+      studentId: _studentId!,
+      department: _department!,
+      name: _name!,
+      role: _selectedRole!,
+      isApproved: _selectedRole == '관리자' ? false : true, // 관리자는 승인 필요
+    );
+
+    await logViewModel.signUp(newUser);
+    _showSuccessDialog(context);
+  }
+
+  // 학번 중복 체크 함수
+  Future<bool> _checkDuplicate() async {
+    bool isDuplicate = await logViewModel.isStudentIdDuplicate(_studentId!);
+    if (isDuplicate) {
+      _showErrorDialog(context, '오류', '이미 사용 중인 학번입니다.');
+      return true;
+    }
+    return false;
+  }
+
+  // 에러 메시지 다이얼로그 표시
+  void _showErrorDialog(BuildContext context, String title, String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(title),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text('확인'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // 회원가입 성공 메시지 다이얼로그 표시
+  void _showSuccessDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('회원가입 성공'),
+        content: Text(_selectedRole == '관리자'
+            ? '회원가입이 완료되었습니다. 관리자 승인 대기 중입니다.'
+            : '회원가입이 완료되었습니다!'),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => logPage(isLogin: true)),
+                    (Route<dynamic> route) => false,
+              );
+            },
+            child: Text('확인'),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -28,87 +103,98 @@ class _SignUpFormState extends State<SignUpForm> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 30.w), // 좌우 여백 고정
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch, // Stretching elements
-            children: [
-              Flexible(
-                child: SoonCheckWidget(bottom: -5.h, left: -50.w), // 반응형 위치 설정
-              ),
+          padding: EdgeInsets.symmetric(horizontal: 30.w),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Flexible(child: SoonCheckWidget(bottom: -5.h, left: -50.w)),
 
-              // "사용자 유형"과 "이름" 사이 간격 설정 (관리자 선택 시 40, 학부생 선택 시 20)
-              SizedBox(height: _selectedRole == '관리자' ? 70.h : 70.h),
+                SizedBox(height: _getRoleBasedSpacing()),
 
-              // 사용자 유형 Dropdown
-              CustomDropdownFormField(
-                labelText: '사용자 유형',
-                value: _selectedRole,
-                items: ['학부생', '관리자'],
-                onChanged: (value) {
-                  setState(() {
-                    _selectedRole = value;
-                  });
-                },
-              ),
+                _buildRoleDropdown(),
 
-              // 학부생일 때만 "학과 선택" 필드 표시
-              if (_selectedRole == '학부생') ...[
-                SizedBox(height: 20.h), // 간격 유지
-                CustomDropdownFormField(
-                  labelText: '학과를 선택하세요',
-                  value: _department,
-                  items: [
-                    '의료IT공학과',
-                    '컴퓨터소프트웨어공학과',
-                    '정보보호학과',
-                    'AI빅데이터학과',
-                    '사물인터넷학과',
-                    '메타버스&게임학과'
-                  ],
-                  onChanged: (value) {
-                    setState(() {
-                      _department = value;
-                    });
-                  },
-                ),
-              ],
+                if (_selectedRole == '학부생') ...[
+                  SizedBox(height: 20.h),
+                  _buildDepartmentDropdown(),
+                ],
 
-              // 관리자 선택 시 "이름"과 "학번" 사이 간격 조정
-              SizedBox(height: _selectedRole == '관리자' ? 20.h : 20.h),
+                SizedBox(height: 20.h),
 
-              // 이름 TextField
-              buildCustomTextField('이름', TextInputType.text, false, (value) => _name = value),
+                _buildCustomTextField('이름', TextInputType.text, (value) => _name = value),
 
-              SizedBox(height: 20.h), // "이름"과 "학번" 사이 간격 (일관성 유지)
+                SizedBox(height: 20.h),
 
-              // 학번 TextField
-              buildCustomTextField('학번', TextInputType.number, false, (value) => _studentId = value),
+                _buildCustomTextField('학번', TextInputType.number, (value) => _studentId = value),
 
-              Spacer(), // 남은 공간을 밀어주기 위해 사용
+                SizedBox(height: 30.h),
 
-              Flexible(
-                child: Center(
-                  child: LogUpButton(
-                    onPressed: () => _submitForm(context),
-                    text: '회원가입',
+                Flexible(
+                  child: Center(
+                    child: LogUpButton(
+                      onPressed: () => _submitForm(context),
+                      text: '회원가입',
+                    ),
                   ),
                 ),
-              ),
 
-              SizedBox(height: 130.h), // 버튼 아래 여백 추가
-            ],
+                SizedBox(height: 130.h),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  // Custom TextField widget to avoid conflicts
-  Widget buildCustomTextField(String labelText, TextInputType keyboardType, bool obscureText, FormFieldSetter<String>? onSaved) {
+  // 역할 선택에 따라 간격 설정
+  double _getRoleBasedSpacing() {
+    return _selectedRole == '관리자' ? 100.h : 70.h;
+  }
+
+  // 사용자 유형 드롭다운 빌드 함수
+  Widget _buildRoleDropdown() {
+    return CustomDropdownFormField(
+      labelText: '사용자 유형',
+      value: _selectedRole,
+      items: ['학부생', '관리자'],
+      onChanged: (value) {
+        setState(() {
+          _selectedRole = value;
+        });
+      },
+    );
+  }
+
+  // 학과 드롭다운 빌드 함수
+  Widget _buildDepartmentDropdown() {
+    return CustomDropdownFormField(
+      labelText: '학과를 선택하세요',
+      value: _department,
+      items: [
+        '의료IT공학과',
+        '컴퓨터소프트웨어공학과',
+        '정보보호학과',
+        'AI빅데이터학과',
+        '사물인터넷학과',
+        '메타버스&게임학과'
+      ],
+      onChanged: (value) {
+        setState(() {
+          _department = value;
+        });
+      },
+    );
+  }
+
+  // 텍스트 필드 빌드 함수
+  Widget _buildCustomTextField(
+      String labelText, TextInputType keyboardType, FormFieldSetter<String> onSaved) {
     return InfoTextField(
       labelText: labelText,
       keyboardType: keyboardType,
-      obscureText: obscureText,
+      obscureText: false,
       onSaved: onSaved,
       validator: (value) => value == null || value.isEmpty ? '$labelText을 입력하세요' : null,
     );

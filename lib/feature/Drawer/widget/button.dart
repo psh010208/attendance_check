@@ -1,73 +1,32 @@
-//매니저 : 버튼 2개 (참여 학생 현황, 상품 추천)
-// 학생 : 로그아웃 버튼, 로고
-// null : 로그인, 회원가입
-
 import 'package:flutter/material.dart';
 import 'package:attendance_check/feature/Log/logPage.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:attendance_check/feature/Drawer/widget/IdText.dart';
 
-// 로그인
-class LogInButton extends StatelessWidget {
+class CommonButton extends StatelessWidget {
   final VoidCallback onPressed;
+  final IconData icon;
+  final String text;
+  final double iconSize;
+  final double textSize;
+  final double top;
+  final double left;
 
-  LogInButton({required this.onPressed});
+  CommonButton({
+    required this.onPressed,
+    required this.icon,
+    required this.text,
+    required this.iconSize,
+    required this.textSize,
+    required this.top,
+    required this.left,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      top: 250.h, // y축 위치 조정
-      left: 10.w, // x축 위치 조정
-      child: Column(
-        mainAxisSize: MainAxisSize.min, // 버튼 크기를 최소화
-        children: [
-          // ElevatedButton
-          ElevatedButton(
-            onPressed: () {
-              // 로그아웃 로직을 여기에 추가하세요.
-              // 로그아웃 후 SignInPage로 이동
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => logPage(isLogin: true),)
-              );
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.transparent, // 버튼 배경색을 투명하게 설정
-              shadowColor: Colors.transparent, // 그림자 색상 투명하게
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            ),
-            child: Row( // 아이콘과 텍스트를 나란히 배치
-              mainAxisSize: MainAxisSize.min, // 버튼 크기를 최소화
-              children: [
-                Icon(
-                  Icons.login, // 로그아웃 아이콘
-                  color: Colors.white, // 아이콘 색상
-                  size: 25,
-                ),
-                SizedBox(width: 10), // 아이콘과 텍스트 간의 간격
-                CustomText(
-                  id: '로그인',
-                  size: 25, // 텍스트 크기 조정
-                ),
-              ],
-            ),
-          ), // 로고 이미지 추가
-        ],
-      ),
-    );
-  }
-}
-// 회원가입
-class JoinButton extends StatelessWidget {
-  final VoidCallback onPressed;
-
-  JoinButton({required this.onPressed});
-
-  @override
-  Widget build(BuildContext context) {
-    return Positioned(
-      top: 300.h, // y축 위치 조정
-      left: 10.w, // x축 위치 조정
+      top: top,
+      left: left,
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
@@ -75,18 +34,18 @@ class JoinButton extends StatelessWidget {
           shadowColor: Colors.transparent, // 그림자 색상 투명하게
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
         ),
-        child: Row( // 아이콘과 텍스트를 나란히 배치
-          mainAxisSize: MainAxisSize.min, // 버튼 크기를 최소화
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Icon(
-              Icons.account_circle, // 로그아웃 아이콘
-              color: Colors.white, // 아이콘 색상
-              size: 25,
+              icon,
+              color: Colors.white,
+              size: iconSize,
             ),
-            SizedBox(width: 10), // 아이콘과 텍스트 간의 간격
+            SizedBox(width: 10),
             CustomText(
-              id : '회원가입',
-              size: 25, // 텍스트 크기 조정
+              id: text,
+              size: textSize,
             ),
           ],
         ),
@@ -94,6 +53,57 @@ class JoinButton extends StatelessWidget {
     );
   }
 }
+
+// 로그인 버튼
+class LogInButton extends StatelessWidget {
+  final VoidCallback onPressed;
+
+  LogInButton({required this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return CommonButton(
+      onPressed: () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => logPage(isLogin: true)),
+        );
+      },
+      icon: Icons.login,
+      text: '로그인',
+      iconSize: 25,
+      textSize: 25,
+      top: 250.h,
+      left: 10.w,
+    );
+  }
+}
+
+// 회원가입 버튼
+class JoinButton extends StatelessWidget {
+  final VoidCallback onPressed;
+
+  JoinButton({required this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return CommonButton(
+      onPressed: () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => logPage(isLogin: false)), // 회원가입 페이지로 이동
+        );
+      },
+      icon: Icons.account_circle,
+      text: '회원가입',
+      iconSize: 25,
+      textSize: 25,
+      top: 300.h,
+      left: 10.w,
+    );
+  }
+}
+
 // 참여 학생 현황 버튼
 class ParticipationButton extends StatelessWidget {
   final VoidCallback onPressed;
@@ -102,32 +112,16 @@ class ParticipationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      top: 250.h, // y축 위치 조정
-      left: 10.w, // x축 위치 조정
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.transparent, // 버튼 배경색을 투명하게 설정
-          shadowColor: Colors.transparent, // 그림자 색상 투명하게
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        ),
-        child: Row( // 아이콘과 텍스트를 나란히 배치
-          mainAxisSize: MainAxisSize.min, // 버튼 크기를 최소화
-          children: [
-            Icon(
-              Icons.task_alt, // 아이콘
-              color: Colors.white, // 아이콘 색상
-              size: 33,
-            ),
-            SizedBox(width: 10), // 아이콘과 텍스트 간의 간격
-            CustomText(
-              id : '참여 학생 현황',
-              size: 23, // 텍스트 크기 조정
-            ),
-          ],
-        ),
-      ),
+    return CommonButton(
+      onPressed: () {
+        // 참여 학생 현황 페이지로 이동하는 로직 추가
+      },
+      icon: Icons.task_alt,
+      text: '참여 학생 현황',
+      iconSize: 33,
+      textSize: 23,
+      top: 250.h,
+      left: 10.w,
     );
   }
 }
@@ -140,37 +134,21 @@ class RaffleButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      top: 320.h, // y축 위치 조정
-      left: 10.w,// x축 위치 조정
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.transparent, // 버튼 배경색을 투명하게 설정
-          shadowColor: Colors.transparent, // 그림자 색상 투명하게
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        ),
-        child: Row( // 아이콘과 텍스트를 나란히 배치
-          mainAxisSize: MainAxisSize.min, // 버튼 크기를 최소화
-          children: [
-            Icon(
-              Icons.redeem, // 아이콘
-              color: Colors.white, // 아이콘 색상
-              size: 33,
-            ),
-            SizedBox(width: 10), // 아이콘과 텍스트 간의 간격
-            CustomText(
-              id :'상품 추첨',
-              size: 21, // 텍스트 크기 조정
-            ),
-          ],
-        ),
-      ),
+    return CommonButton(
+      onPressed: () {
+        // 상품 추첨 페이지로 이동하는 로직 추가
+      },
+      icon: Icons.redeem,
+      text: '상품 추첨',
+      iconSize: 33,
+      textSize: 21,
+      top: 320.h,
+      left: 10.w,
     );
   }
 }
 
-// 출석 현황
+// 출석 현황 버튼
 class CurrentButton extends StatelessWidget {
   final VoidCallback onPressed;
 
@@ -178,32 +156,21 @@ class CurrentButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      top: 240.h, // y축 위치 조정
-      left: 10.w, // x축 위치 조정
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.transparent, // 버튼 배경색을 투명하게 설정
-          shadowColor: Colors.transparent, // 그림자 색상 투명하게
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        ),
-        child: Row( // 아이콘과 텍스트를 나란히 배치
-          mainAxisSize: MainAxisSize.min, // 버튼 크기를 최소화
-          children: [
-            SizedBox(width: 10), // 아이콘과 텍스트 간의 간격
-            CustomText(
-              id : '출석 현황',
-              size: 20, // 텍스트 크기 조정
-            ),
-          ],
-        ),
-      ),
+    return CommonButton(
+      onPressed: () {
+        // 출석 현황 페이지로 이동하는 로직 추가
+      },
+      icon: Icons.check_circle, // 출석 현황에 적합한 아이콘 추가
+      text: '출석 현황',
+      iconSize: 20,
+      textSize: 20,
+      top: 240.h,
+      left: 10.w,
     );
   }
 }
 
-// 로그아웃
+// 로그아웃 버튼
 class LogOutButton extends StatelessWidget {
   final VoidCallback onPressed;
 
@@ -211,50 +178,24 @@ class LogOutButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      top: 680.h, // y축 위치 조정
-      left: 75.w, // x축 위치 조정
-      child: Column(
-        mainAxisSize: MainAxisSize.min, // 버튼 크기를 최소화
-        children: [
-          // ElevatedButton
-          ElevatedButton(
-            onPressed: () {
-              // 로그아웃 로직을 여기에 추가하세요.
-              // 로그아웃 후 SignInPage로 이동
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => logPage(isLogin: true),)
-              );
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.transparent, // 버튼 배경색을 투명하게 설정
-              shadowColor: Colors.transparent, // 그림자 색상 투명하게
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            ),
-            child: Row( // 아이콘과 텍스트를 나란히 배치
-              mainAxisSize: MainAxisSize.min, // 버튼 크기를 최소화
-              children: [
-                Icon(
-                  Icons.logout, // 로그아웃 아이콘
-                  color: Colors.white, // 아이콘 색상
-                  size: 23,
-                ),
-                SizedBox(width: 10), // 아이콘과 텍스트 간의 간격
-                CustomText(
-                  id: '로그아웃',
-                  size: 17, // 텍스트 크기 조정
-                ),
-              ],
-            ),
-          ), // 로고 이미지 추가
-        ],
-      ),
+    return CommonButton(
+      onPressed: () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => logPage(isLogin: true)),
+        );
+      },
+      icon: Icons.logout,
+      text: '로그아웃',
+      iconSize: 23,
+      textSize: 17,
+      top: 680.h,
+      left: 75.w,
     );
   }
 }
 
-// 로고
+// 로고 버튼
 class Logo extends StatelessWidget {
   final VoidCallback onPressed;
 
@@ -263,19 +204,15 @@ class Logo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      top: 750.h, // y축 위치 조정
-      left: 75.w, // x축 위치 조정
-      child: Column( // Column의 children 속성으로 Image.asset 추가
-        children: [
-          GestureDetector( // onPressed 기능을 추가하려면 GestureDetector 사용
-            onTap: onPressed,
-            child: Image.asset(
-              'assets/simple_logo.png',
-              width: 150,
-              height: 30,
-            ), // 로고 이미지 추가
-          ),
-        ],
+      top: 750.h,
+      left: 75.w,
+      child: GestureDetector(
+        onTap: onPressed,
+        child: Image.asset(
+          'assets/simple_logo.png',
+          width: 150,
+          height: 30,
+        ),
       ),
     );
   }

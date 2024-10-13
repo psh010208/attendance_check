@@ -14,7 +14,7 @@ class SplashScreen extends StatelessWidget {
     // 3초 후에 다음 화면으로 이동 (logPage로)
     Future.delayed(Duration(seconds: 3), () {
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => logPage(isLogin: false)),
+        MaterialPageRoute(builder: (context) => drawerScreen(role: '',id: '',)),
       );
     });
 
@@ -24,8 +24,8 @@ class SplashScreen extends StatelessWidget {
           children: [
             // 로고 이미지 위치 및 크기
             Positioned(
-              top: (ScreenUtil().screenWidth / 1) - (150.w / 1), // 반응형 높이 설정
-              left: (ScreenUtil().screenWidth / 2) - (70.w), // 중앙 정렬을 위한 좌표 계산
+              top: (ScreenUtil().screenWidth / 1.w) - (230.w / 2.w), // 반응형 높이 설정
+              left: (ScreenUtil().screenWidth / 2.w) - (70.w), // 중앙 정렬을 위한 좌표 계산
               child: Image.asset(
                 'assets/appLogo.png', // 로고 파일 경로
                 width: 150.w, // 반응형 너비 설정
@@ -35,8 +35,8 @@ class SplashScreen extends StatelessWidget {
 
             // 재사용 가능한 SoonCheckWidget
             SoonCheckWidget(
-              bottom: (ScreenUtil().screenWidth / 1) - (200.w /1 ), // 반응형 설정
-              left: (ScreenUtil().screenWidth / 2) - (380.w / 2), // 중앙 정렬을 위한 계산
+              bottom: (ScreenUtil().screenWidth / 1.w) - (140.w /1.w ), // 반응형 설정
+              left: (ScreenUtil().screenWidth / 2.w) - (380.w / 2.w), // 중앙 정렬을 위한 계산
             ),
           ],
         ),

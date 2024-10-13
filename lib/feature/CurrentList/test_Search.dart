@@ -11,7 +11,7 @@ class ParticipationStatus extends StatelessWidget {
         appBar: AppBar(
           title: Text(
             '참여 학생 현황',
-            style: Theme.of(context).textTheme.titleLarge,
+            style: Theme.of(context).textTheme.titleSmall,
           ),
           centerTitle: true,
           elevation: 0.0,
