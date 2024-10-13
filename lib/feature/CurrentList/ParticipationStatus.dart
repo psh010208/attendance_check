@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'ParticipationData.dart';
 
 void main() => runApp(ParticipationStatus());
@@ -6,72 +7,102 @@ void main() => runApp(ParticipationStatus());
 class ParticipationStatus extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            '참여 학생 현황',
-            style: Theme.of(context).textTheme.titleLarge,
+    return ScreenUtilInit(
+      designSize: Size(310, 690), // 기본 디자인 사이즈 설정
+      builder: (context, child) {
+        return MaterialApp(
+          home: Scaffold(
+            body: ParticipationStatusBody(),
           ),
-          centerTitle: true,
-          elevation: 0.0,
-          leading: IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.arrow_back),
-          ),
-          actions: [
-            IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.menu),
-            )
-          ],
-          shape: Border(
-            bottom: BorderSide(
-              color: Colors.grey,
-              width: 1,
-            ),
-          ),
-        ),
-        body: StudentDataTable(),
-      ),
+        );
+      },
     );
   }
 }
 
-class StudentDataTable extends StatefulWidget {
+class ParticipationStatusBody extends StatefulWidget {
   @override
-  _DataTableExampleState createState() => _DataTableExampleState();
+  _StudentDataTableState createState() => _StudentDataTableState();
 }
 
-class _DataTableExampleState extends State<StudentDataTable> {
+class _StudentDataTableState extends State<ParticipationStatusBody> {
   List<ParticipationStudent> _data = List.from(p_students);
+  List<ParticipationStudent> _originalData = List.from(p_students); // 원본 데이터 저장
   bool _isSortAsc = true; // 정렬 기능
   String _searchStudentNum = ""; // 학번 검색 기능
   String _searchName = ""; // 이름 검색 기능
 
   @override
   Widget build(BuildContext context) {
-// 화면 크기를 MediaQuery로 얻음
-    double screenHeight = MediaQuery.of(context).size.height;
-    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = 1.sh; // ScreenUtil에서 전체 높이 비율 사용
+    double screenWidth = 1.sw; // ScreenUtil에서 전체 너비 비율 사용
 
     return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(45.h), // AppBar의 높이 설정
+        child: AppBar(
+          backgroundColor: Color(0xffF8FAFD),
+          title: Text(
+            '참여 학생 현황',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+          centerTitle: true,
+          // iOS에서 제목 중앙 정렬
+          elevation: 4,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.black),
+            onPressed: () { // 검색 기능 사용 후 뒤로가기 버튼 누르면 원래 데이터로 돌아가기
+              setState(() {
+                _data = List.from(_originalData);
+                _searchStudentNum = "";
+                _searchName = "";
+              });
+            },
+          ),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.menu, color: Colors.black),
+              onPressed: () {
+                // 마이페이지 완성 후 메뉴바 누르면 마이페이지 오픈!
+              },
+            ),
+          ],
+          shape: Border(
+            bottom: BorderSide(
+              color: Colors.grey,
+              width: 1.w,
+            ),
+          ),
+        ),
+      ),
       body: _buildUI(screenHeight, screenWidth),
     );
   }
 
   Widget _buildUI(double screenHeight, double screenWidth) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.vertical, //스크롤
-      child: FittedBox(
-        fit: BoxFit.fitWidth,
-        child: DataTable(
-          columnSpacing: 10, //열 사이 간격
-          columns: _createColumns(),
-          rows: _createRows(screenHeight, screenWidth),
+    return RefreshIndicator(  //아래로 당기면 새로고침
+      onRefresh: _refresh,
+      backgroundColor: Color(0xffF8FAFD),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.vertical, //스크롤
+        child: FittedBox(
+          fit: BoxFit.fitWidth,
+          child: DataTable(
+            columnSpacing: 10.w, //열 사이 간격
+            columns: _createColumns(),
+            rows: _createRows(screenHeight, screenWidth),
+          ),
         ),
       ),
     );
+  }
+
+  // 새로고침 함수
+  Future<void> _refresh() async {
+    setState(() {
+      // 새로고침 시 동작할 로직, 데이터를 다시 로드하거나 초기화할 수 있음
+      _data = List.from(_originalData); // 예시: 원본 데이터를 다시 불러오기
+    });
   }
 
 // 표 제목
@@ -79,24 +110,24 @@ class _DataTableExampleState extends State<StudentDataTable> {
     return [
       DataColumn(
         label: Container(
-          width: 140,
-          height: 30,
+          width: 170.w,
+          height: 30.h,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(4.0), // 모서리 반경
-            color: Color(0xffE2E6EB), // 배경색
+            borderRadius: BorderRadius.circular(4.r),
+            color: Color(0xffE2E6EB),
           ),
           child: Row(children: [
-            SizedBox(width: 6),
-            Icon(Icons.arrow_drop_down, size: 25),
-            SizedBox(width: 5),
-            const Text("학과"),
+            SizedBox(width: 10.w),
+            Icon(Icons.arrow_drop_down, size: 25.sp),
+            SizedBox(width: 5.w),
+            Text("학과", style: TextStyle(fontSize: 15.sp)),
           ]),
         ),
         onSort: (columnIndex, _) {  // 학과 정렬
           setState(() {
             if (_isSortAsc) {
               _data.sort(
-                    (a, b) => a.dept.compareTo(b.dept),
+                    (a, b) => a.count.compareTo(b.count),
               );
             } else {
               _data.sort(
@@ -111,18 +142,18 @@ class _DataTableExampleState extends State<StudentDataTable> {
         label: GestureDetector(
           onTap: () => _showSearchDialog('학번'), // 학번 검색 다이얼로그
           child: Container(
-            width: 85,
-            height: 30,
+            width: 85.w,
+            height: 30.h,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(4.0), // 모서리 반경
-              color: Color(0xffE2E6EB), // 배경색
+              borderRadius: BorderRadius.circular(4.r),
+              color: Color(0xffE2E6EB),
             ),
             child: Row(
               children: [
-                SizedBox(width: 10),
-                Icon(Icons.search, size: 17),
-                SizedBox(width: 6),
-                const Text("학번"),
+                SizedBox(width: 10.w),
+                Icon(Icons.search, size: 17.sp),
+                SizedBox(width: 6.w),
+                Text("학번", style: TextStyle(fontSize: 15.sp)),
               ],
             ),
           ),
@@ -132,18 +163,18 @@ class _DataTableExampleState extends State<StudentDataTable> {
         label: GestureDetector(
           onTap: () => _showSearchDialog('이름'), // 이름 검색 다이얼로그
           child: Container(
-            width: 75,
-            height: 30,
+            width: 75.w,
+            height: 30.h,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(4.0), // 모서리 반경
-              color: Color(0xffE2E6EB), // 배경색
+              borderRadius: BorderRadius.circular(4.r),
+              color: Color(0xffE2E6EB),
             ),
             child: Row(
               children: [
-                SizedBox(width: 8),
-                Icon(Icons.search, size: 17),
-                SizedBox(width: 6),
-                const Text("이름"),
+                SizedBox(width: 8.w),
+                Icon(Icons.search, size: 17.sp),
+                SizedBox(width: 6.w),
+                Text("이름", style: TextStyle(fontSize: 15.sp)),
               ],
             ),
           ),
@@ -151,18 +182,18 @@ class _DataTableExampleState extends State<StudentDataTable> {
       ),
       DataColumn(
         label: Container(
-          width: 95,
-          height: 30,
+          width: 95.w,
+          height: 30.h,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(4.0), // 모서리 반경
-            color: Color(0xffE2E6EB), // 배경색
+            borderRadius: BorderRadius.circular(4.r),
+            color: Color(0xffE2E6EB),
           ),
           child: Row(
             children: [
-              SizedBox(width: 4),
-              Icon(Icons.arrow_drop_down, size: 20),
-              SizedBox(width: 4),
-              const Text("참여횟수"),
+              SizedBox(width: 4.w),
+              Icon(Icons.arrow_drop_down, size: 25.sp),
+              SizedBox(width: 4.w),
+              Text("참여횟수", style: TextStyle(fontSize: 15.sp)),
             ],
           ),
         ),
@@ -184,10 +215,9 @@ class _DataTableExampleState extends State<StudentDataTable> {
     ];
   }
 
-  //검색 기능
+  //학과, 이름 검색 기능
   void _showSearchDialog(String title) {
     String searchQuery = "";
-
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -232,40 +262,150 @@ class _DataTableExampleState extends State<StudentDataTable> {
     // 필터링 추가
     return _data
         .where((e) =>
-    e.num.contains(_searchStudentNum) &&
-        e.name.contains(_searchName))
+    e.num.contains(_searchStudentNum) && e.name.contains(_searchName))
         .map((e) {
       return DataRow(
         cells: [
           DataCell(Row(children: [
-            Icon(Icons.person, size: 20), // 어디 넣어야 할 지 모르겠어서 일단 여기 넣음
-            SizedBox(width: 17),
-            Text(e.dept),
+            Icon(Icons.person, size: 20.sp), // 어디 넣어야 할 지 모르겠어서 일단 여기 넣음
+            SizedBox(width: 17.w),
+            Text(e.dept, style: TextStyle(fontSize: 13.sp)),
           ])),
           DataCell(Row(children: [
-            SizedBox(width: 10),
-            Text(e.num),
+            SizedBox(width: 10.w),
+            Text(e.num, style: TextStyle(fontSize: 13.sp)),
           ])),
           DataCell(Row(children: [
-            SizedBox(width: 15),
-            Text(e.name),
+            SizedBox(width: 15.w),
+            Text(e.name, style: TextStyle(fontSize: 13.sp)),
           ])),
           DataCell(Row(children: [
-            SizedBox(width: 30),
-            Text(e.count),
+            SizedBox(width: 30.w),
+            Text(e.count, style: TextStyle(fontSize: 13.sp)),
             IconButton(
               icon: Icon(Icons.keyboard_arrow_down),
               onPressed: () {
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return AlertDialog(
-                      content: Text('이 버튼을 눌렀습니다!'),
+                    return AlertDialog( //일정별 정확한 입퇴실 시간 보여줌
+                      backgroundColor: Color(0xff26539C),
+                      content: SingleChildScrollView(
+                        child: Container(
+                          padding: EdgeInsets.all(8.w),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('일정 1',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold)),
+                              Divider(),
+                              Text('입실   ' + e.time,
+                                  style: TextStyle(color: Colors.white)),
+                              SizedBox(height: 5),
+                              Text('퇴실   2024 / 10 / 9 / 16:30',
+                                  style: TextStyle(color: Colors.white)),
+                              SizedBox(height: 10),
+                              Text('일정 2',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold)),
+                              Divider(),
+                              Text('입실   ' + e.time,
+                                  style: TextStyle(color: Colors.white)),
+                              SizedBox(height: 5),
+                              Text('퇴실   2024 / 10 / 9 / 16:30',
+                                  style: TextStyle(color: Colors.white)),
+                              SizedBox(height: 10),
+                              Text('일정 3',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold)),
+                              Divider(),
+                              Text('입실   ' + e.time,
+                                  style: TextStyle(color: Colors.white)),
+                              SizedBox(height: 5),
+                              Text('퇴실   2024 / 10 / 9 / 16:30',
+                                  style: TextStyle(color: Colors.white)),
+                              SizedBox(height: 10),
+                              Text('일정 4',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold)),
+                              Divider(),
+                              Text('입실   ' + e.time,
+                                  style: TextStyle(color: Colors.white)),
+                              SizedBox(height: 5),
+                              Text('퇴실   2024 / 10 / 9 / 16:30',
+                                  style: TextStyle(color: Colors.white)),
+                              SizedBox(height: 10),
+                              Text('일정 5',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold)),
+                              Divider(),
+                              Text('입실   ' + e.time,
+                                  style: TextStyle(color: Colors.white)),
+                              SizedBox(height: 5),
+                              Text('퇴실   2024 / 10 / 9 / 16:30',
+                                  style: TextStyle(color: Colors.white)),
+                              SizedBox(height: 10),
+                              Text('일정 6',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold)),
+                              Divider(),
+                              Text('입실   ' + e.time,
+                                  style: TextStyle(color: Colors.white)),
+                              SizedBox(height: 5),
+                              Text('퇴실   2024 / 10 / 9 / 16:30',
+                                  style: TextStyle(color: Colors.white)),
+                              SizedBox(height: 10),
+                              Text('일정 7',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold)),
+                              Divider(),
+                              Text('입실   ' + e.time,
+                                  style: TextStyle(color: Colors.white)),
+                              SizedBox(height: 5),
+                              Text('퇴실   2024 / 10 / 9 / 16:30',
+                                  style: TextStyle(color: Colors.white)),
+                              SizedBox(height: 10),
+                              Text('일정 8',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold)),
+                              Divider(),
+                              Text('입실   ' + e.time,
+                                  style: TextStyle(color: Colors.white)),
+                              SizedBox(height: 5),
+                              Text('퇴실   2024 / 10 / 9 / 16:30',
+                                  style: TextStyle(color: Colors.white)),
+                              SizedBox(height: 10),
+                              Text('일정 9',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold)),
+                              Divider(),
+                              Text('입실   ' + e.time,
+                                  style: TextStyle(color: Colors.white)),
+                              SizedBox(height: 5),
+                              Text('퇴실   2024 / 10 / 9 / 16:30',
+                                  style: TextStyle(color: Colors.white)),
+                              SizedBox(height: 10),
+                            ],
+                          ),
+                        ),
+                      ),
                       actions: [
                         TextButton(
-                          child: Text('닫기'),
+                          child: Text('닫기',
+                              style: TextStyle(
+                                  color: Colors.white)),
                           onPressed: () {
-                            Navigator.of(context).pop(); // 팝업 창 닫기
+                            Navigator.of(context).pop();
                           },
                         ),
                       ],
