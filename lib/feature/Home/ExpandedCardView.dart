@@ -77,63 +77,6 @@ class ExpandedCardView extends StatelessWidget {
                 ),
               ),
             ),
-            Expanded(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 65, // 체크 버튼, 장소, 알림 버튼의 위치를 카드 정 중앙으로
-                    child: ListTile(
-                      contentPadding: EdgeInsets.symmetric(horizontal: 40),
-                      // 내용 패딩
-                      title: Text(title,
-                          style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold)),
-                      trailing: Text(time,
-                          style: TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold)),
-                    ),
-                  ),
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            IconButton(
-                              icon: Icon(
-                                Icons.check_circle_outline,
-                                size: 30,
-                              ),
-                              onPressed: () {
-                                // 체크 아이콘 눌렀을 때 동작
-                              },
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Text(
-                              '$location',
-                              style: TextStyle(fontSize: 15),
-                            ),
-                            SizedBox(width: 10),
-                            IconButton(
-                              icon: Icon(
-                                Icons.alarm,
-                                size: 30,
-                              ),
-                              onPressed: () {
-                                // 알림 아이콘 눌렀을 때 동작
-                              },
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
           ],
         ),
       ),

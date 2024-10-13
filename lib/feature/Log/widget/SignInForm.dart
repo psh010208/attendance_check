@@ -1,10 +1,13 @@
-
-
-
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:attendance_check/database/Repository/ManagerRepository.dart';
-import 'package:attendance_check/database/model/ManagerModel.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:attendance_check/feature/Log/widget/LogInButton.dart'; // LogInButton 임포트
+import 'package:attendance_check/feature/Log/ViewModel/logViewModel.dart'; // LogViewModel 임포트
+
+import '../../Drawer/drawerScreen.dart';
+import '../../Home/widget/SoonCheck.dart';
+import '../Model/logModel.dart';
+import 'CustomDropdownFormField.dart';
+import 'CustomTextFormField.dart';
 
 class SignInForm extends StatefulWidget {
   @override
@@ -12,150 +15,171 @@ class SignInForm extends StatefulWidget {
 }
 
 class _SignInFormState extends State<SignInForm> {
-  final TextEditingController idController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  final LogViewModel logViewModel = LogViewModel();
   String? _selectedRole = '학부생';
-  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  String? _department = '의료IT공학과';
+  String? _studentId;
 
-  Future<void> _login(BuildContext context) async {
-    String id = idController.text.trim();
-    String password = passwordController.text.trim();
+  Future<void> _submitForm(BuildContext context) async {
+    if (!_formKey.currentState!.validate()) return;
+    _formKey.currentState!.save();
 
-    if (id.isEmpty || password.isEmpty || _selectedRole == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('모든 필드를 입력하세요.')),
-      );
-      return;
-    }
+    // Firestore에서 학번과 역할을 통해 로그인 검증
+    bool isLoggedIn = await logViewModel.logIn(_studentId!, _selectedRole!);
 
-    try {
-      if (_selectedRole == '학부생') {
-        var snapshot = await firestore
-            .collection('student')
-            .where('studentId', isEqualTo: id)
-            .where('password', isEqualTo: password)
-            .get();
-
-        if (snapshot.docs.isNotEmpty) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('로그인 성공!')),
-          );
-          // Navigator.pushReplacement(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => MainCardScreen(id: '12'),  // 실제 id 전달 필요
-          //   ),
-          // );
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('학번 또는 비밀번호가 잘못되었습니다.')),
-          );
-        }
-      } else if (_selectedRole == '교수(관리자)') {
-        ManagerRepository managerRepo = ManagerRepository();
-        ManagerModel? manager = await managerRepo.fetchManagerById(id);
-        if (manager != null && manager.password == password) {
-          if (manager.isApprove == true) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('로그인 성공!')),
-            );
-            // Navigator.pushReplacement(
-            //   context,
-            //   MaterialPageRoute(
-            //     builder: (context) => MainAdminScreen(id: id, role: _selectedRole!),
-            //   ),
-            // );
-          } else {
-            _showApprovalPendingDialog(context);
-          }
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('관리자 ID 또는 비밀번호가 잘못되었습니다.')),
-          );
-        }
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('로그인 중 오류가 발생했습니다. 다시 시도하세요.')),
-      );
+    if (isLoggedIn) {
+      _navigateToDrawerScreen();
+    } else {
+      _handleLoginFailure(context);
     }
   }
 
-  void _showApprovalPendingDialog(BuildContext context) {
+  // Navigator로 drawerScreen으로 이동하는 로직을 분리
+  void _navigateToDrawerScreen() {
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (context) => drawerScreen(
+          role: _selectedRole!,
+          id: _studentId!,
+        ),
+      ),
+          (Route<dynamic> route) => false,
+    );
+  }
+
+  // 로그인 실패 시 에러 처리 함수
+  Future<void> _handleLoginFailure(BuildContext context) async {
+    LogModel? user = await logViewModel.getUser(_studentId!);
+
+    if (user != null && user.role == '관리자' && !user.isApproved) {
+      _showErrorDialog(context, '로그인 실패', '관리자 승인이 필요합니다. 승인이 완료될 때까지 기다려 주세요.');
+    } else {
+      _showErrorDialog(context, '로그인 실패', '학번 또는 역할이 올바르지 않습니다.');
+    }
+  }
+
+  // 에러 메시지 다이얼로그를 표시하는 함수
+  void _showErrorDialog(BuildContext context, String title, String message) {
     showDialog(
       context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Center(child: Text("승인 대기 중", textAlign: TextAlign.center)),
-          content: Text(
-            "관리자 승인이 필요합니다. \n승인이 완료될 때까지 기다려주세요.",
-            textAlign: TextAlign.center,
+      builder: (context) => AlertDialog(
+        title: Text(title),
+        content: Text(message),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text('확인'),
           ),
-          actions: [
-            Center(
-              child: TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: Text("확인"),
-              ),
-            ),
-          ],
-        );
-      },
+        ],
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        DropdownButtonFormField<String>(
-          decoration: InputDecoration(
-            labelText: '사용자 유형',
-            border: OutlineInputBorder(),
-          ),
-          value: _selectedRole,
-          items: ['학부생', '교수(관리자)'].map((value) {
-            return DropdownMenuItem(child: Text(value), value: value);
-          }).toList(),
-          onChanged: (value) {
-            setState(() {
-              _selectedRole = value;
-            });
-          },
-        ),
-        const SizedBox(height: 15),
-        TextField(
-          controller: idController,
-          decoration: InputDecoration(
-            labelText: '아이디(학번 또는 관리자 ID)',
-            border: OutlineInputBorder(),
-          ),
-        ),
-        const SizedBox(height: 20),
-        TextField(
-          controller: passwordController,
-          decoration: InputDecoration(
-            labelText: '비밀번호(생년월일 6자리)',
-            border: OutlineInputBorder(),
-          ),
-          obscureText: true,
-        ),
-        const SizedBox(height: 40),
-        ElevatedButton(
-          onPressed: () => _login(context),
-          child: Text('로그인'),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.black,
-            foregroundColor: Colors.white,
-            minimumSize: Size(200, 50),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
+    return Scaffold(
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 30.w),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _buildHeaderWidget(),
+                SizedBox(height: _selectedRole == '관리자' ? 100.h : 70.h),
+                _buildRoleDropdown(),
+                if (_selectedRole == '학부생') ...[
+                  SizedBox(height: 20.h),
+                  _buildDepartmentDropdown(),
+                ],
+                SizedBox(height: 20.h),
+                _buildStudentIdField(),
+                SizedBox(height: 30.h),
+                _buildLoginButton(),
+                SizedBox(height: 130.h),
+              ],
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  // 헤더 위젯 빌드 함수
+  Widget _buildHeaderWidget() {
+    return Flexible(
+      child: SoonCheckWidget(bottom: -5.h, left: -50.w),
+    );
+  }
+
+  // 사용자 유형 드롭다운 빌드 함수
+  Widget _buildRoleDropdown() {
+    return CustomDropdownFormField(
+      labelText: '사용자 유형',
+      value: _selectedRole,
+      items: ['학부생', '관리자'],
+      onChanged: (value) {
+        setState(() {
+          _selectedRole = value;
+        });
+      },
+    );
+  }
+
+  // 학과 드롭다운 빌드 함수
+  Widget _buildDepartmentDropdown() {
+    return CustomDropdownFormField(
+      labelText: '학과를 선택하세요',
+      value: _department,
+      items: [
+        '의료IT공학과',
+        '컴퓨터소프트웨어공학과',
+        '정보보호학과',
+        'AI빅데이터학과',
+        '사물인터넷학과',
+        '메타버스&게임학과',
       ],
+      onChanged: (value) {
+        setState(() {
+          _department = value;
+        });
+      },
+    );
+  }
+
+  // 학번 입력 필드 빌드 함수
+  Widget _buildStudentIdField() {
+    return buildCustomTextField(
+      '학번',
+      TextInputType.number,
+      false,
+          (value) => _studentId = value,
+    );
+  }
+
+  // 로그인 버튼 빌드 함수
+  Widget _buildLoginButton() {
+    return Flexible(
+      child: Center(
+        child: LogInButton(
+          onPressed: () => _submitForm(context),
+          text: '로그인',
+        ),
+      ),
+    );
+  }
+
+  // Custom TextField widget to avoid conflicts
+  Widget buildCustomTextField(String labelText, TextInputType keyboardType, bool obscureText, FormFieldSetter<String>? onSaved) {
+    return InfoTextField(
+      labelText: labelText,
+      keyboardType: keyboardType,
+      obscureText: obscureText,
+      onSaved: onSaved,
+      validator: (value) => value == null || value.isEmpty ? '$labelText을 입력하세요' : null,
     );
   }
 }

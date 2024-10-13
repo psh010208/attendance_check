@@ -35,36 +35,36 @@ class drawerScreen extends StatelessWidget {
                           child: Icon(Icons.account_circle, size: 70),
                         ),
                       ),
-                    if(role != '교수(관리자)' && role!='학부생')
+                    if(role != '관리자' && role!='학부생')
                       Positioned(
                         top: 95.h, // 반응형 높이 설정
                         left: 88.w,
                         child: CustomText(
                           id: '정보없음'
-                              , size: 30,  // 역할 표시
+                              , size: 30.sp,  // 역할 표시
                         ),
                       ),
-                    if(role == '교수(관리자)')
+                    if(role == '관리자')
                       Positioned(
                         top: 75.h, // 반응형 높이 설정
                         left: 65.w,
                         child: CustomText(
-                          id: role, size: 30,  // 역할 표시
+                          id: role, size: 30.sp,  // 역할 표시
                         ),
                       )else if(role=='학부생')
                       Positioned(
                         top: 75.h, // 반응형 높이 설정
                         left: 100.w,
                         child: CustomText(
-                          id: role, size: 30,  // 역할 표시
+                          id: role, size: 30.sp,  // 역할 표시
                         ),
                       ),
-                    if(role == '교수(관리자)' || role=='학부생')
+                    if(role == '관리자' || role=='학부생')
                       Positioned(
                         top: 123.h, // 반응형 높이 설정
                         left: 113.w,
                         child: CustomText(
-                          id: id,size: 20,   // 아이디 표시
+                          id: id,size: 20.sp,   // 아이디 표시
                         ),
                       ),
                   ],
@@ -84,7 +84,7 @@ class drawerScreen extends StatelessWidget {
               thickness: 3,
             ),
           ),
-          if (role == '교수(관리자)') ...[
+          if (role == '관리자') ...[
             ParticipationButton(  //참여 학생
               onPressed: () {},
             ),
@@ -102,7 +102,7 @@ class drawerScreen extends StatelessWidget {
             LogInButton(onPressed: (){}),
             JoinButton(onPressed: (){}),
           ],
-          if(role == '교수(관리자)' || role=='학부생')
+          if(role == '관리자' || role=='학부생')
             LogOutButton(onPressed: (){}),
           Logo(onPressed: (){}),
         ],
