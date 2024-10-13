@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class LotteryModel {
+class LotteryStudent {
   final String studentId;    // 학번
   final String name;         // 이름
   final String department;   // 학과
   final int attendanceCount; // 출석 횟수
   final DateTime? lotteryDate; // 추첨 일자 (nullable)
 
-  LotteryModel({
+  LotteryStudent({
     required this.studentId,
     required this.name,
     required this.department,
@@ -16,12 +16,12 @@ class LotteryModel {
   });
 
   // Firestore에서 데이터를 가져와서 LotteryModel 객체로 변환
-  factory LotteryModel.fromFirestore(Map<String, dynamic> data) {
-    return LotteryModel(
+  factory LotteryStudent.fromFirestore(Map<String, dynamic> data, {required int attendanceCount}) {
+    return LotteryStudent(
       studentId: data['student_id'] ?? '',
-      name: data['student_name'] ?? '',
+      name: data['name'] ?? '',
       department: data['department'] ?? '',
-      attendanceCount: data['total_attendance'] ?? 0,
+      attendanceCount: attendanceCount, // 받아온 출석 횟수를 할당
       lotteryDate: (data['lottery_date'] as Timestamp?)?.toDate(),
     );
   }
