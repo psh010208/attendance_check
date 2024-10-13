@@ -11,6 +11,11 @@ import 'CustomDropdownFormField.dart';
 import 'CustomTextFormField.dart';
 
 class SignInForm extends StatefulWidget {
+  final String? initialRole; // 초기 역할
+  final String? initialStudentId; // 초기 학번
+
+  SignInForm({this.initialRole, this.initialStudentId}); // 생성자
+
   @override
   _SignInFormState createState() => _SignInFormState();
 }
@@ -21,6 +26,14 @@ class _SignInFormState extends State<SignInForm> {
   String? _selectedRole = '학부생';
   String? _department = '의료IT공학과';
   String? _studentId;
+
+  @override
+  void initState() {
+    super.initState();
+    // 초기값 설정
+    _selectedRole = widget.initialRole ?? '학부생'; // 초기 역할 설정
+    _studentId = widget.initialStudentId; // 초기 학번 설정
+  }
 
   Future<void> _submitForm(BuildContext context) async {
     if (!_formKey.currentState!.validate()) return;
@@ -41,7 +54,10 @@ class _SignInFormState extends State<SignInForm> {
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(
-        builder: (context) => HomeScreen(),
+        builder: (context) => HomeScreen(
+          role: _selectedRole!,
+          id: _studentId!,
+        ),
       ),
           (Route<dynamic> route) => false,
     );
