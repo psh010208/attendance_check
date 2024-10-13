@@ -1,4 +1,5 @@
 import 'package:attendance_check/feature/Drawer/model/infoModel.dart';
+import 'package:attendance_check/feature/Home/homeScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
@@ -166,7 +167,10 @@ class _PrizeDrawPageState extends State<PrizeDrawPage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => HomeScreen(role: InfoModel.role!,id: InfoModel.id!,)), // 회원가입 페이지로 이동
+            );
           },
         ),
         actions: [
