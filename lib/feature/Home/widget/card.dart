@@ -174,7 +174,10 @@ class _ScheduleCardState extends State<ScheduleCard> {
                         ],
                       ),
                     ),
-                    Divider(),
+                    Divider(
+                      color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5), // 색상 설정
+                      thickness: 1, // 두께 설정
+                    ),
                     Expanded(
                       child: Container(
                         color: Theme.of(context).cardColor,
