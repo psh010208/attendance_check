@@ -41,7 +41,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                   ),
                   if (widget.role != '관리자' && widget.role != '학부생')
                     Positioned(
-                      top: 95.h, // 반응형 높이 설정
+                      top: 100.h, // 반응형 높이 설정
                       left: 88.w,
                       child: CustomText(
                         id: '정보없음',
