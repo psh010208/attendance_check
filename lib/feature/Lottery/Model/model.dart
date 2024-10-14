@@ -30,9 +30,10 @@ class LotteryStudent {
   Map<String, dynamic> toFirestore() {
     return {
       'student_id': studentId,
-      'student_name': name,
+      'name':name,
       'department': department,
       'total_attendance': attendanceCount,
+
       if (lotteryDate != null) 'lottery_date': Timestamp.fromDate(lotteryDate!),
     };
   }

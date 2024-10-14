@@ -15,6 +15,7 @@ class DeleteButton extends StatelessWidget {
       child: Icon(CupertinoIcons.delete),
       style: ElevatedButton.styleFrom(
         minimumSize: Size(55.w, 40.h),
+        iconColor:Theme.of(context).colorScheme.surface ,
         elevation: 4,
       ),
     );

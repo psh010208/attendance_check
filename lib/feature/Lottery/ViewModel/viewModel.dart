@@ -41,14 +41,31 @@ class LotteryViewModel {
 
   // 학부생들 대상으로 추첨을 실행하는 메서드
   Future<LotteryStudent> runLottery() async {
+    // 모든 학부생 데이터를 가져옴 (user 컬렉션에서 'role'이 '학부생'인 사람들)
     List<LotteryStudent> students = await getAllStudents();
+
+    // Firestore에서 이미 추첨된 학생들의 ID를 가져옴
+    QuerySnapshot alreadySelectedSnapshot = await _firestore.collection('lottery').get();
+    List<String> alreadySelectedIds = alreadySelectedSnapshot.docs
+        .map((doc) => doc['student_id'] as String)
+        .toList();
+
+    // 이미 추첨된 학생을 제외한 목록 생성
+    List<LotteryStudent> eligibleStudents = students.where((student) {
+      return !alreadySelectedIds.contains(student.studentId); // 이미 추첨된 학생 제외
+    }).toList();
 
     // 출석 횟수에 따른 가중치 리스트 생성
     List<LotteryStudent> weightedPool = [];
-    for (var student in students) {
+
+    for (var student in eligibleStudents) {
       for (int i = 0; i < student.attendanceCount; i++) {
         weightedPool.add(student); // 출석 횟수만큼 학생을 리스트에 추가
       }
+    }
+
+    if (weightedPool.isEmpty) {
+      throw Exception("추첨할 수 있는 학생이 없습니다.");
     }
 
     // 랜덤 추첨
@@ -59,7 +76,7 @@ class LotteryViewModel {
     // Firestore에 당첨된 학생 정보 저장
     await _firestore.collection('lottery').add({
       'student_id': winner.studentId,
-      'student_name': winner.name,
+      'name': winner.name,
       'department': winner.department,
       'attendance_count': winner.attendanceCount, // 출석 횟수 추가
       'lottery_date': FieldValue.serverTimestamp(),
@@ -68,11 +85,21 @@ class LotteryViewModel {
     return winner; // 추첨된 학생 정보 반환
   }
 
-  // Firestore에서 학부생 중 추첨된 학생 리스트 가져오기
+
+// Firestore에서 학부생 중 추첨된 학생 리스트 가져오기
   Stream<List<LotteryStudent>> getLotteryResults() {
-    return _firestore.collection('lottery').snapshots().map((snapshot) {
+    return _firestore
+        .collection('lottery')
+        .snapshots()
+        .map((snapshot) {
       return snapshot.docs.map((doc) {
-        return LotteryStudent.fromFirestore(doc.data() as Map<String, dynamic>, attendanceCount: 0);
+        final data = doc.data() as Map<String, dynamic>;
+
+        // 출석 횟수를 Firestore에서 가져와서 사용
+        return LotteryStudent.fromFirestore(
+          data,
+          attendanceCount: data['attendance_count'] ?? 0, // Firestore에서 출석 횟수 가져오기
+        );
       }).toList();
     });
   }

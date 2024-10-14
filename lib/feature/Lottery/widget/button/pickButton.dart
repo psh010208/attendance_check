@@ -12,14 +12,15 @@ class PickButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: isLoading ? null : onPressed,
-      child: isLoading
-          ? CircularProgressIndicator(color: Colors.white)
-          : Text('상품 추첨하기', style: TextStyle(fontSize: 16.sp)),
+      child: Text('상품 추첨하기', style: Theme.of(context).textTheme.titleSmall?.copyWith( // 굵게
+        color:Theme.of(context).colorScheme.surfaceVariant,
+        fontWeight: FontWeight.bold,
+        fontSize: 18.sp, // fontSize에 size 전달
+      ) ),
       style: ElevatedButton.styleFrom(
-        backgroundColor: Color(0xff2C2C2C),
-        foregroundColor: Colors.white,
+        backgroundColor:Theme.of(context).colorScheme.onSurface,
         minimumSize: Size(200.w, 40.h),
-        elevation: 6,
+        elevation: 5,
         shadowColor: Colors.grey.withOpacity(1),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.r),
@@ -28,3 +29,5 @@ class PickButton extends StatelessWidget {
     );
   }
 }
+
+
