@@ -1,23 +1,24 @@
-//재추첨 버튼
+// 삭제버튼
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class DialogRepickButton extends StatelessWidget {
+class LotteryDeleteButton extends StatelessWidget {
   final VoidCallback onPressed;
 
-  const DialogRepickButton({required this.onPressed});
+  const LotteryDeleteButton({required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: onPressed,
-      child: Text('다시 추첨하기', style: TextStyle(fontSize: 16.sp)),
+      child: Icon(CupertinoIcons.delete),
       style: ElevatedButton.styleFrom(
-        backgroundColor: Color(0xff2C2C2C),
-        foregroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.onSurface,
+        iconColor:Theme.of(context).colorScheme.surface,
         minimumSize: Size(55.w, 40.h),
-        elevation: 6,
-        shadowColor: Colors.grey.withOpacity(1),
+        elevation: 4,
+        shadowColor: Theme.of(context).colorScheme.onSurface.withOpacity(1),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.r),
         ),

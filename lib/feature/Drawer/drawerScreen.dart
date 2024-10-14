@@ -32,7 +32,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
               child: Stack(
                 children: [
                   Positioned(
-                    top: 10.h, // 반응형 높이 설정
+                    top: -1.h, // 반응형 높이 설정
                     left: 105.w,
                     child: CircleAvatar(
                       radius: 0,
@@ -41,7 +41,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                   ),
                   if (widget.role != '관리자' && widget.role != '학부생')
                     Positioned(
-                      top: 95.h, // 반응형 높이 설정
+                      top: 100.h, // 반응형 높이 설정
                       left: 88.w,
                       child: CustomText(
                         id: '정보없음',
@@ -50,7 +50,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                     ),
                   if (widget.role == '관리자')
                     Positioned(
-                      top: 75.h, // 반응형 높이 설정
+                      top: 78.h, // 반응형 높이 설정
                       left: 100.w,
                       child: CustomText(
                         id: widget.role,
@@ -59,7 +59,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                     )
                   else if (widget.role == '학부생')
                     Positioned(
-                      top: 75.h, // 반응형 높이 설정
+                      top: 78.h, // 반응형 높이 설정
                       left: 100.w,
                       child: CustomText(
                         id: widget.role,
