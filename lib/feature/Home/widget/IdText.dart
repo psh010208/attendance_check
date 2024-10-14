@@ -11,7 +11,7 @@ class CustomText extends StatelessWidget {
     this.size,
     //required Color,
   }) : super(key: key);
-
+//qwe
   @override
   Widget build(BuildContext context) {
     return Text(

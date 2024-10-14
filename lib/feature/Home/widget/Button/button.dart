@@ -21,7 +21,7 @@ class qrCodeScanner {
       }
     });
   }
-
+//qwe
   // QR 코드 스캔을 중지하는 메서드
   void stopScanning() {
     controller?.stopCamera();

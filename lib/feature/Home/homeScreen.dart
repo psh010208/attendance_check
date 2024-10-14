@@ -17,7 +17,7 @@ class HomeScreen extends HookWidget {
     required this.role,
     required this.id,
   });
-
+//wqe
   final qrCodeScanner Scanner = qrCodeScanner(); // QR 코드 스캐너 인스턴스 생성
   ScheduleViewModel scheduleViewModel = ScheduleViewModel(); // ViewModel 선언
   @override
