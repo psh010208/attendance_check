@@ -32,10 +32,10 @@ class _DrawerScreenState extends State<DrawerScreen> {
               child: Stack(
                 children: [
                   Positioned(
-                    top: 0.h, // 반응형 높이 설정
+                    top: 10.h, // 반응형 높이 설정
                     left: 105.w,
                     child: CircleAvatar(
-                      radius: 30,
+                      radius: 0,
                       child: Icon(Icons.account_circle, size: 70),
                     ),
                   ),
@@ -51,7 +51,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                   if (widget.role == '관리자')
                     Positioned(
                       top: 75.h, // 반응형 높이 설정
-                      left: 65.w,
+                      left: 100.w,
                       child: CustomText(
                         id: widget.role,
                         size: 30.sp, // 역할 표시
