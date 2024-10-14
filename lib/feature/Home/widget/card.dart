@@ -1,5 +1,3 @@
-import 'package:intl/intl.dart';  // intl 패키지 가져오기
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../model/homeModel.dart';
@@ -39,9 +37,10 @@ class _ScheduleCardState extends State<ScheduleCard> {
           Container(
             height: isExpandedList.contains(true)
                 ? MediaQuery.of(context).size.height * 0.05
-                : MediaQuery.of(context).size.height * 0.2,
+                : MediaQuery.of(context).size.height * 0.25,
           ),
           Stack(
+            clipBehavior: Clip.none, // 카드가 영역을 벗어나도 잘리지 않도록 설정
             alignment: Alignment.topCenter,
             children: buildOverlappingCards(context, widget.schedules, barColors),
           ),
@@ -77,13 +76,36 @@ class _ScheduleCardState extends State<ScheduleCard> {
           }
         }
       },
-      child: AnimatedContainer(
-        duration: Duration(milliseconds: 500),
-        curve: Curves.easeInOut,
-        margin: EdgeInsets.only(
-          top: isExpandedList[index] ? 200.0 * index : 40.0 * index,
-        ),
-        child: buildScheduleCard(schedule, index, isExpandedList[index], barColors),
+      child: Stack(
+        clipBehavior: Clip.none, // Stack에서 자르지 않도록 설정
+        children: [
+          // 이미지 배치
+          Positioned(
+            top: -130.h, // 카드 위로 이미지 배치
+            left: 0.w,
+            right: 0.w,
+            child: Opacity(
+              opacity: isExpandedList[index] ? 0 : 1, // 카드가 펼쳐지면 이미지가 사라지도록 설정
+              child: Container(
+                height: 80.h,
+                child: Image.asset(
+                  Theme.of(context).brightness == Brightness.dark
+                      ? 'assets/dark_ver.png'  // 다크 모드 이미지
+                      : 'assets/light_ver.png', // 라이트 모드 이미지
+                  fit: BoxFit.contain, // 이미지가 화면에 맞게 조절되도록 설정
+                ),
+              ),
+            ),
+          ),
+          AnimatedContainer(
+            duration: Duration(milliseconds: 500),
+            curve: Curves.easeInOut,
+            margin: EdgeInsets.only(
+              top: isExpandedList[index] ? 200.0 * index : 40.0 * index,
+            ),
+            child: buildScheduleCard(schedule, index, isExpandedList[index], barColors),
+          ),
+        ],
       ),
     );
   }
@@ -91,9 +113,8 @@ class _ScheduleCardState extends State<ScheduleCard> {
   Widget buildScheduleCard(Schedule schedule, int index, bool isExpanded, List<Color> barColors) {
     final screenSize = MediaQuery.of(context).size;
     final cardHeight = screenSize.height * 0.25; // Responsive card height
-    final cardWidth = screenSize.width * 0.86; // Responsive card width
+    final cardWidth = screenSize.width * 0.80; // Responsive card width
 
-    // Use % operator to cycle through the colors
     Color barColor = barColors[index % barColors.length];
     double borderRadiusValue = 10.0; // 카드의 모서리 둥글기 값을 설정
 
@@ -114,7 +135,6 @@ class _ScheduleCardState extends State<ScheduleCard> {
           borderRadius: BorderRadius.circular(borderRadiusValue),
           child: Row(
             children: [
-              // 왼쪽 바
               Container(
                 width: 19,
                 decoration: BoxDecoration(
@@ -128,13 +148,12 @@ class _ScheduleCardState extends State<ScheduleCard> {
               Expanded(
                 child: Column(
                   children: [
-                    // 상단 바 (제목과 시간)
                     Container(
                       height: 40.h,
                       padding: EdgeInsets.symmetric(horizontal: 10),
                       color: Theme.of(context).cardColor,
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center, // 가운데 정렬
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
                             schedule.scheduleName.isNotEmpty ? schedule.scheduleName : "이름 없음",
@@ -143,7 +162,7 @@ class _ScheduleCardState extends State<ScheduleCard> {
                               fontWeight: FontWeight.w900,
                             ),
                           ),
-                          SizedBox(width: 20.w), // 제목과 시간 사이 여백
+                          SizedBox(width: 20.w),
                           Text(
                             "$formattedStartTime - $formattedEndTime",
                             style: TextStyle(
@@ -154,14 +173,13 @@ class _ScheduleCardState extends State<ScheduleCard> {
                         ],
                       ),
                     ),
-                    Divider(), // 구분선 추가
+                    Divider(),
                     Expanded(
                       child: Container(
                         color: Theme.of(context).cardColor,
                         padding: EdgeInsets.symmetric(vertical: 8, horizontal: 15),
                         child: Stack(
                           children: [
-                            // 로고 이미지
                             Positioned(
                               top: 0,
                               bottom: 5,
@@ -174,12 +192,11 @@ class _ScheduleCardState extends State<ScheduleCard> {
                                 ),
                               ),
                             ),
-                            // 텍스트 배치
                             Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.center, // 가운데 정렬
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Icon(Icons.location_on, color: Theme.of(context).colorScheme.onSurface),
                                     SizedBox(width: 8.w),
@@ -201,7 +218,7 @@ class _ScheduleCardState extends State<ScheduleCard> {
                                 ),
                                 SizedBox(height: 10.h),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.center, // 가운데 정렬
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Icon(Icons.person, color: Theme.of(context).colorScheme.onSurface),
                                     SizedBox(width: 8.w),
