@@ -6,9 +6,14 @@ import '../Model/model.dart';
 class LotteryViewModel {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // Firestore에서 학생 리스트 가져오기 (attendance_summary의 total_attendance를 포함)
+  // Firestore에서 학부생만 가져오기 (attendance_summary의 total_attendance를 포함)
   Future<List<LotteryStudent>> getAllStudents() async {
-    QuerySnapshot userSnapshot = await _firestore.collection('user').get();
+    // 'user' 컬렉션에서 'role' 필드가 '학부생'인 사람만 쿼리
+    QuerySnapshot userSnapshot = await _firestore
+        .collection('user')
+        .where('role', isEqualTo: '학부생') // 학부생만 필터링
+        .get();
+
     List<LotteryStudent> students = [];
 
     for (var doc in userSnapshot.docs) {
@@ -34,6 +39,7 @@ class LotteryViewModel {
     return students;
   }
 
+  // 학부생들 대상으로 추첨을 실행하는 메서드
   Future<LotteryStudent> runLottery() async {
     List<LotteryStudent> students = await getAllStudents();
 
@@ -62,13 +68,33 @@ class LotteryViewModel {
     return winner; // 추첨된 학생 정보 반환
   }
 
-
-  // Firestore에서 추첨된 학생 리스트 가져오기
+  // Firestore에서 학부생 중 추첨된 학생 리스트 가져오기
   Stream<List<LotteryStudent>> getLotteryResults() {
     return _firestore.collection('lottery').snapshots().map((snapshot) {
       return snapshot.docs.map((doc) {
         return LotteryStudent.fromFirestore(doc.data() as Map<String, dynamic>, attendanceCount: 0);
       }).toList();
     });
+  }
+
+  // 학생 정보 삭제 메서드 (학부생 포함)
+  Future<void> deleteStudent(String studentId) async {
+    try {
+      // Firestore에서 해당 student_id를 가진 문서 찾기
+      QuerySnapshot snapshot = await _firestore
+          .collection('lottery')
+          .where('student_id', isEqualTo: studentId)
+          .get();
+
+      if (snapshot.docs.isNotEmpty) {
+        // 문서가 있으면 해당 문서 삭제
+        await snapshot.docs.first.reference.delete();
+        print('Student with student_id $studentId deleted successfully.');
+      } else {
+        print('No student found with student_id $studentId.');
+      }
+    } catch (e) {
+      print('Error deleting student: $e');
+    }
   }
 }
