@@ -4,7 +4,6 @@ import 'package:attendance_check/feature/Drawer/widget/currentBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'model/AttendanceViewModel.dart';
-import 'model/InfoModel.dart'; // ViewModel 가져오기
 
 class DrawerScreen extends StatefulWidget {
   final String role;
@@ -33,16 +32,16 @@ class _DrawerScreenState extends State<DrawerScreen> {
               child: Stack(
                 children: [
                   Positioned(
-                    top: 0.h, // 반응형 높이 설정
+                    top: -1.h, // 반응형 높이 설정
                     left: 105.w,
                     child: CircleAvatar(
-                      radius: 30,
+                      radius: 0,
                       child: Icon(Icons.account_circle, size: 70),
                     ),
                   ),
                   if (widget.role != '관리자' && widget.role != '학부생')
                     Positioned(
-                      top: 95.h, // 반응형 높이 설정
+                      top: 100.h, // 반응형 높이 설정
                       left: 88.w,
                       child: CustomText(
                         id: '정보없음',
@@ -51,8 +50,8 @@ class _DrawerScreenState extends State<DrawerScreen> {
                     ),
                   if (widget.role == '관리자')
                     Positioned(
-                      top: 75.h, // 반응형 높이 설정
-                      left: 65.w,
+                      top: 78.h, // 반응형 높이 설정
+                      left: 100.w,
                       child: CustomText(
                         id: widget.role,
                         size: 30.sp, // 역할 표시
@@ -60,7 +59,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                     )
                   else if (widget.role == '학부생')
                     Positioned(
-                      top: 75.h, // 반응형 높이 설정
+                      top: 78.h, // 반응형 높이 설정
                       left: 100.w,
                       child: CustomText(
                         id: widget.role,
@@ -95,7 +94,6 @@ class _DrawerScreenState extends State<DrawerScreen> {
           if (widget.role == '관리자') ...[
             ParticipationButton( //참여 학생
               onPressed: () {
-                print(InfoModel.role);
               },role: widget.role,
               id: widget.id,
             ),
