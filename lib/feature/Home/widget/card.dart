@@ -174,10 +174,15 @@ class _ScheduleCardState extends State<ScheduleCard> {
                         ],
                       ),
                     ),
-                    Divider(
-                      color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5), // 색상 설정
-                      thickness: 1, // 두께 설정
+                    Container(
+                      height: 2.h, // 직접 높이 설정
+                      margin: EdgeInsets.symmetric(vertical: 0.0), // 위아래 여백 조정
+                      child: Divider(
+                        color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5), // 색상 설정
+                        thickness: 2, // 두께 설정
+                      ),
                     ),
+
                     Expanded(
                       child: Container(
                         color: Theme.of(context).cardColor,
@@ -187,7 +192,7 @@ class _ScheduleCardState extends State<ScheduleCard> {
                             Positioned(
                               top: 0,
                               bottom: 5,
-                              left: 80,
+                              left: 60,
                               child: Opacity(
                                 opacity: 0.4,
                                 child: Image.asset(
