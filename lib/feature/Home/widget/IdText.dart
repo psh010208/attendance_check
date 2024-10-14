@@ -9,7 +9,6 @@ class CustomText extends StatelessWidget {
     Key? key,
     required this.id,
     this.size,
-    required FontWeight fontWeight,
     //required Color,
   }) : super(key: key);
 
@@ -18,8 +17,9 @@ class CustomText extends StatelessWidget {
     return Text(
       id,
       style: Theme.of(context).textTheme.titleSmall?.copyWith( // 굵게
-        color: Colors.black,
-        fontSize: size, // fontSize에 size 전달
+        color: Theme.of(context).colorScheme.onSurface,
+        fontSize: size,
+        fontWeight: FontWeight.bold,// fontSize에 size 전달
       ),
     );
   }

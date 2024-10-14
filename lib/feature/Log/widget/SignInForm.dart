@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:attendance_check/feature/Log/widget/LogInButton.dart'; // LogInButton 임포트
 import 'package:attendance_check/feature/Log/ViewModel/logViewModel.dart'; // LogViewModel 임포트
 
-import '../../Drawer/model/InfoModel.dart';
 import '../../Home/widget/SoonCheck.dart';
 import '../Model/logModel.dart';
 import 'CustomDropdownFormField.dart';
@@ -44,7 +43,6 @@ class _SignInFormState extends State<SignInForm> {
 
     if (isLoggedIn) {
       // 로그인 성공 시 InfoModel에 정보 저장
-      InfoModel.setUser(_selectedRole!, _studentId!);
       // print(_selectedRole);
       _navigateToDrawerScreen(); // 홈 화면으로 이동
     } else {
@@ -55,7 +53,6 @@ class _SignInFormState extends State<SignInForm> {
 
   void _navigateToDrawerScreen() {
     // InfoModel에 정보 저장
-    InfoModel.setUser(_selectedRole!, _studentId!);
     print(_selectedRole);
     Navigator.pushAndRemoveUntil(
       context,

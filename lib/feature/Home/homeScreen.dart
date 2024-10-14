@@ -1,12 +1,15 @@
+import 'package:attendance_check/feature/Home/widget/Button/animation_button.dart';
+import 'package:attendance_check/feature/Home/widget/Button/button.dart';
 import 'package:flutter/material.dart';
-import 'package:attendance_check/feature/Home/model/homeModel.dart'; // Schedule 모델 임포트
-import 'package:attendance_check/feature/Home/widget/card.dart'; // 카드 디자인을 임포트합니다
+import 'package:attendance_check/feature/Home/model/homeModel.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:attendance_check/feature/Home/view_model/HomeViewModel.dart';
 import 'package:attendance_check/feature/Drawer/drawerScreen.dart';
-import 'package:attendance_check/feature/Home/widget/SoonCheck.dart';
+import 'package:attendance_check/feature/Home/widget/card.dart'; // 카드 위젯 임포트
+import 'package:attendance_check/feature/Home/widget/Button/animation_button.dart';
 
-import '../Drawer/model/InfoModel.dart';
-
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends HookWidget {
   final String role;
   final String id;
 
@@ -15,78 +18,96 @@ class HomeScreen extends StatelessWidget {
     required this.id,
   });
 
+  final qrCodeScanner Scanner = qrCodeScanner(); // QR 코드 스캐너 인스턴스 생성
+  ScheduleViewModel scheduleViewModel = ScheduleViewModel(); // ViewModel 선언
+
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.surface, // AppBar 배경색
-        iconTheme: IconThemeData(
-          color: Colors.black, // AppBar 아이콘 색상 검정으로 설정
-        ),
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        iconTheme: IconThemeData(color: Colors.black),
         flexibleSpace: Container(
           padding: EdgeInsets.only(
-            top: MediaQuery.of(context).padding.top, // 상단 안전 영역 고려
-            left: MediaQuery.of(context).size.width * 0.05, // 왼쪽 여백 설정
-            right: MediaQuery.of(context).size.width * 0.5, // 오른쪽 여백 설정
+            top: MediaQuery.of(context).padding.top,
+            left: MediaQuery.of(context).size.width * 0.05,
+            right: MediaQuery.of(context).size.width * 0.5,
           ),
           child: Center(
             child: Image.asset(
               'assets/logo.png',
-              height: MediaQuery.of(context).size.height * 0.1, // 화면 높이에 비례하여 크기 조정
-              fit: BoxFit.contain, // 이미지 비율 유지
+              height: MediaQuery.of(context).size.height * 0.1,
+              fit: BoxFit.contain,
             ),
           ),
         ),
-        // AppBar에서 드로어 버튼에 기능 연결
         actions: [
           Builder(
             builder: (BuildContext context) {
               return IconButton(
                 icon: Icon(Icons.menu),
                 onPressed: () {
-                  // 새로운 context에서 Scaffold의 endDrawer를 열기
                   Scaffold.of(context).openEndDrawer();
                 },
-                color: Colors.black, // 개별 아이콘 색상 명시적으로 설정
+                color: Colors.black,
               );
             },
           ),
         ],
       ),
       endDrawer: DrawerScreen(
-
-        role: role, // 필요한 파라미터 전달
+        role: role,
         id: id,
-
       ),
       drawerScrimColor: Colors.black.withOpacity(0.5),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              // 카드를 만들기 위한 메서드 호출
-              //SoonCheckWidget(bottom:1, left: 1),
-              buildScheduleCard(context),
-            ],
-          ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            // 일정 카드 표시
+            buildScheduleCard(context),
+
+            // '학부생' 역할인 경우 QR 코드 스캐너 애니메이션 버튼 추가
+            if (role == '학부생')
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: animationButton(
+                  icon: Icons.qr_code_scanner, // QR 코드 아이콘 직접 사용
+                  iconSize: 40, // 아이콘 크기 설정
+                  iconColor: Theme.of(context).colorScheme.scrim, // 아이콘 색상 설정
+                  defaultSize: const Offset(80, 80), // 버튼 기본 크기 설정
+                  clickedSize: const Offset(70, 70), // 버튼 클릭 시 크기
+                  defaultButtonColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.1), // 버튼 색상
+                  clickedButtonColor: Theme.of(context).colorScheme.primary, // 클릭 시 버튼 색상
+                  circularRadius: 50,
+                  onTap: () {
+                    // QR 코드 스캔 시작 (기능 추가 필요)
+                  },
+                ),
+              ),
+          ],
         ),
+      ),
     );
   }
 
-        Widget buildScheduleCard(BuildContext context) {
+  Widget buildScheduleCard(BuildContext context) {
+    return StreamBuilder<List<Schedule>>(
+      stream: scheduleViewModel.getScheduleStream(), // Firestore에서 일정 데이터 가져오기
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator()); // 로딩 중일 때
+        }
+        if (snapshot.hasError) {
+          print('오류 세부사항: ${snapshot.error}');
+          return Center(child: Text('일정을 불러오는 중 오류가 발생했습니다: ${snapshot.error}'));
+        }
+        if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return Center(child: Text('등록된 일정이 없습니다.'));
+        }
 
-    // 샘플 Schedule 데이터 생성
-    List<Schedule> schedules = [
-      Schedule(title: '일정 1', time: '09:00 - 10:00', location: '1506', professor: '민세동'),
-      Schedule(title: '일정 2', time: '10:00 - 11:00', location: '1507', professor: '김상대'),
-      Schedule(title: '일정 3', time: '12:00 - 13:00', location: '1058', professor: '오동익'),
-      Schedule(title: '일정 4', time: '10:30 - 11:30', location: '1059', professor: '권춘기'),
-      Schedule(title: '일정 5', time: '10:30 - 11:30', location: '1059', professor: '권춘기'),
-      // 추가적인 Schedule 객체를 여기에 추가하세요
-    ];
-    return ScheduleCard(
-
-      schedules: schedules, // 생성한 schedules 리스트를 전달합니다
+        List<Schedule> schedules = snapshot.data!;
+        return ScheduleCard(schedules: schedules); // 일정 데이터를 카드로 표시
+      },
     );
   }
 }

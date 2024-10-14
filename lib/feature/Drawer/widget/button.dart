@@ -1,10 +1,11 @@
-import 'package:attendance_check/feature/Drawer/ApproveWaitingList.dart';
 import 'package:attendance_check/feature/Log/widget/SignUpForm.dart';
 import 'package:flutter/material.dart';
 import 'package:attendance_check/feature/Log/logPage.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:attendance_check/feature/Drawer/widget/IdText.dart';
 import 'package:attendance_check/feature/Lottery/PrizeDrawPage.dart';
+
+import '../../CurrentList/ApproveWaitingList.dart';
 
 class CommonButton extends StatelessWidget {
   final VoidCallback onPressed;
@@ -117,9 +118,6 @@ class ParticipationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('12');
-    print( role);
-    print(id);
 
     return CommonButton(
       onPressed: () {

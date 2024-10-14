@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../CurrentList/WaitingData.dart';
 import 'package:attendance_check/feature/Drawer/drawerScreen.dart';
-import 'package:attendance_check/feature/Drawer/model/infoModel.dart';
 
 class ApproveWaitingList extends StatelessWidget {
   final String role;
