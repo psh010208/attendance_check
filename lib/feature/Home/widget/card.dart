@@ -1,9 +1,10 @@
+import 'package:intl/intl.dart';  // intl 패키지 가져오기
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-//qwe
 import '../model/homeModel.dart';
 import '../view_model/HomeViewModel.dart';
+
 class ScheduleCard extends StatefulWidget {
   final List<Schedule> schedules;
 
@@ -12,6 +13,7 @@ class ScheduleCard extends StatefulWidget {
   @override
   _ScheduleCardState createState() => _ScheduleCardState();
 }
+
 class _ScheduleCardState extends State<ScheduleCard> {
   ScheduleViewModel scheduleViewModel = ScheduleViewModel(); // ViewModel 선언
   late List<bool> isExpandedList;
@@ -29,7 +31,6 @@ class _ScheduleCardState extends State<ScheduleCard> {
       Theme.of(context).colorScheme.onPrimaryContainer,
       Theme.of(context).colorScheme.inversePrimary,
       Theme.of(context).colorScheme.secondary,
-
     ];
 
     return Center(
@@ -48,7 +49,6 @@ class _ScheduleCardState extends State<ScheduleCard> {
       ),
     );
   }
-
 
   List<Widget> buildOverlappingCards(BuildContext context, List<Schedule> schedules, List<Color> barColors) {
     return schedules.asMap().entries.map((entry) {
@@ -97,9 +97,9 @@ class _ScheduleCardState extends State<ScheduleCard> {
     Color barColor = barColors[index % barColors.length];
     double borderRadiusValue = 10.0; // 카드의 모서리 둥글기 값을 설정
 
-    // 시간 포맷팅
-    String formattedStartTime = schedule.startTime.toDate().toLocal().toString().split(' ')[1].substring(0, 5);
-    String formattedEndTime = schedule.endTime.toDate().toLocal().toString().split(' ')[1].substring(0, 5);
+    // 시간 포맷팅 (DateFormat 사용)
+    String formattedStartTime = DateFormat('HH:mm').format(schedule.startTime); // .toDate() 제거
+    String formattedEndTime = DateFormat('HH:mm').format(schedule.endTime);     // .toDate() 제거
 
     return Container(
       width: cardWidth,
@@ -236,4 +236,4 @@ class _ScheduleCardState extends State<ScheduleCard> {
       ),
     );
   }
-  }
+}
