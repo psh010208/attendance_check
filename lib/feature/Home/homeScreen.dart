@@ -74,7 +74,7 @@ class HomeScreen extends HookWidget {
             Positioned(
               bottom: 50, // 하단에서 50px 떨어진 위치
               left: MediaQuery.of(context).size.width / 2 - 40, // 중앙 정렬을 위해 좌우 위치 계산
-              child: animationButton(
+              child: AnimationButton(
                 icon: Icons.qr_code_scanner, // QR 코드 아이콘 직접 사용
                 iconSize: 40, // 아이콘 크기 설정
                 iconColor: Theme.of(context).colorScheme.scrim, // 아이콘 색상 설정
