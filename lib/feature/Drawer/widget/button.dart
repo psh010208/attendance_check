@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:attendance_check/feature/Log/logPage.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:attendance_check/feature/Drawer/widget/IdText.dart';
-import 'package:attendance_check/feature/Lottery/PrizeDrawPage.dart';
+import 'package:attendance_check/feature/Lottery/lottery_view.dart';
 
 class CommonButton extends StatelessWidget {
   final VoidCallback onPressed;
@@ -161,7 +161,7 @@ class RaffleButton extends StatelessWidget {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => PrizeDrawPage(
+            builder: (context) => LotteryView(
               role: role, // widget.role 사용
               id: id, // widget.id 사용
             ),

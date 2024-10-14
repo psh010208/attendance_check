@@ -5,24 +5,24 @@ import 'package:flutter/cupertino.dart';
 import '../Drawer/model/InfoModel.dart';
 import 'Model/model.dart';
 import 'ViewModel/viewModel.dart';
-import 'widget/button/deleteButton.dart';
-import 'widget/button/dialogOkButton.dart';
-import 'widget/button/dialogRepickButton.dart';
-import 'widget/button/pickButton.dart';
+import 'widget/button/lottery_delete_button.dart';
+import 'widget/button/lottery_dialog_register_button.dart';
+import 'widget/button/lottery_dialog_redraw_button.dart';
+import 'widget/button/lottery_draw_button.dart';
 import 'package:attendance_check/feature/Drawer/drawerScreen.dart';
 import 'package:attendance_check/feature/Lottery/ViewModel/viewModel.dart';
 
-class PrizeDrawPage extends StatefulWidget {
+class LotteryView extends StatefulWidget {
   final String role;
   final String id;
 
-  PrizeDrawPage({required this.role, required this.id});
+  LotteryView({required this.role, required this.id});
 
   @override
-  _PrizeDrawPageState createState() => _PrizeDrawPageState();
+  _LotteryView createState() => _LotteryView();
 }
 
-class _PrizeDrawPageState extends State<PrizeDrawPage> {
+class _LotteryView extends State<LotteryView> {
   final LotteryViewModel _lotteryViewModel = LotteryViewModel();
   bool isLoading = false; // 로딩 상태 관리
 
@@ -30,29 +30,23 @@ class _PrizeDrawPageState extends State<PrizeDrawPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme
-            .of(context)
-            .colorScheme
-            .surface,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         iconTheme: IconThemeData(
-          color: Colors.black,
+          color: Theme.of(context).colorScheme.surface,
         ),
-        title: Text('상품 추첨하기', style: Theme
-            .of(context)
-            .textTheme
-            .titleLarge),
+        title: Text('상품 추첨하기', style: Theme.of(context).textTheme.titleLarge),
         centerTitle: true,
         elevation: 4,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) =>
-                  HomeScreen(role: widget.role, id: widget.id)),
-            );
-          },
-        ),
+            icon: Icon(Icons.arrow_back,
+                color: Theme.of(context).colorScheme.onSurface),
+            onPressed: () {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          HomeScreen(role: widget.role, id: widget.id)));
+            }),
         actions: [
           Builder(
             builder: (context) {
@@ -61,17 +55,11 @@ class _PrizeDrawPageState extends State<PrizeDrawPage> {
                 onPressed: () {
                   Scaffold.of(context).openEndDrawer();
                 },
-                color: Colors.black,
+                color: Theme.of(context).colorScheme.onSurface,
               );
             },
           ),
         ],
-        shape: Border(
-          bottom: BorderSide(
-            color: Colors.grey,
-            width: 1.w,
-          ),
-        ),
       ),
       endDrawer: DrawerScreen(role: widget.role, id: widget.id),
       body: Column(
@@ -83,7 +71,7 @@ class _PrizeDrawPageState extends State<PrizeDrawPage> {
               border: Border.all(color: Color(0xff26539C), width: 5.w),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.grey.withOpacity(1),
+                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.4),
                   spreadRadius: 1.w,
                   blurRadius: 6.w,
                   offset: Offset(0, 3.h),
@@ -104,7 +92,8 @@ class _PrizeDrawPageState extends State<PrizeDrawPage> {
           ),
 
           // 학생 리스트 표시 부분
-          Expanded(
+          Container(
+            height: 200.h,
             child: StreamBuilder<List<LotteryStudent>>(
               stream: _lotteryViewModel.getLotteryResults(),
               builder: (context, snapshot) {
@@ -113,13 +102,19 @@ class _PrizeDrawPageState extends State<PrizeDrawPage> {
                 }
 
                 final students = snapshot.data!;
-                return SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
+                return Container(
+                  margin: EdgeInsets.fromLTRB(3.w, 0, 3.w, 0),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Theme.of(context).colorScheme.onSurface, width: 0.5.w),
+                  ),
                   child: SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: DataTable(
-                      columns: createColumns(),
-                      rows: createRows(students),
+                    scrollDirection: Axis.horizontal,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      child: DataTable(
+                        columns: createColumns(),
+                        rows: createRows(students),
+                      ),
                     ),
                   ),
                 );
@@ -128,7 +123,7 @@ class _PrizeDrawPageState extends State<PrizeDrawPage> {
           ),
 
           // 상품 추첨하기 버튼
-          PickButton(
+          LotteryDrawButton(
             isLoading: isLoading,
             onPressed: () async {
               await drawLottery();
@@ -142,27 +137,36 @@ class _PrizeDrawPageState extends State<PrizeDrawPage> {
   // 열 생성 함수
   List<DataColumn> createColumns() {
     return [
-      DataColumn(label: Text("학과", style: TextStyle(color: Theme
-          .of(context)
-          .colorScheme
-          .onSurface,
-          fontSize: 19.sp, fontWeight: FontWeight.bold))),
-      DataColumn(label: Text("학번", style: TextStyle(color: Theme
-          .of(context)
-          .colorScheme
-          .onSurface, fontSize: 19.sp, fontWeight: FontWeight.bold))),
-      DataColumn(label: Text("이름", style: TextStyle(color: Theme
-          .of(context)
-          .colorScheme
-          .onSurface, fontSize: 19.sp, fontWeight: FontWeight.bold))),
-      DataColumn(label: Text("참여 횟수", style: TextStyle(color: Theme
-          .of(context)
-          .colorScheme
-          .onSurface, fontSize: 19.sp, fontWeight: FontWeight.bold))),
-      DataColumn(label: Text("삭제", style: TextStyle(color: Theme
-          .of(context)
-          .colorScheme
-          .onSurface, fontSize: 19.sp, fontWeight: FontWeight.bold))),
+      DataColumn(
+          label: Text("학과",
+              style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurface,
+                  fontSize: 19.sp,
+                  fontWeight: FontWeight.bold))),
+      DataColumn(
+          label: Text("학번",
+              style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurface,
+                  fontSize: 19.sp,
+                  fontWeight: FontWeight.bold))),
+      DataColumn(
+          label: Text("이름",
+              style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurface,
+                  fontSize: 19.sp,
+                  fontWeight: FontWeight.bold))),
+      DataColumn(
+          label: Text("참여 횟수",
+              style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurface,
+                  fontSize: 19.sp,
+                  fontWeight: FontWeight.bold))),
+      DataColumn(
+          label: Text("삭제",
+              style: TextStyle(
+                  color: Theme.of(context).colorScheme.onSurface,
+                  fontSize: 19.sp,
+                  fontWeight: FontWeight.bold))),
       // 삭제 열 추가
     ];
   }
@@ -170,20 +174,34 @@ class _PrizeDrawPageState extends State<PrizeDrawPage> {
   // Firestore에서 불러온 학부생 데이터를 행으로 변환
   List<DataRow> createRows(List<LotteryStudent> students) {
     return students.map((student) {
-      print('하이');
-      print(student.name);
-      print(student.studentId);
-
-
       return DataRow(
         cells: [
-          DataCell(Text(student.department)),
-          DataCell(Text(student.studentId)),
-          DataCell(Text(student.name)), // 여기서 student.name 사용
-          DataCell(Text(student.attendanceCount.toString())),
           DataCell(
-            DeleteButton(
-
+            Container(
+              alignment: Alignment.center, // 중앙 정렬
+              child: Text(student.department),
+            ),
+          ),
+          DataCell(
+            Container(
+              alignment: Alignment.center, // 중앙 정렬
+              child: Text(student.studentId),
+            ),
+          ),
+          DataCell(
+            Container(
+              alignment: Alignment.center, // 중앙 정렬
+              child: Text(student.name),
+            ),
+          ),
+          DataCell(
+            Container(
+              alignment: Alignment.center, // 중앙 정렬
+              child: Text(student.attendanceCount.toString()),
+            ),
+          ),
+          DataCell(
+            LotteryDeleteButton(
               onPressed: () async {
                 bool confirmDelete = await _showConfirmationDialog(context);
                 if (confirmDelete) {
@@ -216,32 +234,52 @@ class _PrizeDrawPageState extends State<PrizeDrawPage> {
               onPressed: () {
                 Navigator.of(context).pop(false);
               },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Theme.of(context).colorScheme.onSurface,
+                foregroundColor: Theme.of(context).colorScheme.surface,
+                minimumSize: Size(55.w, 40.h),
+                elevation: 4,
+                shadowColor:
+                Theme.of(context).colorScheme.onSurface.withOpacity(1),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.r),
+                ),
+              ),
             ),
             TextButton(
               child: Text('삭제'),
               onPressed: () {
                 Navigator.of(context).pop(true);
               },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Theme.of(context).colorScheme.onSurface,
+                foregroundColor: Theme.of(context).colorScheme.surface,
+                minimumSize: Size(55.w, 40.h),
+                elevation: 4,
+                shadowColor:
+                Theme.of(context).colorScheme.onSurface.withOpacity(1),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.r),
+                ),
+              ),
             ),
           ],
         );
       },
-    ) ?? false;
+    ) ??
+        false;
   }
 
-// 상품 추첨 로직
+  // 상품 추첨 로직
   Future<void> drawLottery() async {
     setState(() {
       isLoading = true;
     });
 
+    await Future.delayed(Duration(milliseconds: 3550)); // gif 1회 반복 시간 대기
+
     try {
-      // runLottery가 호출되는지 확인하기 위해 print 문 추가
-      print('runLottery 호출 전');
-
       LotteryStudent winner = await _lotteryViewModel.runLottery();
-
-      print('runLottery 호출 후, 추첨된 학생: ${winner.name}');
 
       showDialog(
         context: context,
@@ -257,10 +295,12 @@ class _PrizeDrawPageState extends State<PrizeDrawPage> {
               ],
             ),
             actions: [
-              DialogOkButton(onPressed: () {
+              LotteryDialogRegisterButton(onPressed: () async {
+                // 등록 버튼을 눌렀을 때 당첨자를 Firestore에 저장
+                await _lotteryViewModel.registerWinner(winner);
                 Navigator.of(context).pop();
               }),
-              DialogRepickButton(onPressed: () {
+              LotteryDialogRedrawButton(onPressed: () {
                 Navigator.of(context).pop();
                 drawLottery(); // 재추첨
               }),
@@ -277,7 +317,7 @@ class _PrizeDrawPageState extends State<PrizeDrawPage> {
             title: Text('오류'),
             content: Text('추첨 중 오류가 발생했습니다. 다시 시도해주세요.'),
             actions: [
-              DialogOkButton(onPressed: () {
+              LotteryDialogRegisterButton(onPressed: () {
                 Navigator.of(context).pop();
               }),
             ],
