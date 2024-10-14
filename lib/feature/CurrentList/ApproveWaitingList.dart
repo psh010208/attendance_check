@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'WaitingData.dart';
+import '../CurrentList/WaitingData.dart';
 import 'package:attendance_check/feature/Drawer/drawerScreen.dart';
 import 'package:attendance_check/feature/Drawer/model/infoModel.dart';
 
@@ -102,7 +102,8 @@ class _WaitingStatusState extends State<WaitingStatus> {
     );
   }
 
-  Widget _buildUI(double screenHeight, double screenWidth) {
+  Widget _buildUI(double screenHeight, double screenWidth)
+  {
     return RefreshIndicator(
       onRefresh: _refresh,
       backgroundColor: Color(0xffF8FAFD),

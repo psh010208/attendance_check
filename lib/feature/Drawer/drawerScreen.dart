@@ -4,7 +4,6 @@ import 'package:attendance_check/feature/Drawer/widget/currentBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'model/AttendanceViewModel.dart';
-import 'model/InfoModel.dart'; // ViewModel 가져오기
 
 class DrawerScreen extends StatefulWidget {
   final String role;
@@ -95,7 +94,6 @@ class _DrawerScreenState extends State<DrawerScreen> {
           if (widget.role == '관리자') ...[
             ParticipationButton( //참여 학생
               onPressed: () {
-                print(InfoModel.role);
               },role: widget.role,
               id: widget.id,
             ),
