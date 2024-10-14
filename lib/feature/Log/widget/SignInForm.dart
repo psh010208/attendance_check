@@ -121,7 +121,7 @@ class _SignInFormState extends State<SignInForm> {
                 _buildStudentIdField(),
                 SizedBox(height: 30.h),
                 _buildLoginButton(),
-                SizedBox(height: 130.h),
+                SizedBox(height: 50.h),
               ],
             ),
           ),
