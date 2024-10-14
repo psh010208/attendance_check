@@ -17,10 +17,9 @@ class HomeScreen extends HookWidget {
     required this.role,
     required this.id,
   });
-
+//wqe
   final qrCodeScanner Scanner = qrCodeScanner(); // QR 코드 스캐너 인스턴스 생성
   ScheduleViewModel scheduleViewModel = ScheduleViewModel(); // ViewModel 선언
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,32 +59,36 @@ class HomeScreen extends HookWidget {
         id: id,
       ),
       drawerScrimColor: Colors.black.withOpacity(0.5),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            // 일정 카드 표시
-            buildScheduleCard(context),
+      body: Stack(
+        children: [
+          // 일정 카드 표시
+          Positioned(
+            top: 20, // 원하는 위치 설정
+            left: 0,
+            right: 0,
+            child: buildScheduleCard(context),
+          ),
 
-            // '학부생' 역할인 경우 QR 코드 스캐너 애니메이션 버튼 추가
-            if (role == '학부생')
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: animationButton(
-                  icon: Icons.qr_code_scanner, // QR 코드 아이콘 직접 사용
-                  iconSize: 40, // 아이콘 크기 설정
-                  iconColor: Theme.of(context).colorScheme.scrim, // 아이콘 색상 설정
-                  defaultSize: const Offset(80, 80), // 버튼 기본 크기 설정
-                  clickedSize: const Offset(70, 70), // 버튼 클릭 시 크기
-                  defaultButtonColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.1), // 버튼 색상
-                  clickedButtonColor: Theme.of(context).colorScheme.primary, // 클릭 시 버튼 색상
-                  circularRadius: 50,
-                  onTap: () {
-                    // QR 코드 스캔 시작 (기능 추가 필요)
-                  },
-                ),
+          // QR 코드 스캐너 버튼을 하단 중앙에 고정
+          if (role == '학부생')
+            Positioned(
+              bottom: 50, // 하단에서 50px 떨어진 위치
+              left: MediaQuery.of(context).size.width / 2 - 40, // 중앙 정렬을 위해 좌우 위치 계산
+              child: AnimationButton(
+                icon: Icons.qr_code_scanner, // QR 코드 아이콘 직접 사용
+                iconSize: 40, // 아이콘 크기 설정
+                iconColor: Theme.of(context).colorScheme.scrim, // 아이콘 색상 설정
+                defaultSize:  Offset(80, 80), // 버튼 크기 고정
+                clickedSize:  Offset(70, 70), // 클릭 시에도 크기 변화 없음
+                defaultButtonColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.1), // 기본 버튼 색상
+                clickedButtonColor: Theme.of(context).colorScheme.primary, // 클릭 시 버튼 색상
+                circularRadius: 50, // 원형 버튼
+                onTap: () {
+                  // QR 코드 스캔 시작 (기능 추가 필요)
+                },
               ),
-          ],
-        ),
+            ),
+        ],
       ),
     );
   }
