@@ -32,7 +32,7 @@ class _SignInFormState extends State<SignInForm> {
     super.initState();
     // 초기값 설정
     _selectedRole = widget.initialRole ?? '학부생'; // 초기 역할 설정
-    _studentId = widget.initialStudentId; // 초기 학번 설정
+    _studentId = widget.initialStudentId ?? '20225524'; // 초기 학번 설정
   }
 
   Future<void> _submitForm(BuildContext context) async {
@@ -43,15 +43,20 @@ class _SignInFormState extends State<SignInForm> {
     bool isLoggedIn = await logViewModel.logIn(_studentId!, _selectedRole!);
 
     if (isLoggedIn) {
-      _navigateToDrawerScreen();
+      // 로그인 성공 시 InfoModel에 정보 저장
+      InfoModel.setUser(_selectedRole!, _studentId!);
+      // print(_selectedRole);
+      _navigateToDrawerScreen(); // 홈 화면으로 이동
     } else {
       _handleLoginFailure(context);
     }
   }
 
+
   void _navigateToDrawerScreen() {
     // InfoModel에 정보 저장
     InfoModel.setUser(_selectedRole!, _studentId!);
+    print(_selectedRole);
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(

@@ -5,8 +5,6 @@ import 'package:attendance_check/feature/Log/logPage.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:attendance_check/feature/Drawer/widget/IdText.dart';
 import 'package:attendance_check/feature/Lottery/PrizeDrawPage.dart';
-import 'package:attendance_check/feature/Drawer/model/infoModel.dart';
-import 'package:attendance_check/feature/Drawer/ApproveWaitingList.dart';
 
 class CommonButton extends StatelessWidget {
   final VoidCallback onPressed;
@@ -112,16 +110,27 @@ class JoinButton extends StatelessWidget {
 // 참여 학생 현황 버튼
 class ParticipationButton extends StatelessWidget {
   final VoidCallback onPressed;
+  final String role;
+  final String id;
 
-  ParticipationButton({required this.onPressed});
+  ParticipationButton({required this.onPressed, required this.role, required this.id});
 
   @override
   Widget build(BuildContext context) {
+    print('12');
+    print( role);
+    print(id);
+
     return CommonButton(
       onPressed: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => ApproveWaitingList()), // push 사용
+          MaterialPageRoute(
+            builder: (context) => ApproveWaitingList(
+              role,  // role 값 전달
+              id,    // id 값 전달
+            ),
+          ),
         );
       },
       icon: Icons.task_alt,
@@ -137,16 +146,26 @@ class ParticipationButton extends StatelessWidget {
 // 상품 추첨 버튼
 class RaffleButton extends StatelessWidget {
   final VoidCallback onPressed;
+  final String role;
+  final String id;
 
-  RaffleButton({required this.onPressed});
+  RaffleButton({required this.onPressed, required this.role, required this.id});
 
   @override
   Widget build(BuildContext context) {
+    print(role);
+    print(id);
+
     return CommonButton(
       onPressed: () {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => PrizeDrawPage(role: InfoModel.role!,id: InfoModel.id!,)), // 회원가입 페이지로 이동
+          MaterialPageRoute(
+            builder: (context) => PrizeDrawPage(
+              role: role, // widget.role 사용
+              id: id, // widget.id 사용
+            ),
+          ),
         );
       },
       icon: Icons.redeem,

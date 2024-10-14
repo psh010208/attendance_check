@@ -9,4 +9,5 @@ class InfoModel{
     role = newRole;
     id = newId;
   }
+
 }

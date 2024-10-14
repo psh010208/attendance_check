@@ -3,17 +3,23 @@ import 'package:attendance_check/feature/Drawer/widget/button.dart';
 import 'package:attendance_check/feature/Drawer/widget/currentBar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'model/AttendanceViewModel.dart'; // ViewModel 가져오기
+import 'model/AttendanceViewModel.dart';
+import 'model/InfoModel.dart'; // ViewModel 가져오기
 
-class drawerScreen extends StatelessWidget {
+class DrawerScreen extends StatefulWidget {
   final String role;
   final String id;
 
-  drawerScreen({
+  DrawerScreen({
     required this.role,
     required this.id,
   });
 
+  @override
+  _DrawerScreenState createState() => _DrawerScreenState();
+}
+
+class _DrawerScreenState extends State<DrawerScreen> {
   @override
   Widget build(BuildContext context) {
     AttendanceViewModel viewModel = AttendanceViewModel(); // ViewModel 인스턴스 생성
@@ -34,7 +40,7 @@ class drawerScreen extends StatelessWidget {
                       child: Icon(Icons.account_circle, size: 70),
                     ),
                   ),
-                  if (role != '관리자' && role != '학부생')
+                  if (widget.role != '관리자' && widget.role != '학부생')
                     Positioned(
                       top: 95.h, // 반응형 높이 설정
                       left: 88.w,
@@ -43,30 +49,30 @@ class drawerScreen extends StatelessWidget {
                         size: 30.sp, // 역할 표시
                       ),
                     ),
-                  if (role == '관리자')
+                  if (widget.role == '관리자')
                     Positioned(
                       top: 75.h, // 반응형 높이 설정
                       left: 65.w,
                       child: CustomText(
-                        id: role,
+                        id: widget.role,
                         size: 30.sp, // 역할 표시
                       ),
                     )
-                  else if (role == '학부생')
+                  else if (widget.role == '학부생')
                     Positioned(
                       top: 75.h, // 반응형 높이 설정
                       left: 100.w,
                       child: CustomText(
-                        id: role,
+                        id: widget.role,
                         size: 30.sp, // 역할 표시
                       ),
                     ),
-                  if (role == '관리자' || role == '학부생')
+                  if (widget.role == '관리자' || widget.role == '학부생')
                     Positioned(
                       top: 123.h, // 반응형 높이 설정
                       left: 113.w,
                       child: CustomText(
-                        id: id,
+                        id: widget.id,
                         size: 20.sp, // 아이디 표시
                       ),
                     ),
@@ -86,22 +92,25 @@ class drawerScreen extends StatelessWidget {
               thickness: 3,
             ),
           ),
-          if (role == '관리자') ...[
+          if (widget.role == '관리자') ...[
             ParticipationButton( //참여 학생
-              onPressed: () {},
+              onPressed: () {
+                print(InfoModel.role);
+              },role: widget.role,
+              id: widget.id,
             ),
             SizedBox(height: 10),
             RaffleButton( //추첨
-              onPressed: () {},
+              onPressed: () {},role: widget.role,
+              id: widget.id,
             ),
             SizedBox(height: 10),
-          ] else if (role == '학부생') ...[
+          ] else if (widget.role == '학부생') ...[
             CurrentButton( // 현황
               onPressed: () {},
             ),
-            // Firestore에서 total_attendance 가져오기
             FutureBuilder<int?>(
-              future: viewModel.getTotalAttendanceByStudentId(id), // student_id를 통해 데이터 가져옴
+              future: viewModel.getTotalAttendanceByStudentId(widget.id), // student_id를 통해 데이터 가져옴
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return CircularProgressIndicator(); // 로딩 상태 표시
@@ -124,7 +133,7 @@ class drawerScreen extends StatelessWidget {
             LogInButton(onPressed: () {}),
             JoinButton(onPressed: () {}),
           ],
-          if (role == '관리자' || role == '학부생')
+          if (widget.role == '관리자' || widget.role == '학부생')
             LogOutButton(onPressed: () {}),
           Logo(onPressed: () {}),
         ],

@@ -4,6 +4,8 @@ import 'package:attendance_check/feature/Home/widget/card.dart'; // 카드 디�
 import 'package:attendance_check/feature/Drawer/drawerScreen.dart';
 import 'package:attendance_check/feature/Home/widget/SoonCheck.dart';
 
+import '../Drawer/model/InfoModel.dart';
+
 class HomeScreen extends StatelessWidget {
   final String role;
   final String id;
@@ -15,6 +17,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.surface, // AppBar 배경색
@@ -51,9 +54,11 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-      endDrawer: drawerScreen(
+      endDrawer: DrawerScreen(
+
         role: role, // 필요한 파라미터 전달
         id: id,
+
       ),
       drawerScrimColor: Colors.black.withOpacity(0.5),
         body: SingleChildScrollView(
@@ -69,6 +74,7 @@ class HomeScreen extends StatelessWidget {
   }
 
         Widget buildScheduleCard(BuildContext context) {
+
     // 샘플 Schedule 데이터 생성
     List<Schedule> schedules = [
       Schedule(title: '일정 1', time: '09:00 - 10:00', location: '1506', professor: '민세동'),
@@ -79,6 +85,7 @@ class HomeScreen extends StatelessWidget {
       // 추가적인 Schedule 객체를 여기에 추가하세요
     ];
     return ScheduleCard(
+
       schedules: schedules, // 생성한 schedules 리스트를 전달합니다
     );
   }

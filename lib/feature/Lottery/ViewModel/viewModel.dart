@@ -34,7 +34,6 @@ class LotteryViewModel {
     return students;
   }
 
-  // 출석 횟수에 따라 추첨 진행
   Future<LotteryStudent> runLottery() async {
     List<LotteryStudent> students = await getAllStudents();
 
@@ -50,7 +49,6 @@ class LotteryViewModel {
     Random random = Random();
     int winnerIndex = random.nextInt(weightedPool.length);
     LotteryStudent winner = weightedPool[winnerIndex];
-    print('Student Name: ${winner.name}');
 
     // Firestore에 당첨된 학생 정보 저장
     await _firestore.collection('lottery').add({
@@ -59,11 +57,11 @@ class LotteryViewModel {
       'department': winner.department,
       'attendance_count': winner.attendanceCount, // 출석 횟수 추가
       'lottery_date': FieldValue.serverTimestamp(),
-
     });
 
     return winner; // 추첨된 학생 정보 반환
   }
+
 
   // Firestore에서 추첨된 학생 리스트 가져오기
   Stream<List<LotteryStudent>> getLotteryResults() {

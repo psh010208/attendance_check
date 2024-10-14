@@ -5,14 +5,20 @@ import 'package:attendance_check/feature/Drawer/drawerScreen.dart';
 import 'package:attendance_check/feature/Drawer/model/infoModel.dart';
 
 class ApproveWaitingList extends StatelessWidget {
+  final String role;
+  final String id;
+  ApproveWaitingList(this.role, this.id);
+
   @override
   Widget build(BuildContext context) {
+    print("role: $role, id: $id");
+
     return ScreenUtilInit(
       designSize: Size(310, 690), // 기본 디자인 사이즈 설정
       builder: (context, child) {
         return MaterialApp(
           home: Scaffold(
-            body: WaitingStatus(),
+            body: WaitingStatus(role: role, id: id), // role과 id 전달
           ),
         );
       },
@@ -21,6 +27,11 @@ class ApproveWaitingList extends StatelessWidget {
 }
 
 class WaitingStatus extends StatefulWidget {
+  final String role;
+  final String id;
+
+  WaitingStatus({required this.role, required this.id});
+
   @override
   _WaitingStatusState createState() => _WaitingStatusState();
 }
@@ -36,6 +47,8 @@ class _WaitingStatusState extends State<WaitingStatus> {
   Widget build(BuildContext context) {
     double screenHeight = 1.sh; // ScreenUtil에서 전체 높이 비율 사용
     double screenWidth = 1.sw; // ScreenUtil에서 전체 너비 비율 사용
+
+    print("Role in WaitingStatus: ${widget.role}, ID: ${widget.id}"); // 전달된 값 확인
 
     return Scaffold(
       appBar: PreferredSize(
@@ -81,9 +94,9 @@ class _WaitingStatusState extends State<WaitingStatus> {
           ),
         ),
       ),
-      endDrawer: drawerScreen(
-        role: InfoModel.role!, // 역할 전달
-        id: InfoModel.id!,     // ID 전달
+      endDrawer: DrawerScreen(
+        role: widget.role, // 역할 전달
+        id: widget.id,     // ID 전달
       ),
       body: _buildUI(screenHeight, screenWidth),
     );
@@ -171,20 +184,20 @@ class _WaitingStatusState extends State<WaitingStatus> {
       ),
       DataColumn(
         label: Container(
-            width: 98.w,
-            height: 30.h,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(4.r),
-              color: Color(0xffE2E6EB),
-            ),
-            child: Row(
-              children: [
-                SizedBox(width: 3.w),
-                Icon(Icons.arrow_drop_down, size: 25.sp),
-                Text("승인 여부", style: TextStyle(fontSize: 15.sp)),
-              ],
-            ),
+          width: 98.w,
+          height: 30.h,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(4.r),
+            color: Color(0xffE2E6EB),
           ),
+          child: Row(
+            children: [
+              SizedBox(width: 3.w),
+              Icon(Icons.arrow_drop_down, size: 25.sp),
+              Text("승인 여부", style: TextStyle(fontSize: 15.sp)),
+            ],
+          ),
+        ),
         onSort: (columnIndex, _) {  //승인 여부 정렬(문자열 Y랑 N으로)
           setState(() {
             if (_isSortAsc) {
@@ -199,7 +212,7 @@ class _WaitingStatusState extends State<WaitingStatus> {
             _isSortAsc = !_isSortAsc;
           });
         },
-        ),
+      ),
       DataColumn( //승인 버튼 자리(빈 column)
         label: Container(
           width: 20.w,
@@ -258,7 +271,7 @@ class _WaitingStatusState extends State<WaitingStatus> {
   List<DataRow> _createRows(double screenHeight, double screenWidth) {
     return _data
         .where((e) =>
-            e.num.contains(_searchStudentNum) && e.name.contains(_searchName))
+    e.num.contains(_searchStudentNum) && e.name.contains(_searchName))
         .map((e) {
       return DataRow(
         cells: [
@@ -326,7 +339,6 @@ class _WaitingStatusState extends State<WaitingStatus> {
       },
     );
   }
-
 
   // 학생 승인 처리(WaitingData.dart에 approved를 true로 바꿈)
   void _approveStudent(String studentNum) {
