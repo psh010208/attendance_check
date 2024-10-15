@@ -49,11 +49,32 @@ class _QRViewExampleState extends State<QRViewExample> {
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
     controller.scannedDataStream.listen((scanData) {
-      setState(() {
-        qrCodeData = scanData.code; // 스캔된 데이터를 저장
-      });
-      controller.pauseCamera(); // 스캔 후 카메라 일시 정지
-      Navigator.pop(context); // 스캔 완료 후 이전 화면으로 돌아가기
+        setState(() {
+          qrCodeData = scanData.code; // 스캔된 데이터를 저장
+        });
+        controller.pauseCamera(); // 스캔 후 카메라 일시 정지
+        _showScanSuccessDialog(); // 스캔 성공 팝업 표시
     });
+  }
+
+  void _showScanSuccessDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('QR 코드 인식 완료'),
+          content: Text('스캔된 QR 코드: $qrCodeData'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.pop(context); // 팝업 닫고 이전 화면으로 돌아가기
+              },
+              child: Text('확인'),
+            ),
+          ],
+        );
+      },
+    );
   }
 }
