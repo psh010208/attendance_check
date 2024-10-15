@@ -6,6 +6,8 @@ import '../model/homeModel.dart';
 import '../view_model/HomeViewModel.dart';
 
 class ScheduleCard extends StatefulWidget {
+  ScheduleViewModel scheduleViewModel = ScheduleViewModel(); // ViewModel 선언
+
   final List<Schedule> schedules;
 
   ScheduleCard({required this.schedules});
@@ -15,7 +17,6 @@ class ScheduleCard extends StatefulWidget {
 }
 
 class _ScheduleCardState extends State<ScheduleCard> {
-  ScheduleViewModel scheduleViewModel = ScheduleViewModel(); // ViewModel 선언
   late List<bool> isExpandedList;
 
   @override
@@ -82,23 +83,8 @@ class _ScheduleCardState extends State<ScheduleCard> {
         clipBehavior: Clip.none, // Stack에서 자르지 않도록 설정
         children: [
           // 이미지 배치
-          Positioned(
-            top: -130.h, // 카드 위로 이미지 배치
-            left: 0.w,
-            right: 0.w,
-            child: Opacity(
-              opacity: isExpandedList[index] ? 0 : 1, // 카드가 펼쳐지면 이미지가 사라지도록 설정
-              child: Container(
-                height: 80.h,
-                child: Image.asset(
-                  Theme.of(context).brightness == Brightness.dark
-                      ? 'assets/dark_ver.png'  // 다크 모드 이미지
-                      : 'assets/light_ver.png', // 라이트 모드 이미지
-                  fit: BoxFit.contain, // 이미지가 화면에 맞게 조절되도록 설정
-                ),
-              ),
-            ),
-          ),
+
+
           AnimatedContainer(
             duration: Duration(milliseconds: 500),
             curve: Curves.easeInOut,
