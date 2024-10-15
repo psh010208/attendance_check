@@ -32,7 +32,7 @@ class _StudentDataTableState extends State<ParticipationStatus> {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 50.h, // 반응형으로 상단바의 높이를 설정
-        backgroundColor: Theme.of(context).colorScheme.surface,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         title: Text('참여 학생 현황', style: Theme.of(context).textTheme.titleMedium),
         centerTitle: true,
         elevation: 1,
@@ -110,7 +110,7 @@ class _StudentDataTableState extends State<ParticipationStatus> {
           height: 30.h,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(4),
-            color: Color(0xffE2E6EB),
+            color: Theme.of(context).hoverColor,
           ),
           child: Row(children: [
             SizedBox(width: 10.w),
@@ -143,7 +143,7 @@ class _StudentDataTableState extends State<ParticipationStatus> {
             height: 30.h,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(4),
-              color: Color(0xffE2E6EB),
+              color: Theme.of(context).hoverColor,
             ),
             child: Row(
               children: [
@@ -164,7 +164,7 @@ class _StudentDataTableState extends State<ParticipationStatus> {
             height: 30.h,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(4),
-              color: Color(0xffE2E6EB),
+              color: Theme.of(context).hoverColor,
             ),
             child: Row(
               children: [
@@ -183,7 +183,7 @@ class _StudentDataTableState extends State<ParticipationStatus> {
           height: 30.h,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(4),
-            color: Color(0xffE2E6EB),
+            color: Theme.of(context).hoverColor,
           ),
           child: Row(
             children: [
