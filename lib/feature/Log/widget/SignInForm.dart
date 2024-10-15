@@ -99,28 +99,26 @@ class _SignInFormState extends State<SignInForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 30.w),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                _buildHeaderWidget(),
-                SizedBox(height: _selectedRole == '관리자' ? 100.h : 70.h),
-                _buildRoleDropdown(),
-                if (_selectedRole == '학부생') ...[
-                  SizedBox(height: 20.h),
-                  _buildDepartmentDropdown(),
-                ],
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 30.w),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _buildHeaderWidget(),
+              SizedBox(height: _selectedRole == '관리자' ? 100.h : 70.h),
+              _buildRoleDropdown(),
+              if (_selectedRole == '학부생') ...[
                 SizedBox(height: 20.h),
-                _buildStudentIdField(),
-                SizedBox(height: 30.h),
-                _buildLoginButton(),
-                SizedBox(height: 50.h),
+                _buildDepartmentDropdown(),
               ],
-            ),
+              SizedBox(height: 20.h),
+              _buildStudentIdField(),
+              SizedBox(height: 30.h),
+              _buildLoginButton(),
+              SizedBox(height: 50.h),
+            ],
           ),
         ),
       ),

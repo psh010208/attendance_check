@@ -11,6 +11,7 @@ class _QRViewExampleState extends State<QRViewExample> {
   QRViewController? controller;
   String? qrCodeData; // QR 코드 데이터 저장할 변수
 
+
   @override
   void dispose() {
     controller?.dispose();
