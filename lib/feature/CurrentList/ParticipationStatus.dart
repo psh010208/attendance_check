@@ -39,7 +39,7 @@ class _StudentDataTableState extends State<ParticipationStatus> {
           ),
           centerTitle: true,
           // iOS에서 제목 중앙 정렬
-          elevation: 4,
+          elevation: 1,
           leading: IconButton(
               icon: Icon(Icons.arrow_back,
                   color: Theme.of(context).colorScheme.onSurface),

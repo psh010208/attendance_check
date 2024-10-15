@@ -59,7 +59,7 @@ class _WaitingStatusState extends State<WaitingStatus> {
             style: Theme.of(context).textTheme.titleMedium,
           ),
           centerTitle: true,
-          elevation: 4,
+          elevation: 1,
           leading: IconButton(
               icon: Icon(Icons.arrow_back,
                   color: Theme.of(context).colorScheme.onSurface),
