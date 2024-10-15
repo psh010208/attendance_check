@@ -49,7 +49,7 @@ class HomeScreen extends HookWidget {
                   onPressed: () {
                     AddSchedule(context); // 일정 추가 다이얼로그 호출
                   },
-                  color: Colors.black,
+                  color: Theme.of(context).iconTheme.color,
                 );
               },
             ),
