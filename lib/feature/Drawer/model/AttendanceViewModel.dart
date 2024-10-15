@@ -1,9 +1,12 @@
+import 'package:attendance_check/feature/Drawer/model/SchedulesModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'AttendanceSummaryModel.dart';
 import 'UserModel.dart';
 
+final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
 class AttendanceViewModel {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   // 학생 ID로 User 데이터 가져오기
   Future<User?> getUserByStudentId(String studentId) async {
@@ -42,4 +45,22 @@ class AttendanceViewModel {
       return null;
     }
   }
+}
+class ScheduleViewModel {
+
+  String scheduleName = '';
+  String location = '';
+  String instructorName = '강사 미정'; // 기본값 설정
+  DateTime? selectedDate;
+  TimeOfDay? startTime;
+  TimeOfDay? endTime;
+
+
+  Stream<List<Schedule>> getScheduleStream() {
+    return _firestore.collection('schedules')
+        .snapshots()
+        .map((snapshot) =>
+        snapshot.docs.map((doc) => Schedule.fromFirestore(doc)).toList());
+  }
+
 }
