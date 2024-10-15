@@ -51,13 +51,7 @@ class _WaitingStatusState extends State<WaitingStatus> {
       appBar: AppBar(
         toolbarHeight: 50.h, // 반응형으로 상단바의 높이를 설정
         backgroundColor: Theme.of(context).colorScheme.surface,
-        iconTheme: IconThemeData(
-          color: Theme.of(context).colorScheme.surface,
-        ),
-        title: Text(
-          '승인 대기 현황',
-          style: Theme.of(context).textTheme.titleMedium,
-        ),
+        title: Text('승인 대기 현황', style: Theme.of(context).textTheme.titleMedium,),
         centerTitle: true,
         elevation: 1,
         leading: IconButton(
