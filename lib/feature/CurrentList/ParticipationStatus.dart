@@ -34,7 +34,7 @@ class _StudentDataTableState extends State<ParticipationStatus> {
         child: AppBar(
           backgroundColor: Color(0xffF8FAFD),
           title: Text(
-            '참여 학생 현황',
+            '참여 학생 명단',
             style: Theme.of(context).textTheme.titleMedium,
           ),
           centerTitle: true,
