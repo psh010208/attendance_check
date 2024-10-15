@@ -18,12 +18,13 @@ class HomeScreen extends HookWidget {
     required this.id,
   });
 
-  final qrCodeScanner Scanner = qrCodeScanner(); // QR 코드 스캐너 인스턴스 생성
   ScheduleViewModel scheduleViewModel = ScheduleViewModel(); // ViewModel 선언
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
+
       appBar: AppBar(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         flexibleSpace: Container(
@@ -94,9 +95,13 @@ class HomeScreen extends HookWidget {
                     defaultButtonColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.1), // 버튼 색상
                     clickedButtonColor: Theme.of(context).colorScheme.primary, // 클릭 시 버튼 색상
                     circularRadius: 50,
-                    onTap: () {
-                      // QR 코드 스캔 시작 (기능 추가 필요)
-                    },
+    onTap: () {
+    Navigator.of(context).push(
+    MaterialPageRoute(
+    builder: (context) => QRViewExample(),
+    ),
+    );
+    },
                   ),
                 ),
             ],
