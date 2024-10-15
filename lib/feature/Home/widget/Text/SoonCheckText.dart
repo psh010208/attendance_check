@@ -1,18 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class SoonCheckText extends StatelessWidget {
+class SoonCheckTextWidget extends StatelessWidget {
   final String text;
   final TextStyle style;
-  final double leftOffset;
+  final double bottom; // bottom 값을 추가
+  final double left;   // left 값을 추가
 
-  const SoonCheckText({Key? key, required this.text, required this.style, required this.leftOffset}) : super(key: key);
+  const SoonCheckTextWidget({
+    Key? key,
+    required this.text,
+    required this.style,
+    required this.bottom,
+    required this.left,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      bottom: 0, // 나중에 상위 위젯에서 위치 조정
-      left: leftOffset.w, // 위치 조정
+      bottom: bottom.h, // 전달받은 bottom 값을 사용
+      left: left.w,     // 전달받은 left 값을 사용
       child: Text(
         text,
         style: style,
