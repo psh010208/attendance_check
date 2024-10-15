@@ -2,6 +2,7 @@ import 'package:attendance_check/feature/Drawer/model/SchedulesModel.dart';
 import 'package:attendance_check/feature/Drawer/widget/IdText.dart';
 import 'package:attendance_check/feature/Drawer/widget/button.dart';
 import 'package:attendance_check/feature/Drawer/widget/currentBar.dart';
+import 'package:attendance_check/feature/Home/widget/QRService/QrCodeListScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'model/AttendanceViewModel.dart';
@@ -100,6 +101,11 @@ class _DrawerScreenState extends State<DrawerScreen> {
               onPressed: () {},
               role: widget.role,
               id: widget.id,
+            ),
+            QrScreenButton( // 현황
+              onPressed: () {
+                },
+
             ),
           ] else if (widget.role == '학부생') ...[
             FutureBuilder<int?>(

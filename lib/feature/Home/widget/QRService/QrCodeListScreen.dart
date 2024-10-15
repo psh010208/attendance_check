@@ -46,6 +46,36 @@ class _QrCodeListScreenState extends State<QrCodeListScreen> {
     }
   }
 
+  void _showQrCodeDialog(String qrCode) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Container(
+            height: 300,
+            width: 300,
+            child: CustomPaint(
+              size: Size.square(300),
+              painter: QrPainter(
+                data: qrCode, // QR 코드 데이터를 QrImage 위젯으로 시각화
+                version: QrVersions.auto,
+                color: Colors.black,
+                emptyColor: Colors.white,
+                gapless: false,
+              ),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text('닫기'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,6 +105,7 @@ class _QrCodeListScreenState extends State<QrCodeListScreen> {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: ListTile(
+                  onTap: () => _showQrCodeDialog(qrCode), // Tap to show larger QR code
                   leading: Container(
                     width: 50,
                     height: 50,
