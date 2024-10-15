@@ -29,10 +29,7 @@ class _LotteryView extends State<LotteryView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        iconTheme: IconThemeData(
-          color: Theme.of(context).colorScheme.surface,
-        ),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         title: Text('상품 추첨하기', style: Theme.of(context).textTheme.titleLarge),
         centerTitle: true,
         elevation: 1,
