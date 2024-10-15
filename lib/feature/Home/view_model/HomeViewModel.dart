@@ -54,6 +54,11 @@ class ScheduleViewModel {
   TimeOfDay? endTime;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  // QR 코드 생성
+  String generateQrCode() {
+    return DateTime.now().millisecondsSinceEpoch.toString();
+  }
+
   // 일정 정보를 Firestore에 추가하는 메서드
   Future<void> addSchedule() async {
     if (scheduleName.isEmpty ||
@@ -80,13 +85,8 @@ class ScheduleViewModel {
       endTime!.minute,
     );
 
-    // Firestore에서 현재 일정 개수를 가져옴
-    DocumentSnapshot<Map<String, dynamic>> scheduleDoc = await _firestore
-        .collection('schedules')
-        .doc('scheduleCountDoc')
-        .get();
-    int currentCount = scheduleDoc.data()?['scheduleCount'] ?? 0;
-    print(currentCount);
+    // QR 코드 생성
+    String qrCode = generateQrCode();
 
     // Firestore에 일정 추가
     await _firestore.collection('schedules').add({
@@ -95,14 +95,14 @@ class ScheduleViewModel {
       'instructor_name': instructorName,
       'start_time': Timestamp.fromDate(startDateTime),
       'end_time': Timestamp.fromDate(endDateTime),
-      'schedule_count': currentCount + 1,
+      'qr_code': qrCode,  // QR 코드 추가vf
     });
   }
+
   Stream<List<Schedule>> getScheduleStream() {
     return _firestore.collection('schedules')
         .snapshots()
         .map((snapshot) =>
         snapshot.docs.map((doc) => Schedule.fromFirestore(doc)).toList());
   }
-
 }

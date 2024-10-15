@@ -1,45 +1,59 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
-class qrCodeScanner {
+class QRViewExample extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => _QRViewExampleState();
+}
+
+class _QRViewExampleState extends State<QRViewExample> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
-  Barcode? result;
   QRViewController? controller;
-  bool isScanned = false; // 중복 스캔 방지 플래그
+  String? qrCodeData; // QR 코드 데이터 저장할 변수
 
-  // QR 코드 스캔 시작 메서드
-  void startScanning( onScanned) {
-    // 스캔 완료시 데이터를 처리할 콜백 함수
-    controller?.scannedDataStream.listen((scanData) {
-      if (!isScanned) { // 중복 스캔 방지
-        result = scanData;
-        isScanned = true;  // 스캔 완료 플래그 설정
-        controller?.pauseCamera(); // 스캔 후 카메라 일시 중지
-
-        // 스캔된 데이터를 콜백으로 반환
-        onScanned(result?.code ?? 'No data');
-      }
-    });
-  }
-//qwe
-  // QR 코드 스캔을 중지하는 메서드
-  void stopScanning() {
-    controller?.stopCamera();
-  }
-
-  // QR 코드 스캔을 재개하는 메서드
-  void resumeScanning() {
-    isScanned = false;
-    controller?.resumeCamera();
-  }
-
-  // QR 코드 컨트롤러 설정 메서드
-  void onQRViewCreated(QRViewController controller) {
-    this.controller = controller;
-  }
-
-  // QR 코드 스캔 해제 (메모리 누수 방지)
+  @override
   void dispose() {
     controller?.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('QR 코드 스캔'),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+      ),
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            flex: 4,
+            child: QRView(
+              key: qrKey,
+              onQRViewCreated: _onQRViewCreated,
+            ),
+          ),
+          Expanded(
+            flex: 1,
+            child: Center(
+              child: qrCodeData != null
+                  ? Text('스캔된 QR 코드: $qrCodeData')
+                  : Text('QR 코드를 스캔하세요'),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _onQRViewCreated(QRViewController controller) {
+    this.controller = controller;
+    controller.scannedDataStream.listen((scanData) {
+      setState(() {
+        qrCodeData = scanData.code; // 스캔된 데이터를 저장
+      });
+      controller.pauseCamera(); // 스캔 후 카메라 일시 정지
+      Navigator.pop(context); // 스캔 완료 후 이전 화면으로 돌아가기
+    });
   }
 }

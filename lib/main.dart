@@ -66,7 +66,7 @@ class MyApp extends StatelessWidget {
             background: Theme.of(context).colorScheme.surface, // 다크 모드 배경색
             surface: Theme.of(context).colorScheme.surface, // 다크 모드 서피스 색상
           ),
-          themeMode: ThemeMode.light
+          themeMode: ThemeMode.dark
 
           ,
         );
