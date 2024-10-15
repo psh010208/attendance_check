@@ -25,7 +25,7 @@ class SplashScreen extends StatelessWidget {
           children: [
             // 로고 이미지 위치 및 크기
             Positioned(
-              top: (ScreenUtil().screenWidth / 1.w) - (230.w / 2.w), // 반응형 높이 설정
+              top: (ScreenUtil().screenWidth / 1.w) - (200.w / 2.w), // 반응형 높이 설정
               left: (ScreenUtil().screenWidth / 2.w) - (70.w), // 중앙 정렬을 위한 좌표 계산
               child: Image.asset(
                 'assets/appLogo.png', // 로고 파일 경로
