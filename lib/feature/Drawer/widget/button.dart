@@ -147,8 +147,10 @@ class ParticipationButton extends StatelessWidget {
 // 출석 현황 버튼
 class CurrentButton extends StatelessWidget {
   final VoidCallback onPressed;
+  final String role;
+  final String id;
 
-  CurrentButton({required this.onPressed});
+  CurrentButton({required this.onPressed, required this.role, required this.id});
 
   @override
   Widget build(BuildContext context) {
@@ -157,8 +159,10 @@ class CurrentButton extends StatelessWidget {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => ParticipationStatus(
-            ),
+              builder: (context) => ParticipationStatus(
+                role: role, // widget.role 사용
+                id: id,
+              ),
           ),
         );
       },

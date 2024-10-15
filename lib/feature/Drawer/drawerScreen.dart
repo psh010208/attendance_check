@@ -90,7 +90,9 @@ class _DrawerScreenState extends State<DrawerScreen> {
               id: widget.id,
             ),
             CurrentButton( // 현황
-              onPressed: () {},
+              onPressed: () {
+              },role: widget.role,
+            id: widget.id,
             ),
             RaffleButton( //추첨
               onPressed: () {},role: widget.role,
