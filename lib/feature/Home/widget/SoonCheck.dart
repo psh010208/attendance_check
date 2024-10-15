@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:attendance_check/feature/Home/widget/Text/SoonCheckText.dart'; // 새로 만든 텍스트 위젯
+import 'package:attendance_check/feature/Home/widget/Text/SoonCheckText.dart'; // 새로 만든 위젯 import
 
 class SoonCheckWidget extends StatelessWidget {
   final double bottom;
@@ -13,7 +13,7 @@ class SoonCheckWidget extends StatelessWidget {
     return Stack(
       children: [
         // 첫 번째 텍스트 (외곽선)
-        SoonCheckText(
+        SoonCheckTextWidget(
           text: 'Soon CHeck',
           style: Theme.of(context).textTheme.titleSmall!.copyWith(
             fontSize: 50.sp,
@@ -29,37 +29,42 @@ class SoonCheckWidget extends StatelessWidget {
               ),
             ],
           ),
-          leftOffset: left + 40,
+          // 각 텍스트의 위치를 조정하기 위해 bottom과 left 값을 전달
+          bottom: bottom,  // bottom 값 전달
+          left: left + 40, // 왼쪽 오프셋 조정
         ),
 
         // 두 번째 텍스트 (채우기 색상)
-        SoonCheckText(
+        SoonCheckTextWidget(
           text: 'Soon CHeck',
           style: Theme.of(context).textTheme.titleSmall!.copyWith(
             fontSize: 50.sp,
             color: Theme.of(context).primaryColor,
           ),
-          leftOffset: left + 40,
+          bottom: bottom,  // bottom 값 전달
+          left: left + 40, // 왼쪽 오프셋 조정
         ),
 
         // 가운데 일부 텍스트
-        SoonCheckText(
+        SoonCheckTextWidget(
           text: '  oon',
           style: Theme.of(context).textTheme.titleSmall!.copyWith(
             fontSize: 50.sp,
             color: Theme.of(context).colorScheme.onSurface,
           ),
-          leftOffset: left + 43,
+          bottom: bottom,  // bottom 값 전달
+          left: left + 43, // 왼쪽 오프셋 조정
         ),
 
         // 오른쪽 일부 텍스트
-        SoonCheckText(
+        SoonCheckTextWidget(
           text: '                eck',
           style: Theme.of(context).textTheme.titleSmall!.copyWith(
             fontSize: 50.sp,
             color: Theme.of(context).colorScheme.onSurface,
           ),
-          leftOffset: left + 14,
+          bottom: bottom,  // bottom 값 전달
+          left: left + 14, // 왼쪽 오프셋 조정
         ),
       ],
     );
