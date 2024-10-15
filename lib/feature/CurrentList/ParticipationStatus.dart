@@ -1,29 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+// import 'model/model.dart';
 import 'ParticipationData.dart';
+import 'package:attendance_check/feature/Drawer/drawerScreen.dart';
+import 'package:attendance_check/feature/Home/homeScreen.dart';
 
-class ParticipationStatus extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      designSize: Size(330, 690), // 기본 디자인 사이즈 설정
-      builder: (context, child) {
-        return MaterialApp(
-          home: Scaffold(
-            body: ParticipationStatusBody(),
-          ),
-        );
-      },
-    );
-  }
-}
+class ParticipationStatus extends StatefulWidget {
+  final String role;
+  final String id;
 
-class ParticipationStatusBody extends StatefulWidget {
+  ParticipationStatus({required this.role, required this.id});
+
   @override
   _StudentDataTableState createState() => _StudentDataTableState();
 }
 
-class _StudentDataTableState extends State<ParticipationStatusBody> {
+class _StudentDataTableState extends State<ParticipationStatus> {
   List<ParticipationStudent> _data = List.from(p_students);
   List<ParticipationStudent> _originalData = List.from(p_students); // 원본 데이터 저장
   bool _isSortAsc = true; // 정렬 기능
@@ -32,12 +23,14 @@ class _StudentDataTableState extends State<ParticipationStatusBody> {
 
   @override
   Widget build(BuildContext context) {
-    double screenHeight = 1.sh; // ScreenUtil에서 전체 높이 비율 사용
-    double screenWidth = 1.sw; // ScreenUtil에서 전체 너비 비율 사용
+    // 화면 크기를 MediaQuery로 얻음
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
+
 
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(45.h), // AppBar의 높이 설정
+        preferredSize: Size.fromHeight(45), // AppBar의 높이 설정
         child: AppBar(
           backgroundColor: Color(0xffF8FAFD),
           title: Text(
@@ -48,31 +41,37 @@ class _StudentDataTableState extends State<ParticipationStatusBody> {
           // iOS에서 제목 중앙 정렬
           elevation: 4,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: Colors.black),
-            onPressed: () { // 검색 기능 사용 후 뒤로가기 버튼 누르면 원래 데이터로 돌아가기
-              setState(() {
-                _data = List.from(_originalData);
-                _searchStudentNum = "";
-                _searchName = "";
-              });
-            },
-          ),
-          actions: [
-            IconButton(
-              icon: Icon(Icons.menu, color: Colors.black),
+              icon: Icon(Icons.arrow_back,
+                  color: Theme.of(context).colorScheme.onSurface),
               onPressed: () {
-                // 마이페이지 완성 후 메뉴바 누르면 마이페이지 오픈!
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            HomeScreen(role: widget.role, id: widget.id)));
+              }),
+          actions: [
+            Builder(
+              builder: (context) {
+                return IconButton(
+                  icon: Icon(Icons.menu),
+                  onPressed: () {
+                    Scaffold.of(context).openEndDrawer();
+                  },
+                  color: Theme.of(context).colorScheme.onSurface,
+                );
               },
             ),
           ],
           shape: Border(
             bottom: BorderSide(
               color: Colors.grey,
-              width: 1.w,
+              width: 1,
             ),
           ),
         ),
       ),
+      endDrawer: DrawerScreen(role: widget.role, id: widget.id),
       body: _buildUI(screenHeight, screenWidth),
     );
   }
@@ -86,7 +85,7 @@ class _StudentDataTableState extends State<ParticipationStatusBody> {
         child: FittedBox(
           fit: BoxFit.fitWidth,
           child: DataTable(
-            columnSpacing: 8.w, //열 사이 간격
+            columnSpacing: 8, //열 사이 간격
             columns: _createColumns(),
             rows: _createRows(screenHeight, screenWidth),
           ),
@@ -108,8 +107,8 @@ class _StudentDataTableState extends State<ParticipationStatusBody> {
     return [
       DataColumn( //아이콘용 빈 column
         label: Container(
-          width: 20.w,
-          height: 30.h,
+          width: 20,
+          height: 30,
           child: Row(
             children: [],
           ),
@@ -117,17 +116,17 @@ class _StudentDataTableState extends State<ParticipationStatusBody> {
       ),
       DataColumn(
         label: Container(
-          width: 145.w,
-          height: 30.h,
+          width: 145,
+          height: 30,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(4.r),
+            borderRadius: BorderRadius.circular(4),
             color: Color(0xffE2E6EB),
           ),
           child: Row(children: [
-            SizedBox(width: 10.w),
-            Icon(Icons.arrow_drop_down, size: 25.sp),
-            SizedBox(width: 5.w),
-            Text("학과", style: TextStyle(fontSize: 15.sp)),
+            SizedBox(width: 10),
+            Icon(Icons.arrow_drop_down, size: 25),
+            SizedBox(width: 5),
+            Text("학과", style: TextStyle(fontSize: 15)),
           ]),
         ),
         onSort: (columnIndex, _) {  // 학과 정렬
@@ -149,18 +148,18 @@ class _StudentDataTableState extends State<ParticipationStatusBody> {
         label: GestureDetector(
           onTap: () => _showSearchDialog('학번'), // 학번 검색 다이얼로그
           child: Container(
-            width: 80.w,
-            height: 30.h,
+            width: 80,
+            height: 30,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(4.r),
+              borderRadius: BorderRadius.circular(4),
               color: Color(0xffE2E6EB),
             ),
             child: Row(
               children: [
-                SizedBox(width: 10.w),
-                Icon(Icons.search, size: 17.sp),
-                SizedBox(width: 6.w),
-                Text("학번", style: TextStyle(fontSize: 15.sp)),
+                SizedBox(width: 10),
+                Icon(Icons.search, size: 17),
+                SizedBox(width: 6),
+                Text("학번", style: TextStyle(fontSize: 15)),
               ],
             ),
           ),
@@ -170,18 +169,18 @@ class _StudentDataTableState extends State<ParticipationStatusBody> {
         label: GestureDetector(
           onTap: () => _showSearchDialog('이름'), // 이름 검색 다이얼로그
           child: Container(
-            width: 70.w,
-            height: 30.h,
+            width: 70,
+            height: 30,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(4.r),
+              borderRadius: BorderRadius.circular(4),
               color: Color(0xffE2E6EB),
             ),
             child: Row(
               children: [
-                SizedBox(width: 8.w),
-                Icon(Icons.search, size: 17.sp),
-                SizedBox(width: 6.w),
-                Text("이름", style: TextStyle(fontSize: 15.sp)),
+                SizedBox(width: 8),
+                Icon(Icons.search, size: 17),
+                SizedBox(width: 6),
+                Text("이름", style: TextStyle(fontSize: 15)),
               ],
             ),
           ),
@@ -189,18 +188,18 @@ class _StudentDataTableState extends State<ParticipationStatusBody> {
       ),
       DataColumn(
         label: Container(
-          width: 95.w,
-          height: 30.h,
+          width: 95,
+          height: 30,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(4.r),
+            borderRadius: BorderRadius.circular(4),
             color: Color(0xffE2E6EB),
           ),
           child: Row(
             children: [
-              SizedBox(width: 2.w),
-              Icon(Icons.arrow_drop_down, size: 25.sp),
-              SizedBox(width: 4.w),
-              Text("참여횟수", style: TextStyle(fontSize: 15.sp)),
+              SizedBox(width: 2),
+              Icon(Icons.arrow_drop_down, size: 25),
+              SizedBox(width: 4),
+              Text("참여횟수", style: TextStyle(fontSize: 15)),
             ],
           ),
         ),
@@ -274,23 +273,23 @@ class _StudentDataTableState extends State<ParticipationStatusBody> {
       return DataRow(
         cells: [
           DataCell(Row(children: [  //아이콘만
-            Icon(Icons.person, size: 17.sp),
+            Icon(Icons.person, size: 17),
           ])),
           DataCell(Row(children: [
-            SizedBox(width: 5.w),
-            Text(e.dept, style: TextStyle(fontSize: 13.sp)),
+            SizedBox(width: 5),
+            Text(e.dept, style: TextStyle(fontSize: 13)),
           ])),
           DataCell(Row(children: [
-            SizedBox(width: 10.w),
-            Text(e.num, style: TextStyle(fontSize: 13.sp)),
+            SizedBox(width: 10),
+            Text(e.num, style: TextStyle(fontSize: 13)),
           ])),
           DataCell(Row(children: [
-            SizedBox(width: 15.w),
-            Text(e.name, style: TextStyle(fontSize: 13.sp)),
+            SizedBox(width: 15),
+            Text(e.name, style: TextStyle(fontSize: 13)),
           ])),
           DataCell(Row(children: [
-            SizedBox(width: 30.w),
-            Text(e.count, style: TextStyle(fontSize: 13.sp)),
+            SizedBox(width: 30),
+            Text(e.count, style: TextStyle(fontSize: 1)),
             IconButton(
               icon: Icon(Icons.keyboard_arrow_down),
               onPressed: () {
@@ -301,7 +300,7 @@ class _StudentDataTableState extends State<ParticipationStatusBody> {
                       backgroundColor: Color(0xff26539C),
                       content: SingleChildScrollView(
                         child: Container(
-                          padding: EdgeInsets.all(8.w),
+                          padding: EdgeInsets.all(8),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [

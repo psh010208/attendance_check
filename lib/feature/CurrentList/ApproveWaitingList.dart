@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../CurrentList/WaitingData.dart';
+import 'WaitingData.dart';
 import 'package:attendance_check/feature/Drawer/drawerScreen.dart';
 import 'package:attendance_check/feature/Home/homeScreen.dart';
 
@@ -39,8 +39,10 @@ class _WaitingStatusState extends State<WaitingStatus> {
 
   @override
   Widget build(BuildContext context) {
-    double screenHeight = 1; // ScreenUtil에서 전체 높이 비율 사용
-    double screenWidth = 1; // ScreenUtil에서 전체 너비 비율 사용
+    // 화면 크기를 MediaQuery로 얻음
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
+
 
     print("Role in WaitingStatus: ${widget.role}, ID: ${widget.id}"); // 전달된 값 확인
 
