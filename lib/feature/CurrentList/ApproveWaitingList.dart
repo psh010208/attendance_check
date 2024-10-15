@@ -49,14 +49,14 @@ class _WaitingStatusState extends State<WaitingStatus> {
 
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         toolbarHeight: 50.h, // 반응형으로 상단바의 높이를 설정
-        backgroundColor: Theme.of(context).colorScheme.surface,
         title: Text('승인 대기 현황', style: Theme.of(context).textTheme.titleMedium,),
         centerTitle: true,
         elevation: 1,
         leading: IconButton(
             icon: Icon(Icons.arrow_back,
-                color: Theme.of(context).colorScheme.onSurface),
+              color: Theme.of(context).iconTheme.color,),
             onPressed: () {
               Navigator.pushReplacement(
                   context,
@@ -72,7 +72,7 @@ class _WaitingStatusState extends State<WaitingStatus> {
                 onPressed: () {
                   Scaffold.of(context).openEndDrawer();
                 },
-                color: Theme.of(context).colorScheme.onSurface,
+                  color: Theme.of(context).iconTheme.color,
               );
             },
           ),
@@ -130,7 +130,7 @@ class _WaitingStatusState extends State<WaitingStatus> {
             height: 30.h,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(4),
-              color: Color(0xffE2E6EB),
+              color: Theme.of(context).hoverColor,
             ),
             child: Row(
               children: [
@@ -151,7 +151,7 @@ class _WaitingStatusState extends State<WaitingStatus> {
             height: 30.h,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(4),
-              color: Color(0xffE2E6EB),
+              color: Theme.of(context).hoverColor,
             ),
             child: Row(
               children: [
@@ -170,7 +170,7 @@ class _WaitingStatusState extends State<WaitingStatus> {
           height: 30.h,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(4),
-            color: Color(0xffE2E6EB),
+            color: Theme.of(context).hoverColor,
           ),
           child: Row(
             children: [

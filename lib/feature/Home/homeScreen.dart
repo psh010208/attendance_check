@@ -6,7 +6,7 @@ import 'package:attendance_check/feature/Home/model/homeModel.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:attendance_check/feature/Home/view_model/HomeViewModel.dart';
 import 'package:attendance_check/feature/Drawer/drawerScreen.dart';
-import 'package:attendance_check/feature/Home/widget/card.dart'; // 카드 위젯 임포트
+import 'package:attendance_check/feature/Home/widget/Card/Schedule_card.dart'; // 카드 위젯 임포트
 import 'package:attendance_check/feature/Home/widget/Button/AddScheduleButton.dart'; // 카드 위젯 임포트
 
 class HomeScreen extends HookWidget {
@@ -26,8 +26,7 @@ class HomeScreen extends HookWidget {
       resizeToAvoidBottomInset: false,
 
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        iconTheme: IconThemeData(color: Colors.black),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         flexibleSpace: Container(
           padding: EdgeInsets.only(
             top: MediaQuery.of(context).padding.top,
@@ -50,7 +49,7 @@ class HomeScreen extends HookWidget {
                   onPressed: () {
                     AddSchedule(context); // 일정 추가 다이얼로그 호출
                   },
-                  color: Colors.black,
+                  color: Theme.of(context).iconTheme.color,
                 );
               },
             ),
@@ -62,7 +61,7 @@ class HomeScreen extends HookWidget {
                 onPressed: () {
                   Scaffold.of(context).openEndDrawer();
                 },
-                color: Colors.black,
+                color: Theme.of(context).iconTheme.color, // 테마에 따라 아이콘 색상 설정
               );
             },
           ),
