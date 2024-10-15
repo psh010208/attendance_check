@@ -4,6 +4,7 @@ import 'package:attendance_check/feature/Log/logPage.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:attendance_check/feature/Drawer/widget/IdText.dart';
 import 'package:attendance_check/feature/Lottery/lottery_view.dart';
+import 'package:attendance_check/feature/CurrentList/ParticipationStatus.dart';
 
 import '../../CurrentList/ApproveWaitingList.dart';
 
@@ -110,7 +111,7 @@ class JoinButton extends StatelessWidget {
   }
 }
 
-// 참여 학생 현황 버튼
+// 승인 대기 현황 버튼
 class ParticipationButton extends StatelessWidget {
   final VoidCallback onPressed;
   final String role;
@@ -133,11 +134,39 @@ class ParticipationButton extends StatelessWidget {
           ),
         );
       },
-      icon: Icons.task_alt,
-      text: '참여 학생 현황',
+      icon: Icons.hourglass_bottom,
+      text: '승인 대기 현황',
       iconSize: 33.sp,
       textSize: 23.sp,
       top: 250.h,
+      left: 10.w,
+    );
+  }
+}
+
+// 출석 현황 버튼
+class CurrentButton extends StatelessWidget {
+  final VoidCallback onPressed;
+
+  CurrentButton({required this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return CommonButton(
+      onPressed: () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ParticipationStatus(
+            ),
+          ),
+        );
+      },
+      icon: Icons.table_view, // 출석 현황에 적합한 아이콘 추가
+      text: '출석 현황',
+      iconSize: 33.sp,
+      textSize: 23.sp,
+      top: 330.h,
       left: 10.w,
     );
   }
@@ -171,30 +200,8 @@ class RaffleButton extends StatelessWidget {
       icon: Icons.redeem,
       text: '상품 추첨',
       iconSize: 33.sp,
-      textSize: 21.sp,
-      top: 320.h,
-      left: 10.w,
-    );
-  }
-}
-
-// 출석 현황 버튼
-class CurrentButton extends StatelessWidget {
-  final VoidCallback onPressed;
-
-  CurrentButton({required this.onPressed});
-
-  @override
-  Widget build(BuildContext context) {
-    return CommonButton(
-      onPressed: () {
-        // 출석 현황 페이지로 이동하는 로직 추가
-      },
-      icon: Icons.check_circle, // 출석 현황에 적합한 아이콘 추가
-      text: '출석 현황',
-      iconSize: 20.sp,
-      textSize: 20.sp,
-      top: 240.h,
+      textSize: 23.sp,
+      top: 410.h,
       left: 10.w,
     );
   }
