@@ -5,9 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:attendance_check/feature/Drawer/widget/IdText.dart';
 import 'package:attendance_check/feature/Lottery/lottery_view.dart';
 import 'package:attendance_check/feature/CurrentList/ParticipationStatus.dart';
-
-import '../../CurrentList/ApproveWaitingList.dart';
-
 import '../../CurrentList/ApproveWaitingList.dart';
 
 class CommonButton extends StatelessWidget {
