@@ -167,7 +167,7 @@ class CurrentButton extends StatelessWidget {
         );
       },
       icon: Icons.table_view, // 출석 현황에 적합한 아이콘 추가
-      text: '출석 현황',
+      text: '참여 학생 현황',
       iconSize: 33.sp,
       textSize: 23.sp,
       top: 330.h,
