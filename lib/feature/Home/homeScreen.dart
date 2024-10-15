@@ -40,6 +40,7 @@ class HomeScreen extends HookWidget {
             ),
           ),
         ),
+        elevation: 1,
         actions: [
           if (role == '관리자') // role이 '관리자'일 때만 버튼 추가
             Builder(

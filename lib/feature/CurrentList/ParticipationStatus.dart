@@ -46,7 +46,7 @@ class _StudentDataTableState extends State<ParticipationStatusBody> {
           ),
           centerTitle: true,
           // iOS에서 제목 중앙 정렬
-          elevation: 4,
+          elevation: 1,
           leading: IconButton(
             icon: Icon(Icons.arrow_back, color: Colors.black),
             onPressed: () { // 검색 기능 사용 후 뒤로가기 버튼 누르면 원래 데이터로 돌아가기
