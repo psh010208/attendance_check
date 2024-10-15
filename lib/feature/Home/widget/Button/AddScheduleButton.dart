@@ -5,7 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 void AddSchedule(BuildContext context) {
   String scheduleName = '';
   String location = '';
-  String instructorName = '강사 미정'; // 기본값 설정
+  String instructorName = '발표자 미정'; // 기본값 설정
   DateTime? selectedDate;
   TimeOfDay? startTime;
   TimeOfDay? endTime;
@@ -101,7 +101,7 @@ void AddSchedule(BuildContext context) {
                       },
                     ),
                     TextFormField(
-                      decoration: InputDecoration(labelText: '강사 이름 (선택 사항)'),
+                      decoration: InputDecoration(labelText: '발표자 이름 (선택 사항)'),
                       onChanged: (value) {
                         instructorName = value;
                       },
