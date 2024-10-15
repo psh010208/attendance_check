@@ -1,4 +1,4 @@
-import 'package:attendance_check/feature/Home/widget/Button/animation_Button.dart';
+import 'package:attendance_check/feature/Home/widget/Button/AnimationButton.dart';
 import 'package:attendance_check/feature/Home/widget/Button/button.dart';
 import 'package:flutter/material.dart';
 import 'package:attendance_check/feature/Home/model/homeModel.dart';

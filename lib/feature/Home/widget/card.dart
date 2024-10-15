@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+//qwe
 import '../model/homeModel.dart';
 import '../view_model/HomeViewModel.dart';
 
@@ -118,9 +119,9 @@ class _ScheduleCardState extends State<ScheduleCard> {
     Color barColor = barColors[index % barColors.length];
     double borderRadiusValue = 10.0; // 카드의 모서리 둥글기 값을 설정
 
-    // 시간 포맷팅 (DateFormat 사용)
-    String formattedStartTime = DateFormat('HH:mm').format(schedule.startTime); // .toDate() 제거
-    String formattedEndTime = DateFormat('HH:mm').format(schedule.endTime);     // .toDate() 제거
+    // 시간 포맷팅
+    //String formattedStartTime = schedule.startTime.toDate().toLocal().toString().split(' ')[1].substring(0, 5);
+   // String formattedEndTime = schedule.endTime.toDate().toLocal().toString().split(' ')[1].substring(0, 5);
 
     return Container(
       width: cardWidth,
@@ -163,13 +164,13 @@ class _ScheduleCardState extends State<ScheduleCard> {
                             ),
                           ),
                           SizedBox(width: 20.w),
-                          Text(
-                            "$formattedStartTime - $formattedEndTime",
-                            style: TextStyle(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                          // Text(
+                          //   "$formattedStartTime - $formattedEndTime",
+                          //   style: TextStyle(
+                          //     fontSize: 16.sp,
+                          //     fontWeight: FontWeight.bold,
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),
