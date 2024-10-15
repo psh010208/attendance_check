@@ -1,6 +1,7 @@
 import 'package:attendance_check/feature/Home/widget/Button/AnimationButton.dart';
 import 'package:attendance_check/feature/Home/widget/Button/QrButton.dart';
 import 'package:attendance_check/feature/Home/widget/SoonCheck.dart';
+import 'package:attendance_check/feature/Home/widget/card.dart';
 import 'package:flutter/material.dart';
 import 'package:attendance_check/feature/Home/model/homeModel.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -24,7 +25,6 @@ class HomeScreen extends HookWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-
       appBar: AppBar(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         flexibleSpace: Container(
@@ -53,7 +53,6 @@ class HomeScreen extends HookWidget {
                 );
               },
             ),
-
           Builder(
             builder: (BuildContext context) {
               return IconButton(
@@ -95,13 +94,13 @@ class HomeScreen extends HookWidget {
                     defaultButtonColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.1), // 버튼 색상
                     clickedButtonColor: Theme.of(context).colorScheme.primary, // 클릭 시 버튼 색상
                     circularRadius: 50,
-    onTap: () {
-    Navigator.of(context).push(
-    MaterialPageRoute(
-    builder: (context) => QRViewExample(),
-    ),
-    );
-    },
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => QRViewExample(),
+                        ),
+                      );
+                    },
                   ),
                 ),
             ],
