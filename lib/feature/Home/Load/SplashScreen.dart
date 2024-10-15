@@ -37,7 +37,7 @@ class SplashScreen extends StatelessWidget {
             // 재사용 가능한 SoonCheckWidget
             SoonCheckWidget(
               bottom: (ScreenUtil().screenWidth / 1.w) - (140.w /1.w ), // 반응형 설정
-              left: (ScreenUtil().screenWidth / 2.w) - (380.w / 2.w), // 중앙 정렬을 위한 계산
+              left: (ScreenUtil().screenWidth / 2.w) - (300.w / 2.w), // 중앙 정렬을 위한 계산
             ),
           ],
         ),

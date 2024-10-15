@@ -5,25 +5,23 @@ class SoonCheckWidget extends StatelessWidget {
   final double bottom;
   final double left;
 
-  const SoonCheckWidget({super.key, required this.bottom, required this.left,});
+  const SoonCheckWidget({super.key, required this.bottom, required this.left});
 
   @override
   Widget build(BuildContext context) {
     return Stack(
-
       children: [
         // 첫 번째 텍스트 (외곽선)
         Positioned(
-
-          bottom: bottom.h, // 반응형 위치 설정
-          left: left+85.w, // 반응형 위치 설정
+          bottom: bottom.h,
+          left: left + 40.w, // 위치 조정
           child: Text(
             'Soon CHeck',
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
-              fontSize: 50.sp, // 반응형 폰트 크기 설정
+              fontSize: 50.sp,
               foreground: Paint()
                 ..style = PaintingStyle.stroke
-                ..strokeWidth = 6.w // 반응형 외곽선 두께
+                ..strokeWidth = 6.w
                 ..color = Theme.of(context).shadowColor,
               shadows: <Shadow>[
                 Shadow(
@@ -38,12 +36,12 @@ class SoonCheckWidget extends StatelessWidget {
 
         // 두 번째 텍스트 (채우기 색상)
         Positioned(
-          bottom: bottom.h, // 반응형 위치 설정
-          left:left+ 85.w, // 반응형 위치 설정
+          bottom: bottom.h,
+          left: left + 40.w, // 위치 조정
           child: Text(
             'Soon CHeck',
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
-              fontSize: 50.sp, // 반응형 폰트 크기 설정
+              fontSize: 50.sp,
               color: Theme.of(context).primaryColor,
             ),
           ),
@@ -51,12 +49,12 @@ class SoonCheckWidget extends StatelessWidget {
 
         // 가운데 일부 텍스트
         Positioned(
-          bottom: bottom.h, // 반응형 위치 설정
-          left: left+87.8.w, // 반응형 위치 설정
+          bottom: bottom.h,
+          left: left + 43.w, // 위치 조정
           child: Text(
             '  oon',
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
-              fontSize: 50.sp, // 반응형 폰트 크기 설정
+              fontSize: 50.sp,
               color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
@@ -64,12 +62,12 @@ class SoonCheckWidget extends StatelessWidget {
 
         // 오른쪽 일부 텍스트
         Positioned(
-          bottom: bottom.h, // 반응형 위치 설정
-          left:left+ 59.2.w, // 반응형 위치 설정
+          bottom: bottom.h,
+          left: left + 14.w, // 위치 조정
           child: Text(
             '                eck',
             style: Theme.of(context).textTheme.titleSmall?.copyWith(
-              fontSize: 50.sp, // 반응형 폰트 크기 설정
+              fontSize: 50.sp,
               color: Theme.of(context).colorScheme.onSurface,
             ),
           ),

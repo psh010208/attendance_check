@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../CurrentList/WaitingData.dart';
 import 'package:attendance_check/feature/Drawer/drawerScreen.dart';
+import 'package:attendance_check/feature/Home/homeScreen.dart';
 
 class ApproveWaitingList extends StatelessWidget {
   final String role;
@@ -12,15 +12,10 @@ class ApproveWaitingList extends StatelessWidget {
   Widget build(BuildContext context) {
     print("role: $role, id: $id");
 
-    return ScreenUtilInit(
-      designSize: Size(310, 690), // 기본 디자인 사이즈 설정
-      builder: (context, child) {
-        return MaterialApp(
+    return MaterialApp(
           home: Scaffold(
             body: WaitingStatus(role: role, id: id), // role과 id 전달
           ),
-        );
-      },
     );
   }
 }
@@ -44,16 +39,19 @@ class _WaitingStatusState extends State<WaitingStatus> {
 
   @override
   Widget build(BuildContext context) {
-    double screenHeight = 1.sh; // ScreenUtil에서 전체 높이 비율 사용
-    double screenWidth = 1.sw; // ScreenUtil에서 전체 너비 비율 사용
+    double screenHeight = 1; // ScreenUtil에서 전체 높이 비율 사용
+    double screenWidth = 1; // ScreenUtil에서 전체 너비 비율 사용
 
     print("Role in WaitingStatus: ${widget.role}, ID: ${widget.id}"); // 전달된 값 확인
 
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(45.h), // AppBar의 높이 설정
+        preferredSize: Size.fromHeight(45), // AppBar의 높이 설정
         child: AppBar(
-          backgroundColor: Color(0xffF8FAFD),
+          backgroundColor: Theme.of(context).colorScheme.surface,
+          iconTheme: IconThemeData(
+            color: Theme.of(context).colorScheme.surface,
+          ),
           title: Text(
             '승인 대기 명단',
             style: Theme.of(context).textTheme.titleMedium,
@@ -61,26 +59,24 @@ class _WaitingStatusState extends State<WaitingStatus> {
           centerTitle: true,
           elevation: 4,
           leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: Colors.black),
-            onPressed: () {
-              // 검색 기능 사용 후 뒤로가기 버튼 누르면 원래 데이터로 돌아가기
-              setState(() {
-                _data = List.from(_originalData);
-                _searchStudentNum = "";
-                _searchName = "";
-              });
-            },
-          ),
+              icon: Icon(Icons.arrow_back,
+                  color: Theme.of(context).colorScheme.onSurface),
+              onPressed: () {
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            HomeScreen(role: widget.role, id: widget.id)));
+              }),
           actions: [
             Builder(
               builder: (context) {
                 return IconButton(
                   icon: Icon(Icons.menu),
                   onPressed: () {
-                    // 드로어 열기
                     Scaffold.of(context).openEndDrawer();
                   },
-                  color: Colors.black, // 개별 아이콘 색상 명시적으로 설정
+                  color: Theme.of(context).colorScheme.onSurface,
                 );
               },
             ),
@@ -88,15 +84,12 @@ class _WaitingStatusState extends State<WaitingStatus> {
           shape: Border(
             bottom: BorderSide(
               color: Colors.grey,
-              width: 1.w,
+              width: 1,
             ),
           ),
         ),
       ),
-      endDrawer: DrawerScreen(
-        role: widget.role, // 역할 전달
-        id: widget.id,     // ID 전달
-      ),
+      endDrawer: DrawerScreen(role: widget.role, id: widget.id),
       body: _buildUI(screenHeight, screenWidth),
     );
   }
@@ -111,7 +104,7 @@ class _WaitingStatusState extends State<WaitingStatus> {
         child: FittedBox(
           fit: BoxFit.fitWidth,
           child: DataTable(
-            columnSpacing: 10.w, // 열 사이 간격
+            columnSpacing: 10, // 열 사이 간격
             columns: _createColumns(),
             rows: _createRows(screenHeight, screenWidth),
           ),
@@ -133,8 +126,8 @@ class _WaitingStatusState extends State<WaitingStatus> {
     return [
       DataColumn( //아이콘 자리(빈 column)
         label: Container(
-          width: 30.w,
-          height: 30.h,
+          width: 30,
+          height: 30,
           child: Row(
             children: [],
           ),
@@ -144,18 +137,18 @@ class _WaitingStatusState extends State<WaitingStatus> {
         label: GestureDetector(
           onTap: () => _showSearchDialog('사번'), // 학번 검색 다이얼로그
           child: Container(
-            width: 85.w,
-            height: 30.h,
+            width: 85,
+            height: 30,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(4.r),
+              borderRadius: BorderRadius.circular(4),
               color: Color(0xffE2E6EB),
             ),
             child: Row(
               children: [
-                SizedBox(width: 10.w),
-                Icon(Icons.search, size: 17.sp),
-                SizedBox(width: 6.w),
-                Text("사번", style: TextStyle(fontSize: 15.sp)),
+                SizedBox(width: 10),
+                Icon(Icons.search, size: 17),
+                SizedBox(width: 6),
+                Text("사번", style: TextStyle(fontSize: 15)),
               ],
             ),
           ),
@@ -165,18 +158,18 @@ class _WaitingStatusState extends State<WaitingStatus> {
         label: GestureDetector(
           onTap: () => _showSearchDialog('이름'), // 이름 검색 다이얼로그
           child: Container(
-            width: 75.w,
-            height: 30.h,
+            width: 75,
+            height: 30,
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(4.r),
+              borderRadius: BorderRadius.circular(4),
               color: Color(0xffE2E6EB),
             ),
             child: Row(
               children: [
-                SizedBox(width: 8.w),
-                Icon(Icons.search, size: 17.sp),
-                SizedBox(width: 6.w),
-                Text("이름", style: TextStyle(fontSize: 15.sp)),
+                SizedBox(width: 8),
+                Icon(Icons.search, size: 17),
+                SizedBox(width: 6),
+                Text("이름", style: TextStyle(fontSize: 15)),
               ],
             ),
           ),
@@ -184,17 +177,17 @@ class _WaitingStatusState extends State<WaitingStatus> {
       ),
       DataColumn(
         label: Container(
-          width: 98.w,
-          height: 30.h,
+          width: 98,
+          height: 30,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(4.r),
+            borderRadius: BorderRadius.circular(4),
             color: Color(0xffE2E6EB),
           ),
           child: Row(
             children: [
-              SizedBox(width: 3.w),
-              Icon(Icons.arrow_drop_down, size: 25.sp),
-              Text("승인 여부", style: TextStyle(fontSize: 15.sp)),
+              SizedBox(width: 3),
+              Icon(Icons.arrow_drop_down, size: 25),
+              Text("승인 여부", style: TextStyle(fontSize: 15)),
             ],
           ),
         ),
@@ -215,8 +208,8 @@ class _WaitingStatusState extends State<WaitingStatus> {
       ),
       DataColumn( //승인 버튼 자리(빈 column)
         label: Container(
-          width: 20.w,
-          height: 30.h,
+          width: 20,
+          height: 30,
           child: Row(
             children: [],
           ),
@@ -276,19 +269,19 @@ class _WaitingStatusState extends State<WaitingStatus> {
       return DataRow(
         cells: [
           DataCell(Row(children: [  //아이콘만
-            Icon(Icons.person, size: 17.sp),
+            Icon(Icons.person, size: 17),
           ])),
           DataCell(Row(children: [
-            SizedBox(width: 10.w),
-            Text(e.num, style: TextStyle(fontSize: 15.sp)),
+            SizedBox(width: 10),
+            Text(e.num, style: TextStyle(fontSize: 15)),
           ])),
           DataCell(Row(children: [
-            SizedBox(width: 15.w),
-            Text(e.name, style: TextStyle(fontSize: 15.sp)),
+            SizedBox(width: 15),
+            Text(e.name, style: TextStyle(fontSize: 15)),
           ])),
           DataCell(Row(children: [  //승인 여부를 문자열 Y와 N으로 출력
-            SizedBox(width: 40.w),
-            Text(e.approved ? 'Y' : 'N', style: TextStyle(fontSize: 15.sp)),
+            SizedBox(width: 40),
+            Text(e.approved ? 'Y' : 'N', style: TextStyle(fontSize: 15)),
           ])),
           DataCell(Row(children: [  //승인 버튼
             IconButton(
@@ -314,18 +307,18 @@ class _WaitingStatusState extends State<WaitingStatus> {
             width: MediaQuery.of(context).size.width * 0.8, // 화면의 80% 너비
             child: Text(
               "관리자로 승인하시겠습니까?",
-              style: TextStyle(fontSize: 18.sp, color: Colors.black),
+              style: TextStyle(fontSize: 18, color: Colors.black),
             ),
           ),
           actions: [
             TextButton(
-              child: Text("아니요", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.sp, color: Colors.black)),
+              child: Text("아니요", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: Colors.black)),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton( //"예"버튼 클릭하면 승인 처리(WaitingData.dart에 approved를 true로 바꿈)
-              child: Text("예", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17.sp, color: Colors.black)),
+              child: Text("예", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: Colors.black)),
               onPressed: () {
                 setState(() {
                   // 승인 처리 로직

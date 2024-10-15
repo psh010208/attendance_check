@@ -119,7 +119,7 @@ class _SignUpFormState extends State<SignUpForm> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Flexible(child: SoonCheckWidget(bottom: -5.h, left: -50.w)),
+                Flexible(child: SoonCheckWidget(bottom: -5.h, left: 5.w)),
 
                 SizedBox(height: _getRoleBasedSpacing()),
 

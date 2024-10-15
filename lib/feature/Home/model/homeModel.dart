@@ -1,13 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class Schedule {
   final String scheduleName;
   final String location;
   final String instructorName;
-  final Timestamp startTime;
-  final Timestamp endTime;
+  final DateTime startTime; // Timestamp 대신 DateTime으로 변경
+  final DateTime endTime;    // Timestamp 대신 DateTime으로 변경
 
   Schedule({
     required this.scheduleName,
@@ -23,29 +21,28 @@ class Schedule {
       scheduleName: data['schedule_name '] ?? '이름 없음', // Default if field is null
       location: data['location '] ?? '위치 없음', // Default if field is null
       instructorName: data['instructor_name '] ?? '교수 없음', // Default if field is null
-      startTime: data['start_time '] != null ? data['start_time '] as Timestamp : Timestamp.now(), // Handle null case
-      endTime: data['end_time '] != null ? data['end_time '] as Timestamp : Timestamp.now(), // Handle null case
+      startTime: (data['start_time '] as Timestamp).toDate(),  // Timestamp를 DateTime으로 변환
+      endTime: (data['end_time '] as Timestamp).toDate(),      // Timestamp를 DateTime으로 변환
     );
   }
+
   // Firestore로 데이터를 저장할 수 있도록 Schedule 객체를 Map으로 변환하는 메서드
   Map<String, dynamic> toFirestore() {
     return {
-      'schedule_name ': scheduleName,
-      'location ': location,
+      'schedule_name': scheduleName,
+      'location': location,
       'instructor_name': instructorName,
-      'start_time ': startTime,
-      'end_time ': endTime,
+      'start_time': Timestamp.fromDate(startTime), // DateTime을 Timestamp로 변환
+      'end_time': Timestamp.fromDate(endTime),     // DateTime을 Timestamp로 변환
     };
   }
-
 }
-
 class Attendance {
   String studentId;
   String scheduleId;
   bool check;
-  Timestamp checkInTime;
-  Timestamp checkOutTime;
+  DateTime checkInTime;  // DateTime으로 변경
+  DateTime checkOutTime; // DateTime으로 변경
   String qrInCode;
   String qrOutCode;
 
@@ -65,8 +62,8 @@ class Attendance {
       studentId: data['student_id'] ?? '',
       scheduleId: data['schedule_id'] ?? '',
       check: data['check'] ?? false,
-      checkInTime: (data['check_in_time']),
-      checkOutTime: (data['check_out_time'] ),
+      checkInTime: (data['check_in_time'] as Timestamp).toDate(),  // Timestamp -> DateTime 변환
+      checkOutTime: (data['check_out_time'] as Timestamp).toDate(), // Timestamp -> DateTime 변환
       qrInCode: data['qr_in_code'] ?? '',
       qrOutCode: data['qr_out_code'] ?? '',
     );
@@ -78,8 +75,8 @@ class Attendance {
       'student_id': studentId,
       'schedule_id': scheduleId,
       'check': check,
-      'check_in_time': checkInTime,
-      'check_out_time': checkOutTime,
+      'check_in_time': Timestamp.fromDate(checkInTime),  // DateTime -> Timestamp 변환
+      'check_out_time': Timestamp.fromDate(checkOutTime), // DateTime -> Timestamp 변환
       'qr_in_code': qrInCode,
       'qr_out_code': qrOutCode,
     };
