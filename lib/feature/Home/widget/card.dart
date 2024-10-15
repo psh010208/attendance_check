@@ -34,21 +34,20 @@ class _ScheduleCardState extends State<ScheduleCard> {
       Theme.of(context).colorScheme.secondary,
     ];
 
-    return Center(
-      child: Column(
-        children: [
-          Container(
-            height: isExpandedList.contains(true)
-                ? MediaQuery.of(context).size.height * 0.05
-                : MediaQuery.of(context).size.height * 0.25,
-          ),
-          Stack(
-            clipBehavior: Clip.none, // 카드가 영역을 벗어나도 잘리지 않도록 설정
-            alignment: Alignment.topCenter,
-            children: buildOverlappingCards(context, widget.schedules, barColors),
-          ),
-        ],
-      ),
+    return Column(
+      children: [
+        Container(
+
+          height: isExpandedList.contains(true)
+              ? MediaQuery.of(context).size.height * 0.05
+              : MediaQuery.of(context).size.height * 0.25,
+        ),
+        Stack(
+          clipBehavior: Clip.none, // 카드가 영역을 벗어나도 잘리지 않도록 설정
+          alignment: Alignment.topCenter,
+          children: buildOverlappingCards(context, widget.schedules, barColors),
+        ),
+      ],
     );
   }
 
@@ -62,8 +61,10 @@ class _ScheduleCardState extends State<ScheduleCard> {
   }
 
   Widget buildDraggableCard(Schedule schedule, int index, List<Color> barColors) {
+
     return GestureDetector(
       onVerticalDragUpdate: (details) {
+
         // 드래그할 때 카드 상태 업데이트
         if (isExpandedList.every((isExpanded) => isExpanded)) {
           if (details.delta.dy < -10 && index == widget.schedules.length - 1) {
