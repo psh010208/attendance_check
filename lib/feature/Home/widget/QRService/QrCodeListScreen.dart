@@ -1,10 +1,6 @@
-import 'dart:typed_data';
+import 'package:attendance_check/feature/Home/widget/QRService/widget/qr_code_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:qr_flutter/qr_flutter.dart';
-import 'package:path_provider/path_provider.dart';
-import 'dart:ui' as ui;
-import 'dart:io';
 
 class QrCodeListScreen extends StatefulWidget {
   @override
@@ -19,118 +15,71 @@ class _QrCodeListScreenState extends State<QrCodeListScreen> {
     return snapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
   }
 
-  Future<void> _saveQrCodeAsPng(String qrCode) async {
-    try {
-      final qrImage = await QrPainter(
-        data: qrCode,
-        version: QrVersions.auto,
-        gapless: false,
-        color: Colors.black,
-        emptyColor: Colors.white,
-      ).toImage(300);
-
-      final ByteData? byteData = await qrImage.toByteData(format: ui.ImageByteFormat.png);
-      final Uint8List pngBytes = byteData!.buffer.asUint8List();
-
-      final directory = await getApplicationDocumentsDirectory();
-      final filePath = '${directory.path}/qr_code_$qrCode.png';
-
-      final file = File(filePath);
-      await file.writeAsBytes(pngBytes);
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('QR 코드가 저장되었습니다: $filePath')),
-      );
-    } catch (e) {
-      print('QR 코드 저장 중 오류 발생: $e');
+  Widget _buildContent(AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
+    if (snapshot.connectionState == ConnectionState.waiting) {
+      return _buildLoading();  // 로딩 상태일 때
     }
+
+    if (snapshot.hasError) {
+      return _buildError();  // 오류가 발생했을 때
+    }
+
+    if (!snapshot.hasData || snapshot.data!.isEmpty) {
+      return _buildEmpty();  // 데이터가 없을 때
+    }
+
+    return _buildList(snapshot.data!);  // 데이터가 있을 때
   }
 
-  void _showQrCodeDialog(String qrCode) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          content: Container(
-            height: 300,
-            width: 300,
-            child: CustomPaint(
-              size: Size.square(300),
-              painter: QrPainter(
-                data: qrCode, // QR 코드 데이터를 QrImage 위젯으로 시각화
-                version: QrVersions.auto,
-                color: Colors.black,
-                emptyColor: Colors.white,
-                gapless: false,
-              ),
+  Widget _buildLoading() {
+    return Container(
+      alignment: Alignment.center,
+      child: CircularProgressIndicator(),
+    );
+  }
+
+  Widget _buildError() {
+    return Container(
+      alignment: Alignment.center,
+      child: Text('오류가 발생했습니다.'),
+    );
+  }
+
+  Widget _buildEmpty() {
+    return Container(
+      alignment: Alignment.center,
+      child: Text('일정이 없습니다.'),
+    );
+  }
+
+  Widget _buildList(List<Map<String, dynamic>> schedules) {
+    return SingleChildScrollView(
+      child: Column(
+        children: schedules.map((schedule) {
+          final qrCode = schedule['qr_code'] ?? 'N/A';
+
+          return Card(
+            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+
             ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text('닫기'),
+            child: QrCodeTile(
+              qrCode: qrCode,
+              scheduleName: schedule['schedule_name'] ?? '일정 이름 없음',
             ),
-          ],
-        );
-      },
+          );
+        }).toList(),
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('일정 QR 코드 목록')),
       body: FutureBuilder<List<Map<String, dynamic>>>(
         future: _fetchSchedules(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('오류가 발생했습니다.'));
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('일정이 없습니다.'));
-          }
-
-          final schedules = snapshot.data!;
-
-          return ListView.builder(
-            itemCount: schedules.length,
-            itemBuilder: (context, index) {
-              final schedule = schedules[index];
-              final qrCode = schedule['qr_code'] ?? 'N/A';
-
-              return Card(
-                margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: ListTile(
-                  onTap: () => _showQrCodeDialog(qrCode), // Tap to show larger QR code
-                  leading: Container(
-                    width: 50,
-                    height: 50,
-                    child: CustomPaint(
-                      size: Size.square(50),
-                      painter: QrPainter(
-                        data: qrCode, // QR 코드 데이터를 QrImage 위젯으로 시각화
-                        version: QrVersions.auto,
-                        color: Colors.black,
-                        emptyColor: Colors.white,
-                        gapless: false,
-                      ),
-                    ),
-                  ),
-                  title: Text(schedule['schedule_name'] ?? '일정 이름 없음'),
-                  subtitle: Text('QR 코드: $qrCode'),
-                  trailing: IconButton(
-                    icon: Icon(Icons.save_alt),
-                    onPressed: () => _saveQrCodeAsPng(qrCode),
-                  ),
-                ),
-              );
-            },
-          );
-        },
+        builder: (context, snapshot) => _buildContent(snapshot),
       ),
     );
   }

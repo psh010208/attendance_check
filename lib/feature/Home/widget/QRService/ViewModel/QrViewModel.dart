@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-Future<void> addOrUpdateAttendance(BuildContext context, String studentId, String qrCode) async {
+Future<void> addOrUpdateAttendance(String studentId, String qrCode) async {
   try {
     // schedules 컬렉션에서 QR 코드가 존재하는지 확인하고 schedule_name 가져오기
     QuerySnapshot scheduleSnapshot = await _firestore
@@ -49,9 +49,10 @@ Future<void> addOrUpdateAttendance(BuildContext context, String studentId, Strin
       } else {
         print('schedule_name이 존재하지 않습니다.');
       }
+      await _updateTotalAttendance(studentId);
     } else {
-      // QR 코드가 schedules 테이블에 없을 경우 다이얼로그를 띄움
-      _showAlertDialog(context, '일치하는 QR 코드를 찾을 수 없습니다.');
+      // QR 코드가 schedules 테이블에 없을 경우
+      print('해당 QR 코드를 찾을 수 없습니다.');
     }
   } catch (e) {
     print('출석 기록을 추가하거나 업데이트하는 중 에러가 발생했습니다: $e');
@@ -77,4 +78,43 @@ void _showAlertDialog(BuildContext context, String message) {
       );
     },
   );
+}
+
+
+Future<void> _updateTotalAttendance(String studentId) async {
+  try {
+    // attendance 테이블에서 student_id가 일치하는 기록을 가져옴
+    QuerySnapshot attendanceSnapshot = await _firestore
+        .collection('attendance')
+        .where('student_id', isEqualTo: studentId)
+        .limit(1)
+        .get();
+
+    if (attendanceSnapshot.docs.isNotEmpty) {
+      DocumentSnapshot attendanceDoc = attendanceSnapshot.docs.first;
+      List<dynamic> scheduleNames = attendanceDoc['schedule_names'] ?? [];
+
+      // attendance_summary 테이블에서 해당 student_id와 일치하는 문서를 찾음
+      QuerySnapshot summarySnapshot = await _firestore
+          .collection('attendance_summary')
+          .where('student_id', isEqualTo: studentId)
+          .limit(1)
+          .get();
+
+      if (summarySnapshot.docs.isNotEmpty) {
+        // 문서가 존재하면 해당 문서의 document ID로 업데이트
+        DocumentReference summaryDocRef = summarySnapshot.docs.first.reference;
+        await summaryDocRef.update({
+          'total_attendance': scheduleNames.length, // schedule_names 리스트의 길이를 total_attendance에 저장
+        });
+        print('attendance_summary의 total_attendance가 업데이트되었습니다.');
+      } else {
+        print('해당 student_id에 대한 attendance_summary 문서를 찾을 수 없습니다.');
+      }
+    } else {
+      print('해당 student_id로 출석 기록을 찾을 수 없습니다.');
+    }
+  } catch (e) {
+    print('attendance_summary 업데이트 중 오류 발생: $e');
+  }
 }
