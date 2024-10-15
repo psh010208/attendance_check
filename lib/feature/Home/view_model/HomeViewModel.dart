@@ -99,7 +99,7 @@ class ScheduleViewModel {
     });
   }
   Stream<List<Schedule>> getScheduleStream() {
-    return _firestore.collection('schedule')
+    return _firestore.collection('schedules')
         .snapshots()
         .map((snapshot) =>
         snapshot.docs.map((doc) => Schedule.fromFirestore(doc)).toList());
