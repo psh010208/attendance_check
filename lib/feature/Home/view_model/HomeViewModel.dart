@@ -82,7 +82,7 @@ class ScheduleViewModel {
 
     // Firestore에서 현재 일정 개수를 가져옴
     DocumentSnapshot<Map<String, dynamic>> scheduleDoc = await _firestore
-        .collection('scheduleMeta')
+        .collection('schedules')
         .doc('scheduleCountDoc')
         .get();
     int currentCount = scheduleDoc.data()?['scheduleCount'] ?? 0;
@@ -99,9 +99,7 @@ class ScheduleViewModel {
     });
   }
   Stream<List<Schedule>> getScheduleStream() {
-
     return _firestore.collection('schedules')
-
         .snapshots()
         .map((snapshot) =>
         snapshot.docs.map((doc) => Schedule.fromFirestore(doc)).toList());

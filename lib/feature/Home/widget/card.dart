@@ -111,8 +111,8 @@ class _ScheduleCardState extends State<ScheduleCard> {
     String formattedStartTime = DateFormat('HH:mm').format(schedule.startTime.toLocal());
     String formattedEndTime = DateFormat('HH:mm').format(schedule.endTime.toLocal());
     return Container(
-      width: cardWidth,
-      height: cardHeight,
+      width: cardWidth.w,
+      height: cardHeight.h,
       margin: EdgeInsets.symmetric(vertical: 20),
       child: Card(
         elevation: 15,
