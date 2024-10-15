@@ -124,7 +124,7 @@ class ParticipationButton extends StatelessWidget {
 
     return CommonButton(
       onPressed: () {
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(
             builder: (context) => ApproveWaitingList(
