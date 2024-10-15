@@ -19,7 +19,7 @@ class CurrentBar extends StatelessWidget {
       child: Column(
         children: [
           Text(
-            '출석 현황       $currentProgress / $totalProgress',
+            '        $currentProgress / $totalProgress',
             style: Theme.of(context).textTheme.titleSmall?.copyWith( // 굵게
               color: Theme.of(context).colorScheme.surface,
               fontWeight: FontWeight.bold,
