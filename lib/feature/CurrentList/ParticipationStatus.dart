@@ -289,7 +289,7 @@ class _StudentDataTableState extends State<ParticipationStatus> {
           ])),
           DataCell(Row(children: [
             SizedBox(width: 30),
-            Text(e.count, style: TextStyle(fontSize: 1)),
+            Text(e.count, style: TextStyle(fontSize: 13)),
             IconButton(
               icon: Icon(Icons.keyboard_arrow_down),
               onPressed: () {
