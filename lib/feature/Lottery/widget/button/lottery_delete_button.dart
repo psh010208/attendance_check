@@ -15,7 +15,7 @@ class LotteryDeleteButton extends StatelessWidget {
       child: Icon(CupertinoIcons.delete),
       style: ElevatedButton.styleFrom(
         backgroundColor: Theme.of(context).colorScheme.onSurface,
-        iconColor:Theme.of(context).colorScheme.surface,
+        iconColor:Theme.of(context).colorScheme.onInverseSurface,
         minimumSize: Size(55.w, 40.h),
         elevation: 4,
         shadowColor: Theme.of(context).colorScheme.onSurface.withOpacity(1),

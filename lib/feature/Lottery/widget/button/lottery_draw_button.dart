@@ -17,7 +17,7 @@ class LotteryDrawButton extends StatelessWidget {
           : Text('상품 추첨하기', style: TextStyle(fontSize: 16.sp)),
       style: ElevatedButton.styleFrom(
         backgroundColor: Theme.of(context).colorScheme.onSurface,
-        foregroundColor: Theme.of(context).colorScheme.surface,
+        iconColor:Theme.of(context).colorScheme.onInverseSurface,
         minimumSize: Size(200.w, 40.h),
         elevation: 4,
         shadowColor: Theme.of(context).colorScheme.onSurface.withOpacity(1),

@@ -29,7 +29,7 @@ class _LotteryView extends State<LotteryView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.surface,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         iconTheme: IconThemeData(
           color: Theme.of(context).colorScheme.surface,
         ),
