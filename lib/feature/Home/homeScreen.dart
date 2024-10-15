@@ -1,11 +1,12 @@
 import 'package:attendance_check/feature/Home/widget/Button/AnimationButton.dart';
-import 'package:attendance_check/feature/Home/widget/Button/button.dart';
+import 'package:attendance_check/feature/Home/widget/Button/QrButton.dart';
 import 'package:flutter/material.dart';
 import 'package:attendance_check/feature/Home/model/homeModel.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:attendance_check/feature/Home/view_model/HomeViewModel.dart';
 import 'package:attendance_check/feature/Drawer/drawerScreen.dart';
 import 'package:attendance_check/feature/Home/widget/card.dart'; // 카드 위젯 임포트
+import 'package:attendance_check/feature/Home/widget/Button/AddScheduleButton.dart'; // 카드 위젯 임포트
 
 class HomeScreen extends HookWidget {
   final String role;
@@ -40,6 +41,19 @@ class HomeScreen extends HookWidget {
           ),
         ),
         actions: [
+          if (role == '관리자') // role이 '관리자'일 때만 버튼 추가
+            Builder(
+              builder: (BuildContext context) {
+                return IconButton(
+                  icon: Icon(Icons.add, size: 25), // 일정 추가 아이콘
+                  onPressed: () {
+                    AddSchedule(context); // 일정 추가 다이얼로그 호출
+                  },
+                  color: Colors.black,
+                );
+              },
+            ),
+
           Builder(
             builder: (BuildContext context) {
               return IconButton(
