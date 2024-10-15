@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-Future<void> addOrUpdateAttendance(String studentId, String qrCode) async {
+Future<void> addOrUpdateAttendance(BuildContext context, String studentId, String qrCode) async {
   try {
     // schedules 컬렉션에서 QR 코드가 존재하는지 확인하고 schedule_name 가져오기
     QuerySnapshot scheduleSnapshot = await _firestore
@@ -50,10 +50,31 @@ Future<void> addOrUpdateAttendance(String studentId, String qrCode) async {
         print('schedule_name이 존재하지 않습니다.');
       }
     } else {
-      // QR 코드가 schedules 테이블에 없을 경우
-      print('해당 QR 코드를 찾을 수 없습니다.');
+      // QR 코드가 schedules 테이블에 없을 경우 다이얼로그를 띄움
+      _showAlertDialog(context, '일치하는 QR 코드를 찾을 수 없습니다.');
     }
   } catch (e) {
     print('출석 기록을 추가하거나 업데이트하는 중 에러가 발생했습니다: $e');
   }
+}
+
+// 다이얼로그를 띄우는 함수
+void _showAlertDialog(BuildContext context, String message) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text('오류'),
+        content: Text(message),
+        actions: <Widget>[
+          TextButton(
+            child: Text('확인'),
+            onPressed: () {
+              Navigator.of(context).pop(); // 다이얼로그 닫기
+            },
+          ),
+        ],
+      );
+    },
+  );
 }

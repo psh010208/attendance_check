@@ -1,5 +1,6 @@
 import 'package:attendance_check/feature/Home/widget/Button/AnimationButton.dart';
 import 'package:attendance_check/feature/Home/widget/Button/QrButton.dart';
+import 'package:attendance_check/feature/Home/widget/QRService/QrScanner.dart';
 import 'package:attendance_check/feature/Home/widget/SoonCheck.dart';
 import 'package:attendance_check/feature/Home/widget/card.dart';
 import 'package:flutter/material.dart';
@@ -95,9 +96,12 @@ class HomeScreen extends HookWidget {
                     clickedButtonColor: Theme.of(context).colorScheme.primary, // 클릭 시 버튼 색상
                     circularRadius: 50,
                     onTap: () {
-                      Navigator.of(context).push(
+
+                      // QrScanner로 이동하면서 student_id를 넘김
+                      Navigator.push(
+                        context,
                         MaterialPageRoute(
-                          builder: (context) => QRViewExample(),
+                          builder: (context) => QrScanner(studentId: id), // studentId 전달
                         ),
                       );
                     },

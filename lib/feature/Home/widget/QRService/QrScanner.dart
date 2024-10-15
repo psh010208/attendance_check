@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-// QR 코드 스캐너 화면 구현
+import 'ViewModel/QrViewModel.dart'; // Firestore를 사용하기 위한 import
+
 class QrScanner extends StatefulWidget {
+  final String studentId; // studentId를 전달받음
+
+  QrScanner({required this.studentId});
+
   @override
   State<StatefulWidget> createState() => _QrScannerState();
 }
@@ -15,7 +21,10 @@ class _QrScannerState extends State<QrScanner> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.studentId);
+
     return Scaffold(
+
       appBar: AppBar(title: Text('QR 스캐너')),
       body: Column(
         children: <Widget>[
@@ -38,23 +47,25 @@ class _QrScannerState extends State<QrScanner> {
       ),
     );
   }
+
   void _onQRViewCreated(QRViewController controller) {
     this.controller = controller;
-    controller.scannedDataStream.listen((scanData) {
-      if (!isScanned) {  // 중복 스캔 방지
+    controller.scannedDataStream.listen((scanData) async {
+      if (!isScanned) { // 중복 스캔 방지
         setState(() {
           result = scanData;
-          isScanned = true;  // 스캔 완료 플래그 설정
+          isScanned = true; // 스캔 완료 플래그 설정
         });
         controller.pauseCamera(); // 스캔 후 카메라 일시 중지
-        // 추가적으로 데이터를 처리하는 로직 (예: 서버로 전송, UI 업데이트 등)을 여기에 추가
+
+        // Firestore에 출석 정보를 추가/업데이트하는 함수 호출
+        await addOrUpdateAttendance(context,widget.studentId, result!.code!);
+
+        // Firestore 작업 후 카메라 재시작 (필요시)
+        // controller.resumeCamera(); // 필요하면 다시 카메라 재시작
       }
     });
   }
 
-  @override
-  void dispose() {
-    controller?.dispose();
-    super.dispose();
-  }
+
 }
