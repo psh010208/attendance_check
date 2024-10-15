@@ -1,14 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 
 import '../model/homeModel.dart';
 
 class AttendanceViewModel {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // 일정 추가
-  Future<void> addSchedule(Schedule schedule) async {
-    await _firestore.collection('schedules').add(schedule.toFirestore());
-  }
 
   // QR 코드 생성 (랜덤 값 예시)
   String generateQrCode() {
@@ -47,58 +44,64 @@ class AttendanceViewModel {
 
 }
 
+
 class ScheduleViewModel {
+  String scheduleName = '';
+  String location = '';
+  String instructorName = '강사 미정'; // 기본값 설정
+  DateTime? selectedDate;
+  TimeOfDay? startTime;
+  TimeOfDay? endTime;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  // Firestore에서 모든 일정 데이터를 가져오는 스트림
-  Stream<List<Schedule>> getSchedules() {
-    return _firestore.collection('schedules').snapshots().map((snapshot) {
-      // Firestore 데이터에서 각 문서를 Schedule 객체로 변환
-      return snapshot.docs.map((doc) {
-        return Schedule.fromFirestore(doc.data() as Map<String, dynamic>);
-      }).toList();
+
+  // 일정 정보를 Firestore에 추가하는 메서드
+  Future<void> addSchedule() async {
+    if (scheduleName.isEmpty ||
+        selectedDate == null ||
+        startTime == null ||
+        endTime == null ||
+        location.isEmpty) {
+      throw Exception('모든 필드를 입력해주세요.');
+    }
+
+    final startDateTime = DateTime(
+      selectedDate!.year,
+      selectedDate!.month,
+      selectedDate!.day,
+      startTime!.hour,
+      startTime!.minute,
+    );
+
+    final endDateTime = DateTime(
+      selectedDate!.year,
+      selectedDate!.month,
+      selectedDate!.day,
+      endTime!.hour,
+      endTime!.minute,
+    );
+
+    // Firestore에서 현재 일정 개수를 가져옴
+    DocumentSnapshot<Map<String, dynamic>> scheduleDoc = await _firestore
+        .collection('scheduleMeta')
+        .doc('scheduleCountDoc')
+        .get();
+
+    int currentCount = scheduleDoc.data()?['scheduleCount'] ?? 0;
+
+    // Firestore에 일정 추가
+    await _firestore.collection('schedules').add({
+      'schedule_name': scheduleName,
+      'location': location,
+      'instructor_name': instructorName,
+      'start_time': Timestamp.fromDate(startDateTime),
+      'end_time': Timestamp.fromDate(endDateTime),
+      'schedule_count': currentCount + 1,
     });
   }
-  // Firestore에서 일정 데이터를 스트림으로 가져오는 메서드
   Stream<List<Schedule>> getScheduleStream() {
-    return _firestore.collection('schedules').snapshots().map((snapshot) {
-      // 스냅샷을 List<Schedule>로 변환
-      return snapshot.docs.map((doc) {
-        final scheduleData = doc.data() as Map<String, dynamic>;
-        return Schedule.fromFirestore(scheduleData);
-      }).toList();
-    });
-  }
-
-  // Firestore에서 특정 일정 추가
-  Future<void> addSchedule(Schedule schedule) async {
-    try {
-      await _firestore.collection('schedules').add(schedule.toFirestore());
-    } catch (e) {
-      print('일정 추가 중 오류가 발생했습니다: $e');
-    }
-  }
-
-  // Firestore에서 특정 일정 삭제
-  Future<void> deleteSchedule(String scheduleId) async {
-    try {
-      // 해당 scheduleId로 문서 찾기
-      QuerySnapshot snapshot = await _firestore
-          .collection('schedules')
-          .where('schedules_id', isEqualTo: scheduleId)
-          .limit(1)
-          .get();
-
-      if (snapshot.docs.isNotEmpty) {
-        // 문서가 있으면 삭제
-        await snapshot.docs.first.reference.delete();
-        print('일정이 삭제되었습니다.');
-      } else {
-        print('해당 일정이 없습니다.');
-      }
-    } catch (e) {
-      print('일정 삭제 중 오류가 발생했습니다: $e');
-    }
+    return _firestore.collection('schedule')
+        .snapshots()
+        .map((snapshot) =>
+        snapshot.docs.map((doc) => Schedule.fromFirestore(doc)).toList());
   }
 }
-
-

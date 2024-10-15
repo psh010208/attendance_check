@@ -1,5 +1,6 @@
 import 'package:attendance_check/feature/Home/widget/Button/AnimationButton.dart';
 import 'package:attendance_check/feature/Home/widget/Button/QrButton.dart';
+import 'package:attendance_check/feature/Home/widget/SoonCheck.dart';
 import 'package:flutter/material.dart';
 import 'package:attendance_check/feature/Home/model/homeModel.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -32,12 +33,10 @@ class HomeScreen extends HookWidget {
             left: MediaQuery.of(context).size.width * 0.05,
             right: MediaQuery.of(context).size.width * 0.5,
           ),
-          child: Center(
-            child: Image.asset(
-              'assets/logo.png',
-              height: MediaQuery.of(context).size.height * 0.1,
-              fit: BoxFit.contain,
-            ),
+          child: Image.asset(
+            'assets/logo.png',
+            height: MediaQuery.of(context).size.height * 0.1,
+            fit: BoxFit.contain,
           ),
         ),
         elevation: 1,
@@ -74,8 +73,9 @@ class HomeScreen extends HookWidget {
       ),
       drawerScrimColor: Colors.black.withOpacity(0.5),
       body: SingleChildScrollView(
-        child: Column(
+        child: Stack(
           children: [
+            // SoonCheckWidget(bottom: 100, left: 50),
             // 일정 카드 표시
             buildScheduleCard(context),
 
