@@ -59,37 +59,44 @@ class _LotteryView extends State<LotteryView> {
       endDrawer: DrawerScreen(role: widget.role, id: widget.id),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
+        children: [// gif 박스
           // gif 박스
           Container(
             decoration: BoxDecoration(
-              border: Border.all(color: Color(0xff26539C), width: 5.w),
+              border: Border.all(
+                color: Theme.of(context).colorScheme.secondaryContainer,
+                width: 1.5.w,
+              ),
               boxShadow: [
                 BoxShadow(
-                  color:
-                      Theme.of(context).colorScheme.onSurface.withOpacity(0.4),
+                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5),
                   spreadRadius: 1.w,
                   blurRadius: 6.w,
                   offset: Offset(0, 3.h),
                 ),
               ],
+              borderRadius: BorderRadius.circular(150.w), // 동그란 모양 설정
             ),
-            width: 300.w,
-            height: 200.h,
-            child: isLoading
-                ? Image.asset(
-                    'assets/surprise.gif',
-                    fit: BoxFit.fill,
-                  )
-                : Image.asset(
-                    'assets/surprise.png',
-                    fit: BoxFit.fill,
-                  ),
+            width: 210.w,
+            height: 210.w, // 높이와 너비를 같게 설정하여 정원형으로 만들기
+            child: ClipOval(
+              child: isLoading
+                  ? Image.asset(
+                'assets/surprise.gif',
+                fit: BoxFit.cover, // 비율 유지하며 잘리도록 설정
+              )
+                  : Image.asset(
+                'assets/surprise.png',
+                fit: BoxFit.cover, // 비율 유지하며 잘리도록 설정
+              ),
+            ),
           ),
+
+
 
           // 학생 리스트 표시 부분
           Container(
-            height: 180.h,
+            height: 230.h,
             child: StreamBuilder<List<LotteryStudent>>(
               stream: _lotteryViewModel.getLotteryResults(),
               builder: (context, snapshot) {
@@ -99,11 +106,11 @@ class _LotteryView extends State<LotteryView> {
 
                 final students = snapshot.data!;
                 return Container(
-                  margin: EdgeInsets.fromLTRB(1.w, 0, 1.w, 0),
+                  margin: EdgeInsets.fromLTRB(5.w, 3, 3.w, 0),
                   decoration: BoxDecoration(
                     border: Border.all(
-                        color: Theme.of(context).colorScheme.onSurface,
-                        width: 0.5.w),
+                        color: Theme.of(context).splashColor,
+                        width: 0.6.w),
                   ),
                   child: SingleChildScrollView(
                     scrollDirection: Axis.vertical,
@@ -136,19 +143,19 @@ class _LotteryView extends State<LotteryView> {
   List<DataColumn> createColumns() {
     return [
       DataColumn(
-          label: Text(" 학과",
+          label: Text("         학과",
               style: TextStyle(
                   color: Theme.of(context).colorScheme.onSurface,
                   fontSize: 25.sp,
                   fontWeight: FontWeight.bold))),
       DataColumn(
-          label: Text("학번",
+          label: Text("       학번",
               style: TextStyle(
                   color: Theme.of(context).colorScheme.onSurface,
                   fontSize: 25.sp,
                   fontWeight: FontWeight.bold))),
       DataColumn(
-          label: Text("이름",
+          label: Text("    이름",
               style: TextStyle(
                   color: Theme.of(context).colorScheme.onSurface,
                   fontSize: 25.sp,
@@ -160,7 +167,7 @@ class _LotteryView extends State<LotteryView> {
                   fontSize: 25.sp,
                   fontWeight: FontWeight.bold))),
       DataColumn(
-          label: Text("삭제",
+          label: Text("",
               style: TextStyle(
                   color: Theme.of(context).colorScheme.onSurface,
                   fontSize: 25.sp,
@@ -173,6 +180,7 @@ class _LotteryView extends State<LotteryView> {
   List<DataRow> createRows(List<LotteryStudent> students) {
     return students.map((student) {
       return DataRow(
+
         cells: [
           DataCell(
             Container(
@@ -237,7 +245,7 @@ class _LotteryView extends State<LotteryView> {
                     backgroundColor: Theme.of(context).colorScheme.onSurface,
                     foregroundColor: Theme.of(context).colorScheme.surface,
                     minimumSize: Size(55.w, 40.h),
-                    elevation: 4,
+                    elevation: 4.sw,
                     shadowColor:
                         Theme.of(context).colorScheme.onSurface.withOpacity(1),
                     shape: RoundedRectangleBorder(
@@ -254,7 +262,7 @@ class _LotteryView extends State<LotteryView> {
                     backgroundColor: Theme.of(context).colorScheme.onSurface,
                     foregroundColor: Theme.of(context).colorScheme.surface,
                     minimumSize: Size(55.w, 40.h),
-                    elevation: 4,
+                    elevation: 4.sw,
                     shadowColor:
                         Theme.of(context).colorScheme.onSurface.withOpacity(1),
                     shape: RoundedRectangleBorder(
