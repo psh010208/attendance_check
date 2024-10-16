@@ -34,12 +34,12 @@ class HomeScreen extends HookWidget {
         flexibleSpace: Container(
           padding: EdgeInsets.only(
             top: MediaQuery.of(context).padding.top,
-            left: MediaQuery.of(context).size.width * 0.05,
-            right: MediaQuery.of(context).size.width * 0.5,
+            left: MediaQuery.of(context).size.width * 0.05.w,
+            right: MediaQuery.of(context).size.width * 0.5.w,
           ),
           child: Image.asset(
             'assets/logo.png',
-            height: MediaQuery.of(context).size.height * 0.1,
+            height: MediaQuery.of(context).size.height * 0.1.h,
             fit: BoxFit.contain,
           ),
         ),
