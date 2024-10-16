@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'feature/Home/widget/QRService/QrCodeListScreen.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
