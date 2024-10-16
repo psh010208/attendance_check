@@ -9,7 +9,6 @@ import 'widget/button/lottery_dialog_register_button.dart';
 import 'widget/button/lottery_dialog_redraw_button.dart';
 import 'widget/button/lottery_draw_button.dart';
 import 'package:attendance_check/feature/Drawer/drawerScreen.dart';
-import 'package:attendance_check/feature/Lottery/ViewModel/viewModel.dart';
 
 class LotteryView extends StatefulWidget {
   final String role;
