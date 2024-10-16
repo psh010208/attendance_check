@@ -106,9 +106,9 @@ class _DrawerScreenState extends State<DrawerScreen> {
                 id: widget.id,
               ),
               QrScreenButton( // 현황
-                onPressed: () {
-                },
-
+                onPressed: () {},
+                role: widget.role,
+                id: widget.id,
               ),
             ] else if (widget.role == '학부생') ...[
               FutureBuilder<int?>(
