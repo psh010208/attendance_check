@@ -1,8 +1,10 @@
+import 'package:attendance_check/feature/Drawer/model/AttendanceViewModel.dart';
 import 'package:attendance_check/feature/Home/homeScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:attendance_check/feature/Log/widget/LogInButton.dart'; // LogInButton 임포트
 import 'package:attendance_check/feature/Log/ViewModel/logViewModel.dart'; // LogViewModel 임포트
+import 'package:attendance_check/feature/Log/logPage.dart'; // LogInButton 임포트
 
 import '../../Home/widget/SoonCheck.dart';
 import '../Model/logModel.dart';
@@ -105,6 +107,7 @@ class _SignInFormState extends State<SignInForm> {
           key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisSize: MainAxisSize.min, // Column의 크기를 최소한으로 줄임
             children: [
               _buildHeaderWidget(),
               SizedBox(height: _selectedRole == '관리자' ? 100.h : 70.h),
@@ -117,6 +120,8 @@ class _SignInFormState extends State<SignInForm> {
               _buildStudentIdField(),
               SizedBox(height: 30.h),
               _buildLoginButton(),
+              //SizedBox(height: 10.h), // 로그인 버튼과 아래 텍스트 버튼 사이 간격
+              _buildSignUpPrompt(context), // 회원가입으로 전환하는 버튼 추가
               SizedBox(height: 50.h),
             ],
           ),
@@ -184,6 +189,26 @@ class _SignInFormState extends State<SignInForm> {
         child: LogInButton(
           onPressed: () => _submitForm(context),
           text: '로그인',
+        ),
+      ),
+    );
+  }
+
+  // '계정이 없으신가요?' 버튼을 빌드하는 함수
+  Widget _buildSignUpPrompt(BuildContext context) {
+    return TextButton(
+      onPressed: () {
+        // 회원가입 폼으로 이동하도록 logPage의 isLogin을 false로 변경
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => logPage(isLogin: false)),
+        );
+      },
+      child: Text(
+        '계정이 없으신가요? 회원가입',
+        style: TextStyle(
+          fontSize: 14.sp, // 텍스트 크기 반응형으로 설정
+          color: Theme.of(context).colorScheme.primary,
         ),
       ),
     );

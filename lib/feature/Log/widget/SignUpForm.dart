@@ -151,7 +151,11 @@ class _SignUpFormState extends State<SignUpForm> {
                   ),
                 ),
 
-                SizedBox(height: 130.h),
+                //SizedBox(height: 10.h), // 회원가입 버튼과 아래 텍스트 버튼 사이 간격
+
+                _buildSignInPrompt(context), // 로그인으로 전환하는 버튼 추가
+
+                SizedBox(height: 50.h),
               ],
             ),
           ),
@@ -159,7 +163,7 @@ class _SignUpFormState extends State<SignUpForm> {
       ),
     );
   }
-
+  
   // 역할 선택에 따라 간격 설정
   double _getRoleBasedSpacing() {
     return _selectedRole == '관리자' ? 100.h : 70.h;
@@ -211,4 +215,30 @@ class _SignUpFormState extends State<SignUpForm> {
       validator: (value) => value == null || value.isEmpty ? '$labelText을 입력하세요' : null,
     );
   }
+  
+  // '이미 계쩡이 있으신가요?' 버튼을 빌드하는 함수
+  Widget _buildSignInPrompt(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(top: 5.h), // 로그인 버튼 바로 아래 붙도록 여백을 최소화
+      child: Center(
+        child: TextButton(
+          onPressed: () {
+            // 로그인 폼으로 이동하도록 logPage의 isLogin을 false로 변경
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => logPage(isLogin: true)),
+            );
+          },
+          child: Text(
+            '이미 계정이 있으신가요? 로그인',
+            style: TextStyle(
+              fontSize: 16.sp, // 텍스트 크기 반응형으로 설정
+              color: Theme.of(context).colorScheme.primary,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
 }
