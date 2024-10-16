@@ -1,11 +1,14 @@
 import 'package:attendance_check/feature/Home/widget/Button/AnimationButton.dart';
 import 'package:attendance_check/feature/Home/widget/Button/QrButton.dart';
+import 'package:attendance_check/feature/Home/widget/QRService/QrScanner.dart';
+import 'package:attendance_check/feature/Home/widget/SoonCheck.dart';
+import 'package:attendance_check/feature/Home/widget/card.dart';
 import 'package:flutter/material.dart';
 import 'package:attendance_check/feature/Home/model/homeModel.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:attendance_check/feature/Home/view_model/HomeViewModel.dart';
 import 'package:attendance_check/feature/Drawer/drawerScreen.dart';
-import 'package:attendance_check/feature/Home/widget/card.dart'; // 카드 위젯 임포트
+import 'package:attendance_check/feature/Home/widget/Card/Schedule_card.dart'; // 카드 위젯 임포트
 import 'package:attendance_check/feature/Home/widget/Button/AddScheduleButton.dart'; // 카드 위젯 임포트
 
 class HomeScreen extends HookWidget {
@@ -17,27 +20,24 @@ class HomeScreen extends HookWidget {
     required this.id,
   });
 
-  final qrCodeScanner Scanner = qrCodeScanner(); // QR 코드 스캐너 인스턴스 생성
   ScheduleViewModel scheduleViewModel = ScheduleViewModel(); // ViewModel 선언
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        iconTheme: IconThemeData(color: Colors.black),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         flexibleSpace: Container(
           padding: EdgeInsets.only(
             top: MediaQuery.of(context).padding.top,
             left: MediaQuery.of(context).size.width * 0.05,
             right: MediaQuery.of(context).size.width * 0.5,
           ),
-          child: Center(
-            child: Image.asset(
-              'assets/logo.png',
-              height: MediaQuery.of(context).size.height * 0.1,
-              fit: BoxFit.contain,
-            ),
+          child: Image.asset(
+            'assets/logo.png',
+            height: MediaQuery.of(context).size.height * 0.1,
+            fit: BoxFit.contain,
           ),
         ),
         elevation: 1,
@@ -50,11 +50,10 @@ class HomeScreen extends HookWidget {
                   onPressed: () {
                     AddSchedule(context); // 일정 추가 다이얼로그 호출
                   },
-                  color: Colors.black,
+                  color: Theme.of(context).iconTheme.color,
                 );
               },
             ),
-
           Builder(
             builder: (BuildContext context) {
               return IconButton(
@@ -62,7 +61,7 @@ class HomeScreen extends HookWidget {
                 onPressed: () {
                   Scaffold.of(context).openEndDrawer();
                 },
-                color: Colors.black,
+                color: Theme.of(context).iconTheme.color, // 테마에 따라 아이콘 색상 설정
               );
             },
           ),
@@ -74,30 +73,42 @@ class HomeScreen extends HookWidget {
       ),
       drawerScrimColor: Colors.black.withOpacity(0.5),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            // 일정 카드 표시
-            buildScheduleCard(context),
+        child: SizedBox(
+          width: 500,
+          height: 500,
+          child: Stack(
+            children: [
+              SoonCheckWidget(bottom: 400, left: 45),
+              // 일정 카드 표시
+              buildScheduleCard(context),
 
-            // '학부생' 역할인 경우 QR 코드 스캐너 애니메이션 버튼 추가
-            if (role == '학부생')
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: animationButton(
-                  icon: Icons.qr_code_scanner, // QR 코드 아이콘 직접 사용
-                  iconSize: 40, // 아이콘 크기 설정
-                  iconColor: Theme.of(context).colorScheme.scrim, // 아이콘 색상 설정
-                  defaultSize: const Offset(80, 80), // 버튼 기본 크기 설정
-                  clickedSize: const Offset(70, 70), // 버튼 클릭 시 크기
-                  defaultButtonColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.1), // 버튼 색상
-                  clickedButtonColor: Theme.of(context).colorScheme.primary, // 클릭 시 버튼 색상
-                  circularRadius: 50,
-                  onTap: () {
-                    // QR 코드 스캔 시작 (기능 추가 필요)
-                  },
+              // '학부생' 역할인 경우 QR 코드 스캐너 애니메이션 버튼 추가
+              if (role == '학부생')
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: animationButton(
+                    icon: Icons.qr_code_scanner, // QR 코드 아이콘 직접 사용
+                    iconSize: 40, // 아이콘 크기 설정
+                    iconColor: Theme.of(context).colorScheme.scrim, // 아이콘 색상 설정
+                    defaultSize: const Offset(80, 80), // 버튼 기본 크기 설정
+                    clickedSize: const Offset(70, 70), // 버튼 클릭 시 크기
+                    defaultButtonColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.1), // 버튼 색상
+                    clickedButtonColor: Theme.of(context).colorScheme.primary, // 클릭 시 버튼 색상
+                    circularRadius: 50,
+                    onTap: () {
+
+                      // QrScanner로 이동하면서 student_id를 넘김
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => QrScanner(studentId: id), // studentId 전달
+                        ),
+                      );
+                    },
+                  ),
                 ),
-              ),
-          ],
+            ],
+          ),
         ),
       ),
     );

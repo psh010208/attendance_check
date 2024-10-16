@@ -1,3 +1,4 @@
+import 'package:attendance_check/feature/Home/widget/QRService/QrCodeListScreen.dart';
 import 'package:attendance_check/feature/Log/widget/SignUpForm.dart';
 import 'package:flutter/material.dart';
 import 'package:attendance_check/feature/Log/logPage.dart';
@@ -5,9 +6,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:attendance_check/feature/Drawer/widget/IdText.dart';
 import 'package:attendance_check/feature/Lottery/lottery_view.dart';
 import 'package:attendance_check/feature/CurrentList/ParticipationStatus.dart';
-
-import '../../CurrentList/ApproveWaitingList.dart';
-
 import '../../CurrentList/ApproveWaitingList.dart';
 
 class CommonButton extends StatelessWidget {
@@ -46,7 +44,7 @@ class CommonButton extends StatelessWidget {
           children: [
             Icon(
               icon,
-              color: Colors.white,
+              color: Theme.of(context).dialogBackgroundColor,
               size: iconSize,
             ),
             SizedBox(width: 10),
@@ -124,7 +122,7 @@ class ParticipationButton extends StatelessWidget {
 
     return CommonButton(
       onPressed: () {
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
           MaterialPageRoute(
             builder: (context) => ApproveWaitingList(
@@ -167,7 +165,7 @@ class CurrentButton extends StatelessWidget {
         );
       },
       icon: Icons.table_view, // 출석 현황에 적합한 아이콘 추가
-      text: '출석 현황',
+      text: '참여 학생 현황',
       iconSize: 33.sp,
       textSize: 23.sp,
       top: 330.h,
@@ -186,9 +184,6 @@ class RaffleButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(role);
-    print(id);
-
     return CommonButton(
       onPressed: () {
         Navigator.pushReplacement(
@@ -258,3 +253,35 @@ class Logo extends StatelessWidget {
     );
   }
 }
+
+
+// 상품 추첨 버튼
+class QrScreenButton extends StatelessWidget {
+  final VoidCallback onPressed;
+
+  QrScreenButton({required this.onPressed});
+
+
+  @override
+  Widget build(BuildContext context) {
+    return CommonButton(
+      onPressed: () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => QrCodeListScreen(
+             
+            ),
+          ),
+        );
+      },
+      icon: Icons.qr_code_2,
+      text: 'QR코드 확인',
+      iconSize: 33.sp,
+      textSize: 23.sp,
+      top: 490.h,
+      left: 10.w,
+    );
+  }
+}
+

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 //qwe
 import '../model/homeModel.dart';
 import '../view_model/HomeViewModel.dart';
 
 class ScheduleCard extends StatefulWidget {
+  ScheduleViewModel scheduleViewModel = ScheduleViewModel(); // ViewModel 선언
+
   final List<Schedule> schedules;
 
   ScheduleCard({required this.schedules});
@@ -14,7 +17,6 @@ class ScheduleCard extends StatefulWidget {
 }
 
 class _ScheduleCardState extends State<ScheduleCard> {
-  ScheduleViewModel scheduleViewModel = ScheduleViewModel(); // ViewModel 선언
   late List<bool> isExpandedList;
 
   @override
@@ -32,21 +34,20 @@ class _ScheduleCardState extends State<ScheduleCard> {
       Theme.of(context).colorScheme.secondary,
     ];
 
-    return Center(
-      child: Column(
-        children: [
-          Container(
-            height: isExpandedList.contains(true)
-                ? MediaQuery.of(context).size.height * 0.05
-                : MediaQuery.of(context).size.height * 0.25,
-          ),
-          Stack(
-            clipBehavior: Clip.none, // 카드가 영역을 벗어나도 잘리지 않도록 설정
-            alignment: Alignment.topCenter,
-            children: buildOverlappingCards(context, widget.schedules, barColors),
-          ),
-        ],
-      ),
+    return Column(
+      children: [
+        Container(
+
+          height: isExpandedList.contains(true)
+              ? MediaQuery.of(context).size.height * 0.05
+              : MediaQuery.of(context).size.height * 0.25,
+        ),
+        Stack(
+          clipBehavior: Clip.none, // 카드가 영역을 벗어나도 잘리지 않도록 설정
+          alignment: Alignment.topCenter,
+          children: buildOverlappingCards(context, widget.schedules, barColors),
+        ),
+      ],
     );
   }
 
@@ -60,8 +61,10 @@ class _ScheduleCardState extends State<ScheduleCard> {
   }
 
   Widget buildDraggableCard(Schedule schedule, int index, List<Color> barColors) {
+
     return GestureDetector(
       onVerticalDragUpdate: (details) {
+
         // 드래그할 때 카드 상태 업데이트
         if (isExpandedList.every((isExpanded) => isExpanded)) {
           if (details.delta.dy < -10 && index == widget.schedules.length - 1) {
@@ -81,23 +84,8 @@ class _ScheduleCardState extends State<ScheduleCard> {
         clipBehavior: Clip.none, // Stack에서 자르지 않도록 설정
         children: [
           // 이미지 배치
-          Positioned(
-            top: -130.h, // 카드 위로 이미지 배치
-            left: 0.w,
-            right: 0.w,
-            child: Opacity(
-              opacity: isExpandedList[index] ? 0 : 1, // 카드가 펼쳐지면 이미지가 사라지도록 설정
-              child: Container(
-                height: 80.h,
-                child: Image.asset(
-                  Theme.of(context).brightness == Brightness.dark
-                      ? 'assets/dark_ver.png'  // 다크 모드 이미지
-                      : 'assets/light_ver.png', // 라이트 모드 이미지
-                  fit: BoxFit.contain, // 이미지가 화면에 맞게 조절되도록 설정
-                ),
-              ),
-            ),
-          ),
+
+
           AnimatedContainer(
             duration: Duration(milliseconds: 500),
             curve: Curves.easeInOut,
@@ -120,12 +108,12 @@ class _ScheduleCardState extends State<ScheduleCard> {
     double borderRadiusValue = 10.0; // 카드의 모서리 둥글기 값을 설정
 
     // 시간 포맷팅
-    //String formattedStartTime = schedule.startTime.toDate().toLocal().toString().split(' ')[1].substring(0, 5);
-   // String formattedEndTime = schedule.endTime.toDate().toLocal().toString().split(' ')[1].substring(0, 5);
-
+    // 시간 포맷팅 (DateFormat 사용)
+    String formattedStartTime = DateFormat('HH:mm').format(schedule.startTime.toLocal());
+    String formattedEndTime = DateFormat('HH:mm').format(schedule.endTime.toLocal());
     return Container(
-      width: cardWidth,
-      height: cardHeight,
+      width: cardWidth.w,
+      height: cardHeight.h,
       margin: EdgeInsets.symmetric(vertical: 20),
       child: Card(
         elevation: 15,
@@ -164,13 +152,14 @@ class _ScheduleCardState extends State<ScheduleCard> {
                             ),
                           ),
                           SizedBox(width: 20.w),
-                          // Text(
-                          //   "$formattedStartTime - $formattedEndTime",
-                          //   style: TextStyle(
-                          //     fontSize: 16.sp,
-                          //     fontWeight: FontWeight.bold,
-                          //   ),
-                          // ),
+                          Text(
+                            "$formattedStartTime - $formattedEndTime",
+                            style: TextStyle(
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+
                         ],
                       ),
                     ),

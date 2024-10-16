@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'feature/Home/widget/QRService/QrCodeListScreen.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -63,10 +65,12 @@ class MyApp extends StatelessWidget {
               titleSmall: TextStyle(fontFamily: "Abel-Regular"),
             ),
             // 다크 모드에서 배경 및 서피스 색상 설정
-            background: Colors.black, // 다크 모드 배경색
-            surface: Colors.grey[900]!, // 다크 모드 서피스 색상
+            background: Theme.of(context).colorScheme.surface, // 다크 모드 배경색
+            surface: Theme.of(context).colorScheme.surface, // 다크 모드 서피스 색상
           ),
-          themeMode: ThemeMode.light,
+          themeMode: ThemeMode.light
+
+          ,
         );
       },
 

@@ -1,6 +1,8 @@
+import 'package:attendance_check/feature/Drawer/model/SchedulesModel.dart';
 import 'package:attendance_check/feature/Drawer/widget/IdText.dart';
 import 'package:attendance_check/feature/Drawer/widget/button.dart';
 import 'package:attendance_check/feature/Drawer/widget/currentBar.dart';
+import 'package:attendance_check/feature/Home/widget/QRService/QrCodeListScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'model/AttendanceViewModel.dart';
@@ -19,10 +21,11 @@ class DrawerScreen extends StatefulWidget {
 }
 
 class _DrawerScreenState extends State<DrawerScreen> {
+  AttendanceViewModel viewModel = AttendanceViewModel(); // ViewModel 인스턴스 생성
+  ScheduleViewModel scheduleViewModel = ScheduleViewModel(); // 일정 ViewModel 생성
+
   @override
   Widget build(BuildContext context) {
-    AttendanceViewModel viewModel = AttendanceViewModel(); // ViewModel 인스턴스 생성
-
     return Drawer(
       backgroundColor: Theme.of(context).primaryColorDark,
       child: Stack(
@@ -53,8 +56,8 @@ class _DrawerScreenState extends State<DrawerScreen> {
                       top: 78.h, // 반응형 높이 설정
                       left: 94.w,
                       child: CustomText(
-                          id: widget.role,
-                          size: 30.w // 역할 표시
+                        id: widget.role,
+                        size: 30.w, // 역할 표시
                       ),
                     ),
                   Align(
@@ -85,18 +88,24 @@ class _DrawerScreenState extends State<DrawerScreen> {
           ),
           if (widget.role == '관리자') ...[
             ParticipationButton( //참여 학생
-              onPressed: () {
-              },role: widget.role,
+              onPressed: () {},
+              role: widget.role,
               id: widget.id,
             ),
             CurrentButton( // 현황
-              onPressed: () {
-              },role: widget.role,
-            id: widget.id,
+              onPressed: () {},
+              role: widget.role,
+              id: widget.id,
             ),
             RaffleButton( //추첨
-              onPressed: () {},role: widget.role,
+              onPressed: () {},
+              role: widget.role,
               id: widget.id,
+            ),
+            QrScreenButton( // 현황
+              onPressed: () {
+                },
+
             ),
           ] else if (widget.role == '학부생') ...[
             FutureBuilder<int?>(
@@ -108,14 +117,29 @@ class _DrawerScreenState extends State<DrawerScreen> {
                   return Text('Error: ${snapshot.error}');
                 } else if (snapshot.hasData) {
                   int currentProgress = snapshot.data ?? 0; // Firestore에서 가져온 출석 데이터
-                  int totalProgress = 9; // 총 출석 가능 횟수
 
-                  return CurrentBar(
-                    currentProgress: currentProgress, // Firestore 값 반영
-                    totalProgress: totalProgress,
+                  // StreamBuilder로 일정 데이터에서 totalProgress 가져오기
+                  return StreamBuilder<List<Schedule>>(
+                    stream: scheduleViewModel.getScheduleStream(), // 일정 스트림을 구독
+                    builder: (context, scheduleSnapshot) {
+                      if (scheduleSnapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator(); // 로딩 상태 표시
+                      } else if (scheduleSnapshot.hasError) {
+                        return Text('Error: ${scheduleSnapshot.error}');
+                      } else if (scheduleSnapshot.hasData) {
+                        int totalProgress = scheduleSnapshot.data!.length; // 일정 수를 총 출석 가능 횟수로 사용
+
+                        return CurrentBar(
+                          currentProgress: currentProgress, // Firestore 출석 값 반영
+                          totalProgress: totalProgress, // Firestore 일정 수 반영
+                        );
+                      } else {
+                        return Text('No schedule data available');
+                      }
+                    },
                   );
                 } else {
-                  return Text('No data available');
+                  return Text('No attendance data available');
                 }
               },
             ),
