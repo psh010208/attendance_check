@@ -37,7 +37,7 @@ class _StudentDataTableState extends State<ParticipationStatus> {
         elevation: 1,
         leading: IconButton(
             icon: Icon(Icons.arrow_back,
-                color: Theme.of(context).colorScheme.onSurface),
+                color: Theme.of(context).iconTheme.color),
             onPressed: () {
               Navigator.pushReplacement(
                   context,
@@ -53,7 +53,7 @@ class _StudentDataTableState extends State<ParticipationStatus> {
                 onPressed: () {
                   Scaffold.of(context).openEndDrawer();
                 },
-                color: Theme.of(context).colorScheme.onSurface,
+                color: Theme.of(context).iconTheme.color,
               );
             },
           ),
