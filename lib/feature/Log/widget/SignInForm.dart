@@ -145,7 +145,7 @@ class _SignInFormState extends State<SignInForm> {
   // 헤더 위젯 빌드 함수
   Widget _buildHeaderWidget() {
     return Flexible(
-        child: SoonCheckWidget(bottom: -5.h, left: -10.w)
+        child: SoonCheckWidget(bottom: -5.h, left: 0.w)
     );
   }
 

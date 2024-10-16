@@ -29,7 +29,7 @@ class CustomDropdownFormField extends StatelessWidget {
             fontSize: 19.sp, // 반응형 폰트 크기
           ),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0), // 둥근 테두리
+            borderRadius: BorderRadius.circular(10.0.r), // 둥근 테두리
             borderSide: BorderSide(
               color: Theme.of(context).colorScheme.primary,
               width: 2.0.w, // 테두리 두께
@@ -38,7 +38,7 @@ class CustomDropdownFormField extends StatelessWidget {
         ),
         value: value,
         dropdownColor: Theme.of(context).colorScheme.onInverseSurface,
-        borderRadius: BorderRadius.circular(10.0), // 둥근 테두리
+        borderRadius: BorderRadius.circular(10.0.r), // 둥근 테두리
         isExpanded: true,  // Dropdown 선택 항목이 잘리지 않도록 확장
         items: items.map((item) {
           return DropdownMenuItem(

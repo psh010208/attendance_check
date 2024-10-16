@@ -24,7 +24,7 @@ class LogUpButton extends StatelessWidget {
       style: ElevatedButton.styleFrom(
         backgroundColor: Theme.of(context).colorScheme.onSurfaceVariant,
         minimumSize: Size(190.w, 50.h), // 반응형 크기
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r)),
       ),
     );
   }

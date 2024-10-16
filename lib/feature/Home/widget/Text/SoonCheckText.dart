@@ -18,8 +18,8 @@ class SoonCheckTextWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      bottom: bottom.h, // 전달받은 bottom 값을 사용
-      left: left.w,     // 전달받은 left 값을 사용
+      bottom: bottom, // 전달받은 bottom 값을 사용
+      left: left,     // 전달받은 left 값을 사용
       child: Text(
         text,
         style: style,

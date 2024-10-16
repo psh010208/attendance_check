@@ -27,20 +27,20 @@ class ScheduleCardInfo extends StatelessWidget {
     var screenHeight = MediaQuery.of(context).size.height;
     return Container(
       //color: Theme.of(context).scaffoldBackgroundColor,
-      padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 15.w),
+      padding: EdgeInsets.symmetric(vertical: 0.h, horizontal: 15.w),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           // 상단 수업 이름 부분
           Container(
             height: 40.h,
-            padding: EdgeInsets.symmetric(horizontal: 10),
+            padding: EdgeInsets.symmetric(horizontal: 10.w),
             color: Theme.of(context).scaffoldBackgroundColor,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Padding(
-                  padding: EdgeInsets.only(left: 30.w), // 왼쪽에 50픽셀만큼 공간 추가
+                  padding: EdgeInsets.only(left: 20.w), // 왼쪽에 50픽셀만큼 공간 추가
                   child: CustomText(
                     id: schedule.scheduleName.isNotEmpty
                         ? schedule.scheduleName
@@ -66,7 +66,7 @@ class ScheduleCardInfo extends StatelessWidget {
           // 구분선 (카드 끝까지)
           Container(
             height: 2.h, // 직접 높이 설정
-            margin: EdgeInsets.symmetric(vertical: 0.0), // 위아래 여백 조정
+            margin: EdgeInsets.symmetric(vertical: 0.0.h), // 위아래 여백 조정
             child: Divider(
               color: Theme.of(context).colorScheme.onSurface.withOpacity(0.2), // 색상 설정
               thickness: 2.w, // 두께 설정
