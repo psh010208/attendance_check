@@ -14,11 +14,11 @@ class LotteryDrawButton extends StatelessWidget {
       onPressed: isLoading ? null : onPressed,
       child: isLoading
           ? CircularProgressIndicator(color: Theme.of(context).colorScheme.surface)
-          : Text('상품 추첨하기', style: TextStyle(fontSize: 16.sp)),
+          : Text('상품 추첨하기', style: TextStyle(fontSize: 19.sp)),
       style: ElevatedButton.styleFrom(
         backgroundColor: Theme.of(context).colorScheme.onSurface,
         iconColor:Theme.of(context).colorScheme.onInverseSurface,
-        minimumSize: Size(200.w, 40.h),
+        minimumSize: Size(200.w, 50.h),
         elevation: 4,
         shadowColor: Theme.of(context).colorScheme.onSurface.withOpacity(1),
         shape: RoundedRectangleBorder(

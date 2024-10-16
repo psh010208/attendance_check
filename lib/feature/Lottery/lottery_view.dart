@@ -67,7 +67,8 @@ class _LotteryView extends State<LotteryView> {
               border: Border.all(color: Color(0xff26539C), width: 5.w),
               boxShadow: [
                 BoxShadow(
-                  color: Theme.of(context).colorScheme.onSurface.withOpacity(0.4),
+                  color:
+                      Theme.of(context).colorScheme.onSurface.withOpacity(0.4),
                   spreadRadius: 1.w,
                   blurRadius: 6.w,
                   offset: Offset(0, 3.h),
@@ -78,18 +79,18 @@ class _LotteryView extends State<LotteryView> {
             height: 200.h,
             child: isLoading
                 ? Image.asset(
-              'assets/surprise.gif',
-              fit: BoxFit.fill,
-            )
+                    'assets/surprise.gif',
+                    fit: BoxFit.fill,
+                  )
                 : Image.asset(
-              'assets/surprise.png',
-              fit: BoxFit.fill,
-            ),
+                    'assets/surprise.png',
+                    fit: BoxFit.fill,
+                  ),
           ),
 
           // 학생 리스트 표시 부분
           Container(
-            height: 200.h,
+            height: 180.h,
             child: StreamBuilder<List<LotteryStudent>>(
               stream: _lotteryViewModel.getLotteryResults(),
               builder: (context, snapshot) {
@@ -99,14 +100,16 @@ class _LotteryView extends State<LotteryView> {
 
                 final students = snapshot.data!;
                 return Container(
-                  margin: EdgeInsets.fromLTRB(3.w, 0, 3.w, 0),
+                  margin: EdgeInsets.fromLTRB(1.w, 0, 1.w, 0),
                   decoration: BoxDecoration(
-                    border: Border.all(color: Theme.of(context).colorScheme.onSurface, width: 0.5.w),
+                    border: Border.all(
+                        color: Theme.of(context).colorScheme.onSurface,
+                        width: 0.5.w),
                   ),
                   child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.vertical,
+                    scrollDirection: Axis.vertical,
+                    child: FittedBox(
+                      fit: BoxFit.fitWidth,
                       child: DataTable(
                         columns: createColumns(),
                         rows: createRows(students),
@@ -134,34 +137,34 @@ class _LotteryView extends State<LotteryView> {
   List<DataColumn> createColumns() {
     return [
       DataColumn(
-          label: Text("학과",
+          label: Text(" 학과",
               style: TextStyle(
                   color: Theme.of(context).colorScheme.onSurface,
-                  fontSize: 19.sp,
+                  fontSize: 25.sp,
                   fontWeight: FontWeight.bold))),
       DataColumn(
           label: Text("학번",
               style: TextStyle(
                   color: Theme.of(context).colorScheme.onSurface,
-                  fontSize: 19.sp,
+                  fontSize: 25.sp,
                   fontWeight: FontWeight.bold))),
       DataColumn(
           label: Text("이름",
               style: TextStyle(
                   color: Theme.of(context).colorScheme.onSurface,
-                  fontSize: 19.sp,
+                  fontSize: 25.sp,
                   fontWeight: FontWeight.bold))),
       DataColumn(
           label: Text("참여 횟수",
               style: TextStyle(
                   color: Theme.of(context).colorScheme.onSurface,
-                  fontSize: 19.sp,
+                  fontSize: 25.sp,
                   fontWeight: FontWeight.bold))),
       DataColumn(
           label: Text("삭제",
               style: TextStyle(
                   color: Theme.of(context).colorScheme.onSurface,
-                  fontSize: 19.sp,
+                  fontSize: 25.sp,
                   fontWeight: FontWeight.bold))),
       // 삭제 열 추가
     ];
@@ -175,25 +178,25 @@ class _LotteryView extends State<LotteryView> {
           DataCell(
             Container(
               alignment: Alignment.center, // 중앙 정렬
-              child: Text(student.department),
+              child: Text(student.department, style: TextStyle(fontSize: 28.sp)),
             ),
           ),
           DataCell(
             Container(
               alignment: Alignment.center, // 중앙 정렬
-              child: Text(student.studentId),
+              child: Text(student.studentId, style: TextStyle(fontSize: 28.sp)),
             ),
           ),
           DataCell(
             Container(
               alignment: Alignment.center, // 중앙 정렬
-              child: Text(student.name),
+              child: Text(student.name, style: TextStyle(fontSize: 28.sp)),
             ),
           ),
           DataCell(
             Container(
               alignment: Alignment.center, // 중앙 정렬
-              child: Text(student.attendanceCount.toString()),
+              child: Text(student.attendanceCount.toString(), style: TextStyle(fontSize: 28.sp)),
             ),
           ),
           DataCell(
@@ -219,50 +222,50 @@ class _LotteryView extends State<LotteryView> {
   // 삭제 확인 다이얼로그
   Future<bool> _showConfirmationDialog(BuildContext context) async {
     return await showDialog<bool>(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text('삭제 확인'),
-          content: Text('정말로 삭제하시겠습니까?'),
-          actions: [
-            TextButton(
-              child: Text('취소'),
-              onPressed: () {
-                Navigator.of(context).pop(false);
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.onSurface,
-                foregroundColor: Theme.of(context).colorScheme.surface,
-                minimumSize: Size(55.w, 40.h),
-                elevation: 4,
-                shadowColor:
-                Theme.of(context).colorScheme.onSurface.withOpacity(1),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.r),
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text('삭제 확인'),
+              content: Text('정말로 삭제하시겠습니까?'),
+              actions: [
+                TextButton(
+                  child: Text('취소'),
+                  onPressed: () {
+                    Navigator.of(context).pop(false);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).colorScheme.onSurface,
+                    foregroundColor: Theme.of(context).colorScheme.surface,
+                    minimumSize: Size(55.w, 40.h),
+                    elevation: 4,
+                    shadowColor:
+                        Theme.of(context).colorScheme.onSurface.withOpacity(1),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.r),
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            TextButton(
-              child: Text('삭제'),
-              onPressed: () {
-                Navigator.of(context).pop(true);
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.onSurface,
-                foregroundColor: Theme.of(context).colorScheme.surface,
-                minimumSize: Size(55.w, 40.h),
-                elevation: 4,
-                shadowColor:
-                Theme.of(context).colorScheme.onSurface.withOpacity(1),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.r),
+                TextButton(
+                  child: Text('삭제'),
+                  onPressed: () {
+                    Navigator.of(context).pop(true);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).colorScheme.onSurface,
+                    foregroundColor: Theme.of(context).colorScheme.surface,
+                    minimumSize: Size(55.w, 40.h),
+                    elevation: 4,
+                    shadowColor:
+                        Theme.of(context).colorScheme.onSurface.withOpacity(1),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.r),
+                    ),
+                  ),
                 ),
-              ),
-            ),
-          ],
-        );
-      },
-    ) ??
+              ],
+            );
+          },
+        ) ??
         false;
   }
 
@@ -281,7 +284,7 @@ class _LotteryView extends State<LotteryView> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('추첨 완료'),
+            title: Text('추첨 완료', style: TextStyle(color: Colors.black, fontSize: 23.sp, fontWeight: FontWeight.bold)),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -290,15 +293,15 @@ class _LotteryView extends State<LotteryView> {
                 SizedBox(height: 16.h),
               ],
             ),
-            actions: [
+            actions: [  //순서 변경
+              LotteryDialogRedrawButton(onPressed: () {
+                Navigator.of(context).pop();
+                drawLottery(); // 재추첨
+              }),
               LotteryDialogRegisterButton(onPressed: () async {
                 // 등록 버튼을 눌렀을 때 당첨자를 Firestore에 저장
                 await _lotteryViewModel.registerWinner(winner);
                 Navigator.of(context).pop();
-              }),
-              LotteryDialogRedrawButton(onPressed: () {
-                Navigator.of(context).pop();
-                drawLottery(); // 재추첨
               }),
             ],
           );

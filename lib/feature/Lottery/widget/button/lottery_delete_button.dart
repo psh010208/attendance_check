@@ -10,18 +10,14 @@ class LotteryDeleteButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
+    return IconButton(
+      icon: Icon(CupertinoIcons.delete, color: Colors.black, size: 30.w),
       onPressed: onPressed,
-      child: Icon(CupertinoIcons.delete),
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Theme.of(context).colorScheme.onSurface,
-        iconColor:Theme.of(context).colorScheme.onInverseSurface,
-        minimumSize: Size(55.w, 40.h),
-        elevation: 4,
-        shadowColor: Theme.of(context).colorScheme.onSurface.withOpacity(1),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.r),
-        ),
+      iconSize: 24.w, // 아이콘 크기
+      //padding: EdgeInsets.all(0), // 패딩을 없애기
+      constraints: BoxConstraints(
+        minWidth: 40.w,
+        minHeight: 40.h,
       ),
     );
   }
