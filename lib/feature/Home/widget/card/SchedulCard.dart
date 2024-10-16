@@ -36,8 +36,8 @@ class _ScheduleCardState extends State<ScheduleCard> {
           children: [
             Container(
               height: isExpandedList.contains(true)
-                  ? MediaQuery.of(context).size.height * 0.05
-                  : MediaQuery.of(context).size.height * 0.25,
+                  ? MediaQuery.of(context).size.height * 0.05.h
+                  : MediaQuery.of(context).size.height * 0.25.h,
             ),
             Stack(
               clipBehavior: Clip.none,
@@ -90,8 +90,8 @@ class _ScheduleCardState extends State<ScheduleCard> {
 
   Widget buildScheduleCard(Schedule schedule, int index, bool isExpanded, List<Color> barColors) {
     final screenSize = MediaQuery.of(context).size;
-    final cardHeight = screenSize.height * 0.25; // Responsive card height
-    final cardWidth = screenSize.width * 0.80; // Responsive card width
+    final cardHeight = screenSize.height * 0.25.h; // Responsive card height
+    final cardWidth = screenSize.width * 0.80.w; // Responsive card width
 
     Color barColor = barColors[index % barColors.length];
     double borderRadiusValue = 10.0; // 카드의 모서리 둥글기 값을 설정
