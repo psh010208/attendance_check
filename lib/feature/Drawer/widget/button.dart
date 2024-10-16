@@ -38,7 +38,7 @@ class CommonButton extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.transparent, // 버튼 배경색을 투명하게 설정
           shadowColor: Colors.transparent, // 그림자 색상 투명하게
-          padding: EdgeInsets.symmetric(horizontal: 20.r, vertical: 10.r),
+          padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -46,9 +46,9 @@ class CommonButton extends StatelessWidget {
             Icon(
               icon,
               color: Theme.of(context).dialogBackgroundColor,
-              size: iconSize.r,
+              size: iconSize.w,
             ),
-            SizedBox(width: 10),
+            SizedBox(width: 10.w),
             CustomText(
               id: text,
               size: textSize.sp,
@@ -77,7 +77,7 @@ class LogInButton extends StatelessWidget {
       },
       icon: Icons.login,
       text: '로그인',
-      iconSize: 25.r,
+      iconSize: 25.w,
       textSize: 23.sp,
       top: 230.h,
       left: 10.w,
@@ -102,7 +102,7 @@ class JoinButton extends StatelessWidget {
       },
       icon: Icons.account_circle,
       text: '회원가입',
-      iconSize: 25.r,
+      iconSize: 25.w,
       textSize: 23.sp,
       top: 300.h,
       left: 10.w,
@@ -135,7 +135,7 @@ class ParticipationButton extends StatelessWidget {
       },
       icon: Icons.hourglass_bottom,
       text: '승인 대기 현황',
-      iconSize: 33.r,
+      iconSize: 33.w,
       textSize: 23.sp,
       top: 230.h,
       left: 10.w,
@@ -168,7 +168,7 @@ class CurrentButton extends StatelessWidget {
       },
       icon: Icons.table_view, // 출석 현황에 적합한 아이콘 추가
       text: '참여 학생 현황',
-      iconSize: 33.r,
+      iconSize: 33.w,
       textSize: 23.sp,
       top: 310.h,
       left: 10.w,
@@ -200,7 +200,7 @@ class RaffleButton extends StatelessWidget {
       },
       icon: Icons.redeem,
       text: '상품 추첨',
-      iconSize: 33.r,
+      iconSize: 33.w,
       textSize: 23.sp,
       top: 390.h,
       left: 10.w,
@@ -233,7 +233,7 @@ class QrScreenButton extends StatelessWidget {
       },
       icon: Icons.qr_code_2,
       text: 'QR코드 확인',
-      iconSize: 33.r,
+      iconSize: 33.w,
       textSize: 23.sp,
       top: 470.h,
       left: 10.w,
@@ -258,7 +258,7 @@ class LogOutButton extends StatelessWidget {
       },
       icon: Icons.logout,
       text: '로그아웃',
-      iconSize: 23.r,
+      iconSize: 23.w,
       textSize: 17.sp,
       top: 680.h,
       left: 77.w,
@@ -281,8 +281,8 @@ class Logo extends StatelessWidget {
         onTap: onPressed,
         child: Image.asset(
           'assets/simple_logo.png',
-          width: 150.sp,
-          height: 30.sp,
+          width: 150.w,
+          height: 30.h,
         ),
       ),
     );
