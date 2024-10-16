@@ -170,7 +170,7 @@ class _ApproveListScreenState extends State<ApproveListScreen> {
           children: [
             SizedBox(width: 17.w),
             IconButton(
-              icon: Icon(Icons.arrow_back_ios, color: Theme.of(context).colorScheme.onSurface, size: 30),
+              icon: Icon(Icons.arrow_back_ios, color: Theme.of(context).colorScheme.scrim, size: 30),
               onPressed: () {
                 Navigator.pushReplacement(
                     context,
@@ -180,14 +180,14 @@ class _ApproveListScreenState extends State<ApproveListScreen> {
               },
             ),
             Spacer(),
-            CustomText(id: '관리자 승인 대기 목록', size: 20, color: Theme.of(context).colorScheme.onSurface),
+            CustomText(id: '관리자 승인 대기 목록', size: 20, color: Theme.of(context).colorScheme.scrim),
             Spacer(),
           ],
         ),
         centerTitle: true,
         actions: [
           IconButton(
-            icon: Icon(_isRejectionMode ? Icons.check : Icons.edit, color: Theme.of(context).colorScheme.onSurface, size: 30),
+            icon: Icon(_isRejectionMode ? Icons.check : Icons.edit, color: Theme.of(context).colorScheme.scrim, size: 30),
             onPressed: () {
               setState(() {
                 _isRejectionMode = !_isRejectionMode;
