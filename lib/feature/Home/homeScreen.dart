@@ -106,7 +106,7 @@ class HomeScreen extends HookWidget {
                   child: animationButton(
                     icon: Icons.qr_code_scanner, // QR 코드 아이콘 직접 사용
                     iconSize: 40, // 아이콘 크기 설정
-                    iconColor: Theme.of(context).colorScheme.scrim, // 아이콘 색상 설정
+                    iconColor: Theme.of(context).colorScheme.onSurface, // 아이콘 색상 설정
                     defaultSize: const Offset(80, 80), // 버튼 기본 크기 설정
                     clickedSize: const Offset(70, 70), // 버튼 클릭 시 크기
                     defaultButtonColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.1), // 버튼 색상
