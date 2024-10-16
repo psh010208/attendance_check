@@ -138,7 +138,7 @@ class _SignUpFormState extends State<SignUpForm> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Flexible(child: SoonCheckWidget(bottom: -5.h, left: -5.w)),  //로고 중앙으로
+                Flexible(child: SoonCheckWidget(bottom: -5.h, left: 0.w)),  //로고 중앙으로
                 SizedBox(height: _getRoleBasedSpacing()),
                 _buildRoleDropdown(),
                 if (_selectedRole == '학부생') ...[
@@ -158,7 +158,7 @@ class _SignUpFormState extends State<SignUpForm> {
                 )),
                 //SizedBox(height: 5.h), // 회원가입 버튼과 아래 텍스트 버튼 사이 간격
                 _buildSignInPrompt(context), // 로그인으로 전환하는 버튼 추가
-                SizedBox(height: 60.h),
+                SizedBox(height: 30.h),
               ],
             ),
           ),

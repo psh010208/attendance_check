@@ -67,9 +67,9 @@ class _QrCodeListScreenState extends State<QrCodeListScreen> {
           final qrCode = schedule['qr_code'] ?? 'N/A';
 
           return Card(
-            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+            margin: EdgeInsets.symmetric(vertical: 10.w, horizontal: 15.h),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(10.r),
 
             ),
             child: QrCodeTile(

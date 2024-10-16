@@ -70,14 +70,15 @@ class QrCodeTile extends StatelessWidget {
     );
   }
 
+  // QR 코드 확인 페이지에서 QR 누르면 뜨는 창
   void _showQrCodeDialog(BuildContext context, String qrCode) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           content: Container(
-            height: 300,
-            width: 300,
+            height: 300.h,
+            width: 300.w,
             child: CustomPaint(
               size: Size.square(300),
               painter: QrPainter(
@@ -92,7 +93,7 @@ class QrCodeTile extends StatelessWidget {
               onPressed: () => Navigator.of(context).pop(),
               child: Text('닫기',
                   style: TextStyle(
-                      fontSize: 18,
+                      fontSize: 18.sp,
                       color: Theme.of(context).colorScheme.shadow)),
             ),
           ],
@@ -110,14 +111,14 @@ class QrCodeTile extends StatelessWidget {
             width: 2.w,
             strokeAlign: BorderSide.strokeAlignOutside),
         // Border 색상 설정
-        borderRadius: BorderRadius.circular(10), // 모서리 둥글게 설정
+        borderRadius: BorderRadius.circular(10.r), // 모서리 둥글게 설정
       ),
-      margin: EdgeInsets.symmetric(vertical: 4, horizontal: 4), // 컨테이너 외부 여백
+      margin: EdgeInsets.symmetric(vertical: 4.w, horizontal: 4.h), // 컨테이너 외부 여백
       child: ListTile(
         onTap: () => _showQrCodeDialog(context, qrCode),
         leading: Container(
-          width: 50,
-          height: 50,
+          width: 50.w,
+          height: 50.h,
           child: CustomPaint(
             size: Size.square(50),
             painter: QrPainter(
@@ -130,18 +131,18 @@ class QrCodeTile extends StatelessWidget {
         title: Text(
           scheduleName,
           style: TextStyle(
-              fontSize: 18,
+              fontSize: 18.sp,
               color: Theme.of(context).colorScheme.shadow,
               fontWeight: FontWeight.bold), // 일정 이름 색상 설정
         ),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start, // 좌측 정렬
           children: [
-            SizedBox(height: 6),
+            SizedBox(height: 6.h),
             Text(
               '- QR 코드: $qrCode',
               style: TextStyle(
-                fontSize: 13,
+                fontSize: 13.sp,
                 color: Theme.of(context).colorScheme.shadow,
                 fontWeight: FontWeight.bold,
               ), // QR 코드 텍스트 색상 설정
@@ -149,7 +150,7 @@ class QrCodeTile extends StatelessWidget {
           ],
         ),
         trailing: IconButton(
-          icon: Icon(Icons.save_alt, size: 30),
+          icon: Icon(Icons.save_alt, size: 30.w),
           color: Theme.of(context).colorScheme.shadow,
           onPressed: () => _saveQrCodeAsPng(context, qrCode),
         ),

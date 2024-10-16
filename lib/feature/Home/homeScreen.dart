@@ -1,9 +1,8 @@
 import 'package:attendance_check/feature/Home/widget/Button/AnimationButton.dart';
-import 'package:attendance_check/feature/Home/widget/Button/QrButton.dart';
+import 'package:attendance_check/feature/Home/widget/Icon/AdminIcon.dart';
 import 'package:attendance_check/feature/Home/widget/QRService/QrScanner.dart';
 import 'package:attendance_check/feature/Home/widget/SoonCheck.dart';
 import 'package:attendance_check/feature/Home/widget/card/SchedulCard.dart';
-import 'package:attendance_check/main.dart';
 import 'package:flutter/material.dart';
 import 'package:attendance_check/feature/Home/model/homeModel.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -33,7 +32,7 @@ class HomeScreen extends HookWidget {
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         flexibleSpace: Container(
           padding: EdgeInsets.only(
-            top: MediaQuery.of(context).padding.top,
+            top: MediaQuery.of(context).padding.top.h,
             left: MediaQuery.of(context).size.width * 0.05.w,
             right: MediaQuery.of(context).size.width * 0.5.w,
           ),
@@ -48,12 +47,10 @@ class HomeScreen extends HookWidget {
           if (role == '관리자') // role이 '관리자'일 때만 버튼 추가
             Builder(
               builder: (BuildContext context) {
-                return IconButton(
-                  icon: Icon(Icons.add, size: 25), // 일정 추가 아이콘
-                  onPressed: () {
-                    AddSchedule(context); // 일정 추가 다이얼로그 호출
-                  },
-                  color: Theme.of(context).iconTheme.color,
+                return AdminIcon(
+                  onPressed: () async {
+                     AddSchedule(context); // 일정 추가 다이얼로그 호출,
+                  }
                 );
               },
             ),
@@ -95,7 +92,7 @@ class HomeScreen extends HookWidget {
           height: 1000.h,
           child: Stack(
             children: [
-              SoonCheckWidget(bottom: 970.h, left: 45.w),
+              SoonCheckWidget(bottom: 850.h, left: 45.w),
               // 일정 카드 표시
               buildScheduleCard(context),
 
@@ -107,13 +104,13 @@ class HomeScreen extends HookWidget {
                     padding: const EdgeInsets.all(10.0),
                     child: animationButton(
                       icon: Icons.qr_code_scanner, // QR 코드 아이콘 직접 사용
-                      iconSize: 40, // 아이콘 크기 설정
+                      iconSize: 40.w, // 아이콘 크기 설정
                       iconColor: Theme.of(context).colorScheme.onSurface, // 아이콘 색상 설정
                       defaultSize: const Offset(80, 80), // 버튼 기본 크기 설정
                       clickedSize: const Offset(70, 70), // 버튼 클릭 시 크기
                       defaultButtonColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.1), // 버튼 색상
                       clickedButtonColor: Theme.of(context).colorScheme.primary, // 클릭 시 버튼 색상
-                      circularRadius: 50,
+                      circularRadius: 50.r,
                       onTap: () {
                         // QrScanner로 이동하면서 student_id를 넘김
                         Navigator.push(
@@ -132,7 +129,7 @@ class HomeScreen extends HookWidget {
       ),
     );
   }
-//ㅎㅎㅇㅎㅇ
+
   Widget buildScheduleCard(BuildContext context) {
     return StreamBuilder<List<Schedule>>(
       stream: scheduleViewModel.getScheduleStream(), // Firestore에서 일정 데이터 가져오기

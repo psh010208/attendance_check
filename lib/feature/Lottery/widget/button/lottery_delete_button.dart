@@ -11,10 +11,9 @@ class LotteryDeleteButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      icon: Icon(CupertinoIcons.delete, color: Colors.black, size: 30.w),
+      icon: Icon(CupertinoIcons.delete, color: Colors.black),
       onPressed: onPressed,
-      iconSize: 24.w, // 아이콘 크기
-      //padding: EdgeInsets.all(0), // 패딩을 없애기
+      iconSize: 30.w, // 아이콘 크기
       constraints: BoxConstraints(
         minWidth: 40.w,
         minHeight: 40.h,

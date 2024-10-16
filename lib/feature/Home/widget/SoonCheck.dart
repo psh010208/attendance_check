@@ -24,7 +24,7 @@ class SoonCheckWidget extends StatelessWidget {
             shadows: <Shadow>[
               Shadow(
                 offset: Offset(0, 10),
-                blurRadius: 10,
+                blurRadius: 10.r,
                 color: Theme.of(context).colorScheme.outlineVariant,
               ),
             ],

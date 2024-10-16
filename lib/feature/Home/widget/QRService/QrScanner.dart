@@ -1,5 +1,7 @@
+import 'package:attendance_check/feature/CurrentList/ApproveWaitingList.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'ViewModel/QrViewModel.dart'; // Firestore를 사용하기 위한 import
@@ -24,10 +26,10 @@ class _QrScannerState extends State<QrScanner> {
     print(widget.studentId);
 
     // 디바이스의 크기에 따라 scanArea를 지정
-    var scanArea = (MediaQuery.of(context).size.width < 400 ||
-            MediaQuery.of(context).size.height < 400)
-        ? 150.0
-        : 300.0;
+    var scanArea = (MediaQuery.of(context).size.width < 400.w ||
+            MediaQuery.of(context).size.height < 400.h)
+        ? 150.0.w
+        : 300.0.w;
 
     return Scaffold(
       appBar: AppBar(title: Text('QR 스캐너')),
@@ -41,7 +43,7 @@ class _QrScannerState extends State<QrScanner> {
                   builder: (context, constraints) {
                     double screenHeight = constraints.maxHeight;
                     //double screenWidth = constraints.maxWidth;
-                    double cutOutHeight = scanArea * 1.8;
+                    double cutOutHeight = scanArea * 1.8.h;
 
                     return Stack(
                       alignment: Alignment.center,
@@ -51,29 +53,29 @@ class _QrScannerState extends State<QrScanner> {
                           onQRViewCreated: _onQRViewCreated,
                           overlay: QrScannerOverlayShape(
                             borderColor: Theme.of(context).primaryColor, // 모서리 테두리 색
-                            borderRadius: 10, // 둥글게 둥글게
-                            borderLength: 30, // 테두리 길이
-                            borderWidth: 15, // 테두리 너비
+                            borderRadius: 10.r, // 둥글게 둥글게
+                            borderLength: 30.w, // 테두리 길이
+                            borderWidth: 15.w, // 테두리 너비
                             cutOutSize: cutOutHeight,
                           ),
                         ),
                         // 중앙에 빨간색 + 모양 가이드라인
                         // 중앙에 빨간색 + 모양 가이드라인
                         Positioned(
-                          top: (screenHeight - cutOutHeight) / 2 + cutOutHeight / 2.2 - 1,
+                          top: ((screenHeight - cutOutHeight) / 2 + cutOutHeight / 2.2 - 1).h,
                           child: Stack(
                             alignment: Alignment.center,
                             children: [
                               // 세로선
                               Container(
-                                width: 4,
-                                height: 40,
+                                width: 4.w,
+                                height: 40.h,
                                 color: Theme.of(context).primaryColor,
                               ),
                               // 가로선
                               Container(
-                                width: 40,
-                                height: 4,
+                                width: 40.w,
+                                height: 4.h,
                                 color: Theme.of(context).primaryColor,
                               ),
                             ],

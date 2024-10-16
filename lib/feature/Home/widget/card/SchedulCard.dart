@@ -35,7 +35,7 @@ class _ScheduleCardState extends State<ScheduleCard> {
         child: Column(
           children: [
             Container(
-              height: isExpandedList.contains(true)
+              height: isExpandedList.contains(true) // 카드 위에 여백
                   ? MediaQuery.of(context).size.height * 0.05.h
                   : MediaQuery.of(context).size.height * 0.25.h,
             ),
@@ -78,10 +78,10 @@ class _ScheduleCardState extends State<ScheduleCard> {
         });
       },
       child: AnimatedContainer(
-        duration: Duration(milliseconds: 500),
+        duration: Duration(milliseconds: 500), // 카드 펼치고 접히는 속도
         curve: Curves.easeInOut,
         margin: EdgeInsets.only(
-          top: isExpandedList[index] ? 200.0 * index : 40.0 * index,
+          top: isExpandedList[index] ? MediaQuery.of(context).size.height * 0.25.h * index : MediaQuery.of(context).size.height * 0.045.h * index, // 카드끼리의 간격
         ),
         child: buildScheduleCard(schedule, index, isExpandedList[index], barColors),
       ),

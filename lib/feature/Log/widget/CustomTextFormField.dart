@@ -33,7 +33,7 @@ class InfoTextField extends StatelessWidget {
           color: Theme.of(context).hintColor,
         ),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0),
+          borderRadius: BorderRadius.circular(10.0.r),
           borderSide: BorderSide(
             color: Theme.of(context).colorScheme.primary,
             width: 2.0.w, // 반응형 테두리 두께
