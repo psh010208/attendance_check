@@ -1,6 +1,7 @@
 import 'package:attendance_check/feature/Drawer/model/SchedulesModel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import '../../Home/model/homeModel.dart';
 import 'AttendanceSummaryModel.dart';
 import 'UserModel.dart';
 

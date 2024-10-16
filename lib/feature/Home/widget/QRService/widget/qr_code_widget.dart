@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:ui' as ui;
@@ -14,30 +15,59 @@ class QrCodeTile extends StatelessWidget {
 
   Future<void> _saveQrCodeAsPng(BuildContext context, String qrCode) async {
     try {
+      // QR 코드 이미지를 생성
       final qrImage = await QrPainter(
         data: qrCode,
         version: QrVersions.auto,
         gapless: false,
+        color: Colors.black, // 전경색을 검정색으로 설정
+        emptyColor: Colors.white, // 배경색을 흰색으로 설정
+      ).toImage(500);
 
-      ).toImage(300);
-
+      // 이미지 데이터를 PNG로 변환
       final ByteData? byteData = await qrImage.toByteData(format: ui.ImageByteFormat.png);
       final Uint8List pngBytes = byteData!.buffer.asUint8List();
 
-      final directory = await getApplicationDocumentsDirectory();
-      final filePath = '${directory.path}/qr_code_$qrCode.png';
-
-      final file = File(filePath);
-      await file.writeAsBytes(pngBytes);
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('QR 코드가 저장되었습니다: $filePath')),
+      // image_gallery_saver를 사용해 갤러리에 저장
+      final result = await ImageGallerySaver.saveImage(
+        Uint8List.fromList(pngBytes), // 이미지 데이터를 Uint8List로 변환
+        quality: 100, // 이미지 품질 설정
+        name: 'qr_code_$qrCode', // 이미지 이름 설정
       );
+
+      if (result['isSuccess']) {
+        // 성공적으로 저장되었을 때 알림 표시
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('QR 코드가 갤러리에 저장되었습니다.')),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('QR 코드 저장에 실패했습니다.')),
+        );
+      }
     } catch (e) {
       print('QR 코드 저장 중 오류 발생: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('QR 코드 저장 중 오류가 발생했습니다.')),
+      );
     }
   }
 
+  Widget buildQrCode(String qrCode) {
+    return Container(
+      color: Colors.white, // QR 코드 배경을 흰색으로 설정
+      padding: const EdgeInsets.all(10.0),
+      child: CustomPaint(
+        size: Size.square(1000),
+        painter: QrPainter(
+          data: qrCode,
+          version: QrVersions.auto,
+          color: Colors.black, // QR 코드 전경색을 검정으로 설정
+          gapless: false,
+        ),
+      ),
+    );
+  }
   void _showQrCodeDialog(BuildContext context, String qrCode) {
     showDialog(
       context: context,

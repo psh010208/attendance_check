@@ -5,6 +5,7 @@ import 'package:attendance_check/feature/Drawer/widget/currentBar.dart';
 import 'package:attendance_check/feature/Home/widget/QRService/QrCodeListScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../Home/model/homeModel.dart';
 import 'model/AttendanceViewModel.dart';
 
 class DrawerScreen extends StatefulWidget {
