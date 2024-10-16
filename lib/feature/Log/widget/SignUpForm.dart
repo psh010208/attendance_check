@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:attendance_check/feature/Home/homeScreen.dart';
 import '../../Home/widget/SoonCheck.dart';
 import '../Model/logModel.dart';
 import '../ViewModel/logViewModel.dart';
@@ -113,6 +113,23 @@ class _SignUpFormState extends State<SignUpForm> {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent, // 투명한 배경
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.black),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => HomeScreen(
+                    role: '',
+                    id: '_studentId!',
+                  ),
+                ),
+              );
+            }),
+      ),
+
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 30.w),
