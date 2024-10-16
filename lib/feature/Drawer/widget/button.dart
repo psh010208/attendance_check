@@ -209,8 +209,10 @@ class RaffleButton extends StatelessWidget {
 // QR 코드 현황 버튼
 class QrScreenButton extends StatelessWidget {
   final VoidCallback onPressed;
+  final String role;
+  final String id;
 
-  QrScreenButton({required this.onPressed});
+  QrScreenButton({required this.onPressed, required this.role, required this.id});
 
 
   @override
@@ -221,7 +223,8 @@ class QrScreenButton extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => QrCodeListScreen(
-
+              role: role, // widget.role 사용
+              id: id, // widget.id 사용
             ),
           ),
         );
