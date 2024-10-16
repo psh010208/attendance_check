@@ -26,27 +26,27 @@ class LogViewModel {
         .set(newUser.toFirestore());
   }
 
-// 로그인 검증 로직 (학번과 역할을 확인)
-  Future<bool> logIn(String studentId, String role) async {
-    LogModel? user = await getUser(studentId);
+// 로그인 검증 로직 (학번, 역할, 학과를 확인)
+  Future<bool> logIn(String studentId, String role, String department) async {
+    // Firestore에서 학번, 역할, 학과를 모두 확인
+    QuerySnapshot snapshot = await _firestore
+        .collection('user')
+        .where('student_id', isEqualTo: studentId)
+        .where('role', isEqualTo: role)
+        .where('department', isEqualTo: department) // 학과도 추가하여 검증
+        .limit(1)
+        .get();
 
-    if (user != null) {
-      // 역할이 일치하는지 확인
-      if (user.role == role) {
-        // 관리자인 경우 승인 여부를 반드시 확인
-        if (user.role == '관리자') {
-          if (user.isApproved) {
-            return true; // 승인된 관리자는 로그인 성공
-          } else {
-            return false; // 승인되지 않은 관리자는 로그인 실패
-          }
-        } else {
-          // 관리자가 아닌 경우(학부생 등) 바로 로그인 성공
-          return true;
-        }
+    if (snapshot.docs.isNotEmpty) {
+      LogModel user = LogModel.fromFirestore(snapshot.docs.first.data() as Map<String, dynamic>);
+      // 관리자인 경우 승인 여부를 반드시 확인
+      if (user.role == '관리자' && !user.isApproved) {
+        return false; // 관리자는 승인 대기 중일 경우 로그인 불가
       }
+      return true; // 로그인 성공
     }
-    return false; // 로그인 실패 (사용자 정보가 없거나 역할이 일치하지 않는 경우)
+
+    return false; // 로그인 실패 (정보가 일치하지 않는 경우)
   }
 
   // 학번 중복 확인 (회원가입 시 사용)
