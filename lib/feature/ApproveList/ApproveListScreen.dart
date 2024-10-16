@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../Home/homeScreen.dart';
 import 'Model/ApproveModel.dart';
 import 'ViewModel/ApproveViewModel.dart';
 import 'widget/CustomText.dart';
@@ -171,7 +172,11 @@ class _ApproveListScreenState extends State<ApproveListScreen> {
             IconButton(
               icon: Icon(Icons.arrow_back_ios, color: Theme.of(context).colorScheme.onSurface, size: 30),
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            HomeScreen(role: widget.role, id: widget.id)));
               },
             ),
             Spacer(),

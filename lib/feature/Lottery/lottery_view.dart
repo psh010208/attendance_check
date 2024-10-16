@@ -32,9 +32,9 @@ class _LotteryView extends State<LotteryView> {
         title: Text('상품 추첨하기', style: Theme.of(context).textTheme.titleLarge),
         centerTitle: true,
         elevation: 1,
+
         leading: IconButton(
-            icon: Icon(Icons.arrow_back,
-                color: Theme.of(context).iconTheme.color),
+            icon: Icon(Icons.arrow_back_ios, color: Theme.of(context).colorScheme.onSurface, size: 30),
             onPressed: () {
               Navigator.pushReplacement(
                   context,
