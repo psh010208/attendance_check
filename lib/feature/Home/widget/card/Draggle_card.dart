@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:attendance_check/feature/Home/model/homeModel.dart';
-import 'Schedule_card.dart';
 import 'Schedule_card_info.dart';
 
-class DraggableCard extends StatefulWidget {
+class DraggableCard extends StatelessWidget {
   final Schedule schedule;
   final int index;
   final List<bool> isExpandedList;
@@ -18,26 +17,18 @@ class DraggableCard extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _DraggableCardState createState() => _DraggableCardState();
-}
-
-class _DraggableCardState extends State<DraggableCard> {
-  @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onVerticalDragUpdate: (details) {
         updateExpansionState(details);
       },
       child: AnimatedContainer(
-        duration: Duration(milliseconds: 500),
+        duration: Duration(milliseconds: 300),
         curve: Curves.easeInOut,
-        margin: EdgeInsets.only(
-          top: widget.isExpandedList[widget.index] ? 200.0 * widget.index : 40.0 * widget.index,
-        ),
+        margin: EdgeInsets.only(top: 20.0), // 카드 사이의 간격 설정
         child: Column(
           children: [
-            ScheduleCardDesign(schedule: widget.schedule),
-            ScheduleCardInfo(schedule: widget.schedule),
+           // ScheduleCardInfo(schedule: schedule), // 카드 정보
           ],
         ),
       ),
@@ -45,13 +36,13 @@ class _DraggableCardState extends State<DraggableCard> {
   }
 
   void updateExpansionState(DragUpdateDetails details) {
-    if (widget.isExpandedList.every((isExpanded) => isExpanded)) {
-      if (details.delta.dy < -10 && widget.index == widget.isExpandedList.length - 1) {
-        widget.onExpansionChanged(List.filled(widget.isExpandedList.length, false)); // 카드 접기
+    if (isExpandedList.every((isExpanded) => isExpanded)) {
+      if (details.delta.dy < -10 && index == isExpandedList.length - 1) {
+        onExpansionChanged(List.filled(isExpandedList.length, false)); // 카드 접기
       }
     } else {
       if (details.delta.dy > 10) {
-        widget.onExpansionChanged(List.filled(widget.isExpandedList.length, true)); // 카드 펼치기
+        onExpansionChanged(List.filled(isExpandedList.length, true)); // 카드 펼치기
       }
     }
   }
