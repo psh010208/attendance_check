@@ -6,8 +6,29 @@ class ViewModel {
 
   // Firestore에서 관리자 권한 확인
   Future<bool> isAdmin(String userId) async {
-    DocumentSnapshot userSnapshot = await _firestore.collection('users').doc(userId).get();
+    DocumentSnapshot userSnapshot = await _firestore.collection('user').doc(userId).get();
     return userSnapshot.exists && userSnapshot['is_approved'] == true;
+  }
+
+  // 승인 대기 중인 관리자 리스트 가져오기 (is_approved == false)
+  Stream<List<currentListModel>> getPendingAdmins() async* {
+    yield* _firestore
+        .collection('user')
+        .where('role', isEqualTo: '관리자')
+        .where('is_approved', isEqualTo: false) // 승인 대기 중인 관리자만 필터링
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs.map((doc) {
+        return currentListModel.fromFirestore(doc.data() as Map<String, dynamic>);
+      }).toList();
+    });
+  }
+
+  // 관리자 승인 처리 (is_approved를 true로 변경)
+  Future<void> approveAdmin(String studentId) async {
+    await _firestore.collection('user').doc(studentId).update({
+      'is_approved': true, // 승인 처리
+    });
   }
 
   // 학생 출석 현황 가져오기 (관리자만 볼 수 있음)
@@ -22,57 +43,5 @@ class ViewModel {
     } else {
       throw Exception('관리자만 이 정보를 볼 수 있습니다.');
     }
-  }
-
-  //학번으로 검색
-  Stream<List<currentListModel>> searchByStudentId(String studentId) async* {
-    yield* _firestore
-        .collection('attendance_summary')
-        .where('student_id', isEqualTo: studentId)
-        .snapshots()
-        .map((snapshot) {
-      return snapshot.docs.map((doc) {
-        return currentListModel.fromFirestore(doc.data() as Map<String, dynamic>);
-      }).toList();
-    });
-  }
-
-  //이름으로 검색
-  Stream<List<currentListModel>> searchByName(String name) async* {
-    yield* _firestore
-        .collection('attendance_summary')
-        .where('student_name', isEqualTo: name)
-        .snapshots()
-        .map((snapshot) {
-      return snapshot.docs.map((doc) {
-        return currentListModel.fromFirestore(doc.data() as Map<String, dynamic>);
-      }).toList();
-    });
-  }
-
-  // 학과로 정렬
-  Stream<List<currentListModel>> sortByDepartment() async* {
-    yield* _firestore
-        .collection('attendance_summary')
-        .orderBy('department', descending: false) // 학과 오름차순 정렬 (ㄱ,ㄴ,ㄷ 순)
-        .snapshots()
-        .map((snapshot) {
-      return snapshot.docs.map((doc) {
-        return currentListModel.fromFirestore(doc.data() as Map<String, dynamic>);
-      }).toList();
-    });
-  }
-
- //출석 횟수로 정렬
-  Stream<List<currentListModel>> sortByAttendanceCount() async* {
-    yield* _firestore
-        .collection('attendance_summary')
-        .orderBy('total_attendance', descending: true) // 출석 횟수 내림차순 정렬
-        .snapshots()
-        .map((snapshot) {
-      return snapshot.docs.map((doc) {
-        return currentListModel.fromFirestore(doc.data() as Map<String, dynamic>);
-      }).toList();
-    });
   }
 }

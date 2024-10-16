@@ -1,3 +1,5 @@
+import 'package:attendance_check/feature/ApproveList/ApproveListScreen.dart';
+import 'package:attendance_check/feature/Home/homeScreen.dart';
 import 'package:attendance_check/feature/Home/widget/QRService/QrCodeListScreen.dart';
 import 'package:attendance_check/feature/Log/widget/SignUpForm.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +8,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:attendance_check/feature/Drawer/widget/IdText.dart';
 import 'package:attendance_check/feature/Lottery/lottery_view.dart';
 import 'package:attendance_check/feature/CurrentList/ParticipationStatus.dart';
-import '../../CurrentList/ApproveWaitingList.dart';
 
 class CommonButton extends StatelessWidget {
   final VoidCallback onPressed;
@@ -125,9 +126,9 @@ class ParticipationButton extends StatelessWidget {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (context) => ApproveWaitingList(
+            builder: (context) => ApproveListScreen(role:
               role,  // role 값 전달
-              id,    // id 값 전달
+             id:id,    // id 값 전달
             ),
           ),
         );
@@ -157,7 +158,8 @@ class CurrentButton extends StatelessWidget {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-              builder: (context) => ParticipationStatus(
+            //경로 변경예정
+              builder: (context) => HomeScreen(
                 role: role, // widget.role 사용
                 id: id,
               ),
