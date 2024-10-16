@@ -1,9 +1,12 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'ParticipationData.dart';
 import 'package:attendance_check/feature/Drawer/drawerScreen.dart';
 import 'package:attendance_check/feature/Home/homeScreen.dart';
-import 'package:intl/intl.dart'; // 추가
+import 'package:intl/intl.dart';
+
+import 'model/model.dart'; // 추가
 
 class ParticipationStatus extends StatefulWidget {
   final String role;
@@ -16,8 +19,6 @@ class ParticipationStatus extends StatefulWidget {
 }
 
 class _StudentDataTableState extends State<ParticipationStatus> {
-  List<ParticipationStudent> _data = List.from(p_students);
-  List<ParticipationStudent> _originalData = List.from(p_students); // 원본 데이터 저장
   bool _isSortAsc = true; // 정렬 기능
   String _searchStudentNum = ""; // 학번 검색 기능
   String _searchName = ""; // 이름 검색 기능
@@ -72,11 +73,11 @@ class _StudentDataTableState extends State<ParticipationStatus> {
         scrollDirection: Axis.vertical, //스크롤
         child: FittedBox(
           fit: BoxFit.fitWidth,
-          child: DataTable(
-            columnSpacing: 1, //열 사이 간격
-            columns: _createColumns(),
-            rows: _createRows(screenHeight, screenWidth),
-          ),
+          // child: DataTable(
+          //   columnSpacing: 1, //열 사이 간격
+          //   columns: _createColumns(),
+          //   // rows: _createRows(screenHeight, screenWidth),
+          // ),
         ),
       ),
     );
@@ -85,8 +86,8 @@ class _StudentDataTableState extends State<ParticipationStatus> {
   // 새로고침 함수
   Future<void> _refresh() async {
     setState(() {
-      // 새로고침 시 동작할 로직, 데이터를 다시 로드하거나 초기화할 수 있음
-      _data = List.from(_originalData); // 예시: 원본 데이터를 다시 불러오기
+
+
     });
   }
 
@@ -122,13 +123,9 @@ class _StudentDataTableState extends State<ParticipationStatus> {
           // 학과 정렬
           setState(() {
             if (_isSortAsc) {
-              _data.sort(
-                (a, b) => a.dept.compareTo(b.dept),
-              );
+
             } else {
-              _data.sort(
-                (a, b) => b.dept.compareTo(a.dept),
-              );
+
             }
             _isSortAsc = !_isSortAsc;
           });
@@ -196,16 +193,7 @@ class _StudentDataTableState extends State<ParticipationStatus> {
         onSort: (columnIndex, _) {
           //참여횟수 정렬
           setState(() {
-            if (_isSortAsc) {
-              _data.sort(
-                (a, b) => a.count.compareTo(b.count),
-              );
-            } else {
-              _data.sort(
-                (a, b) => b.count.compareTo(a.count),
-              );
-            }
-            _isSortAsc = !_isSortAsc;
+
           });
         },
       ),
@@ -261,12 +249,7 @@ class _StudentDataTableState extends State<ParticipationStatus> {
   }
 
 // 표 내용(ParticipationData.dart에서 불러옴)
-  List<DataRow> _createRows(double screenHeight, double screenWidth) {
-    // 필터링 추가
-    return _data
-        .where((e) =>
-            e.num.contains(_searchStudentNum) && e.name.contains(_searchName))
-        .map((e) {
+  DataRow _createRows(double screenHeight, double screenWidth) {
       return DataRow(
         cells: [
           DataCell(Row(children: [
@@ -275,19 +258,19 @@ class _StudentDataTableState extends State<ParticipationStatus> {
           ])),
           DataCell(Row(children: [
             SizedBox(width: 5.w),
-            Text(e.dept, style: TextStyle(fontSize: 13.sp)),
+            // Text(e.dept, style: TextStyle(fontSize: 13.sp)),
           ])),
           DataCell(Row(children: [
             SizedBox(width: 10.w),
-            Text(e.num, style: TextStyle(fontSize: 13.sp)),
+            // Text(e.num, style: TextStyle(fontSize: 13.sp)),
           ])),
           DataCell(Row(children: [
             SizedBox(width: 15.w),
-            Text(e.name, style: TextStyle(fontSize: 13.sp)),
+            // Text(e.name, style: TextStyle(fontSize: 13.sp)),
           ])),
           DataCell(Row(children: [
             SizedBox(width: 30.w),
-            Text(e.count, style: TextStyle(fontSize: 13.sp)),
+            // Text(e.count, style: TextStyle(fontSize: 13.sp)),
             IconButton(
               icon: Icon(Icons.keyboard_arrow_down),
               onPressed: () {
@@ -305,81 +288,81 @@ class _StudentDataTableState extends State<ParticipationStatus> {
                             children: [
                               Text('일정 1', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                               SizedBox(height: 8),
-                              Text('입실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
+                              // Text('입실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
                               SizedBox(height: 5),
-                              Text('퇴실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
+                              // Text('퇴실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
                               SizedBox(height: 5),
                               Divider( color: Colors.white, thickness: 1 ),
                               SizedBox(height: 10),
 
                               Text('일정 2', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                               SizedBox(height: 8),
-                              Text('입실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
+                              // Text('입실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
                               SizedBox(height: 5),
-                              Text('퇴실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
+                              // Text('퇴실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
                               SizedBox(height: 5),
                               Divider( color: Colors.white, thickness: 1 ),
                               SizedBox(height: 10),
 
                               Text('일정 3', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                               SizedBox(height: 8),
-                              Text('입실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
+                              // Text('입실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
                               SizedBox(height: 5),
-                              Text('퇴실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
+                              // Text('퇴실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
                               SizedBox(height: 5),
                               Divider( color: Colors.white, thickness: 1 ),
                               SizedBox(height: 10),
 
                               Text('일정 4', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                               SizedBox(height: 8),
-                              Text('입실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
+                              // Text('입실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
                               SizedBox(height: 5),
-                              Text('퇴실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
+                              // Text('퇴실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
                               SizedBox(height: 5),
                               Divider( color: Colors.white, thickness: 1 ),
                               SizedBox(height: 10),
 
                               Text('일정 5', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                               SizedBox(height: 8),
-                              Text('입실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
+                              // Text('입실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
                               SizedBox(height: 5),
-                              Text('퇴실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
+                              // Text('퇴실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
                               SizedBox(height: 5),
                               Divider( color: Colors.white, thickness: 1 ),
                               SizedBox(height: 10),
 
                               Text('일정 6', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                               SizedBox(height: 8),
-                              Text('입실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
+                              // Text('입실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
                               SizedBox(height: 5),
-                              Text('퇴실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
+                              // Text('퇴실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
                               SizedBox(height: 5),
                               Divider( color: Colors.white, thickness: 1 ),
                               SizedBox(height: 10),
 
                               Text('일정 7', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                               SizedBox(height: 8),
-                              Text('입실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
+                              // Text('입실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
                               SizedBox(height: 5),
-                              Text('퇴실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
+                              // Text('퇴실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
                               SizedBox(height: 5),
                               Divider( color: Colors.white, thickness: 1 ),
                               SizedBox(height: 10),
 
                               Text('일정 8', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                               SizedBox(height: 8),
-                              Text('입실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
+                              // Text('입실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
                               SizedBox(height: 5),
-                              Text('퇴실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
+                              // Text('퇴실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
                               SizedBox(height: 5),
                               Divider( color: Colors.white, thickness: 1 ),
                               SizedBox(height: 10),
 
                               Text('일정 9', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                               SizedBox(height: 8),
-                              Text('입실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
+                              // Text('입실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
                               SizedBox(height: 5),
-                              Text('퇴실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
+                              // Text('퇴실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
                               SizedBox(height: 10),
                             ],
                           ),
@@ -402,6 +385,6 @@ class _StudentDataTableState extends State<ParticipationStatus> {
           ])),
         ],
       );
-    }).toList();
+    // }).toList();
   }
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'WaitingData.dart';
 import 'package:attendance_check/feature/Drawer/drawerScreen.dart';
 import 'package:attendance_check/feature/Home/homeScreen.dart';
 
@@ -31,9 +30,7 @@ class WaitingStatus extends StatefulWidget {
 }
 
 class _WaitingStatusState extends State<WaitingStatus> {
-  List<Waitinglist> _data = List.from(waitinglist);
-  List<Waitinglist> _originalData =
-      List.from(waitinglist); // 원본 데이터 저장(검색 기능 때문)
+
   bool _isSortAsc = true; // 정렬 기능(승인 여부에서 사용)
   String _searchStudentNum = ""; // 사번 검색 기능
   String _searchName = ""; // 이름 검색 기능
@@ -91,11 +88,7 @@ class _WaitingStatusState extends State<WaitingStatus> {
         scrollDirection: Axis.vertical, // 스크롤
         child: FittedBox(
           fit: BoxFit.fitWidth,
-          child: DataTable(
-            columnSpacing: 10, // 열 사이 간격
-            columns: _createColumns(),
-            rows: _createRows(screenHeight, screenWidth),
-          ),
+
         ),
       ),
     );
@@ -105,7 +98,6 @@ class _WaitingStatusState extends State<WaitingStatus> {
   Future<void> _refresh() async {
     setState(() {
       // 새로고침 시 동작할 로직, 데이터를 다시 로드하거나 초기화할 수 있음
-      _data = List.from(_originalData); // 예시: 원본 데이터를 다시 불러오기
     });
   }
 
@@ -183,18 +175,7 @@ class _WaitingStatusState extends State<WaitingStatus> {
         onSort: (columnIndex, _) {
           //승인 여부 정렬(문자열 Y랑 N으로)
           setState(() {
-            if (_isSortAsc) {
-              _data.sort(
-                (a, b) =>
-                    a.approved.toString().compareTo(b.approved.toString()),
-              );
-            } else {
-              _data.sort(
-                (a, b) =>
-                    b.approved.toString().compareTo(a.approved.toString()),
-              );
-            }
-            _isSortAsc = !_isSortAsc;
+
           });
         },
       ),
@@ -254,11 +235,8 @@ class _WaitingStatusState extends State<WaitingStatus> {
   }
 
   // 표 내용
-  List<DataRow> _createRows(double screenHeight, double screenWidth) {
-    return _data
-        .where((e) =>
-            e.num.contains(_searchStudentNum) && e.name.contains(_searchName))
-        .map((e) {
+  DataRow _createRows(double screenHeight, double screenWidth) {
+
       return DataRow(
         cells: [
           DataCell(Row(children: [
@@ -267,28 +245,30 @@ class _WaitingStatusState extends State<WaitingStatus> {
           ])),
           DataCell(Row(children: [
             SizedBox(width: 10.w),
-            Text(e.num, style: TextStyle(fontSize: 15.sp)),
+            // Text(e.num, style: TextStyle(fontSize: 15.sp)),
           ])),
           DataCell(Row(children: [
             SizedBox(width: 15.w),
-            Text(e.name, style: TextStyle(fontSize: 15.sp)),
+            // Text(e.name, style: TextStyle(fontSize: 15.sp)),
           ])),
           DataCell(Row(children: [
             //승인 여부를 문자열 Y와 N으로 출력
             SizedBox(width: 40.w),
-            Text(e.approved ? 'Y' : 'N', style: TextStyle(fontSize: 15.sp)),
+            // Text(e.approved ? 'Y' : 'N', style: TextStyle(fontSize: 15.sp)),
           ])),
           DataCell(Row(children: [
             //승인 버튼
             IconButton(
               icon: Icon(Icons.add_circle, color: Color(0xff26539C)),
-              onPressed: () =>
-                  _showApprovalDialog(e.num), // 승인 버튼 클릭 시 다이얼로그 표시
+              onPressed: () =>()
+                  // _showApprovalDialog(e.num), // 승인 버튼 클릭 시 다이얼로그 표시
             ),
-          ])),
+          ]
+          ),
+          ),
         ],
       );
-    }).toList();
+
   }
 
   // 승인 다이얼로그 표시
@@ -327,7 +307,6 @@ class _WaitingStatusState extends State<WaitingStatus> {
               onPressed: () {
                 setState(() {
                   // 승인 처리 로직
-                  _approveStudent(studentNum);
                 });
                 Navigator.of(context).pop();
               },
@@ -338,15 +317,4 @@ class _WaitingStatusState extends State<WaitingStatus> {
     );
   }
 
-  // 학생 승인 처리(WaitingData.dart에 approved를 true로 바꿈)
-  void _approveStudent(String studentNum) {
-    // 승인 대기 목록에서 학생을 찾고 상태를 변경 후 목록에서 제거
-    _data.removeWhere((student) {
-      if (student.num == studentNum) {
-        student.approved = true; // 승인 상태 변경
-        return true; // 목록에서 제거
-      }
-      return false;
-    });
-  }
 }
