@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-Future<void> addOrUpdateAttendance(String studentId, String qrCode) async {
+Future<void> addOrUpdateAttendance(BuildContext context, String studentId, String qrCode) async {
   try {
     // schedules 컬렉션에서 QR 코드가 존재하는지 확인하고 schedule_name 가져오기
     QuerySnapshot scheduleSnapshot = await _firestore
@@ -13,12 +13,13 @@ Future<void> addOrUpdateAttendance(String studentId, String qrCode) async {
         .get();
 
     if (scheduleSnapshot.docs.isNotEmpty) {
-      // QR 코드에 해당하는 schedule_name 가져오기 (데이터를 Map<String, dynamic>으로 캐스팅)
+      // QR 코드에 해당하는 schedule_name 가져오기
       Map<String, dynamic>? scheduleData = scheduleSnapshot.docs.first.data() as Map<String, dynamic>?;
       String? scheduleName = scheduleData?['schedule_name'] as String?;
+      String? scheduleQrCode = scheduleData?['qr_code'] as String?;
 
-      if (scheduleName != null) {
-        // attendance 컬렉션에서 student_id가 있는지 확인
+      if (scheduleName != null && scheduleQrCode != null) {
+        // attendance 테이블에서 student_id가 있는지 확인
         QuerySnapshot attendanceSnapshot = await _firestore
             .collection('attendance')
             .where('student_id', isEqualTo: studentId)
@@ -26,36 +27,95 @@ Future<void> addOrUpdateAttendance(String studentId, String qrCode) async {
             .get();
 
         if (attendanceSnapshot.docs.isNotEmpty) {
-          // 이미 출석 기록이 있으면 해당 문서를 업데이트
-          DocumentReference attendanceDoc = attendanceSnapshot.docs.first.reference;
+          // 출석 기록이 있는 경우 해당 문서를 가져옴
+          DocumentSnapshot attendanceDoc = attendanceSnapshot.docs.first;
+          List<dynamic> attendanceQrCodes = attendanceDoc['qr_code'] ?? [];
+
+          // attendance 테이블의 qr_code 리스트에 스캔된 qr_code가 있는지 확인
+          if (attendanceQrCodes.contains(scheduleQrCode)) {
+            _showAlertDialog(context, '이미 출석한 일정입니다.');
+            _navigateToHomeScreen(context);
+            return;
+          }
 
           // schedule_name 배열에 새로 찍힌 QR 코드에 해당하는 schedule_name을 추가
-          await attendanceDoc.update({
+          await attendanceDoc.reference.update({
             'schedule_names': FieldValue.arrayUnion([scheduleName]),
+            'qr_code': FieldValue.arrayUnion([scheduleQrCode]),
             'check_in_time': FieldValue.serverTimestamp(), // 시간을 업데이트
           });
+
           print('출석 기록이 업데이트되었습니다.');
         } else {
           // 출석 기록이 없으면 새로 생성
           await _firestore.collection('attendance').add({
             'student_id': studentId,
-            'qr_code': qrCode,
+            'qr_code': [scheduleQrCode],
             'schedule_names': [scheduleName], // 새로운 schedule_name 배열로 저장
             'check': true,
             'check_in_time': FieldValue.serverTimestamp(),
           });
+
           print('새로운 출석 기록이 생성되었습니다.');
         }
+
+        // 출석 완료 팝업
+        _showAlertDialog(context, '출석 완료되었습니다.');
+        _navigateToHomeScreen(context);
       } else {
-        print('schedule_name이 존재하지 않습니다.');
+        _showAlertDialog(context, 'schedule_name이 존재하지 않습니다.');
+        _navigateToHomeScreen(context);
       }
+
+      // attendance_summary 업데이트
       await _updateTotalAttendance(studentId);
+      print(studentId);
     } else {
-      // QR 코드가 schedules 테이블에 없을 경우
-      print('해당 QR 코드를 찾을 수 없습니다.');
+      _showAlertDialog(context, '해당 QR 코드를 찾을 수 없습니다.');
+      _navigateToHomeScreen(context);
     }
   } catch (e) {
     print('출석 기록을 추가하거나 업데이트하는 중 에러가 발생했습니다: $e');
+    _showAlertDialog(context, 'QR 인식에 실패하였습니다.');
+    _navigateToHomeScreen(context);
+  }
+}
+
+Future<void> _updateTotalAttendance(String studentId) async {
+  try {
+    // attendance 테이블에서 student_id가 일치하는 기록을 가져옴
+    QuerySnapshot attendanceSnapshot = await _firestore
+        .collection('attendance')
+        .where('student_id', isEqualTo: studentId)
+        .limit(1)
+        .get();
+
+    if (attendanceSnapshot.docs.isNotEmpty) {
+      DocumentSnapshot attendanceDoc = attendanceSnapshot.docs.first;
+      List<dynamic> qrCodes = attendanceDoc['qr_code'] ?? [];
+print(qrCodes);
+      // attendance_summary 테이블에서 해당 student_id와 일치하는 문서를 찾음
+      QuerySnapshot summarySnapshot = await _firestore
+          .collection('attendance_summary')
+          .where('student_id', isEqualTo: studentId)
+          .limit(1)
+          .get();
+
+      if (summarySnapshot.docs.isNotEmpty) {
+        // 문서가 존재하면 해당 문서의 document ID로 업데이트
+        DocumentReference summaryDocRef = summarySnapshot.docs.first.reference;
+        await summaryDocRef.update({
+          'total_attendance': qrCodes.length, // qrCode 리스트의 길이를 total_attendance에 저장
+        });
+        print('attendance_summary의 total_attendance가 업데이트되었습니다.');
+      } else {
+        print('해당 student_id에 대한 attendance_summary 문서를 찾을 수 없습니다.');
+      }
+    } else {
+      print('해당 student_id로 출석 기록을 찾을 수 없습니다.');
+    }
+  } catch (e) {
+    print('attendance_summary 업데이트 중 오류 발생: $e');
   }
 }
 
@@ -65,7 +125,7 @@ void _showAlertDialog(BuildContext context, String message) {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text('오류'),
+        title: Text('알림'),
         content: Text(message),
         actions: <Widget>[
           TextButton(
@@ -79,42 +139,8 @@ void _showAlertDialog(BuildContext context, String message) {
     },
   );
 }
-
-
-Future<void> _updateTotalAttendance(String studentId) async {
-  try {
-    // attendance 테이블에서 student_id가 일치하는 기록을 가져옴
-    QuerySnapshot attendanceSnapshot = await _firestore
-        .collection('attendance')
-        .where('student_id', isEqualTo: studentId)
-        .limit(1)
-        .get();
-
-    if (attendanceSnapshot.docs.isNotEmpty) {
-      DocumentSnapshot attendanceDoc = attendanceSnapshot.docs.first;
-      List<dynamic> scheduleNames = attendanceDoc['schedule_names'] ?? [];
-
-      // attendance_summary 테이블에서 해당 student_id와 일치하는 문서를 찾음
-      QuerySnapshot summarySnapshot = await _firestore
-          .collection('attendance_summary')
-          .where('student_id', isEqualTo: studentId)
-          .limit(1)
-          .get();
-
-      if (summarySnapshot.docs.isNotEmpty) {
-        // 문서가 존재하면 해당 문서의 document ID로 업데이트
-        DocumentReference summaryDocRef = summarySnapshot.docs.first.reference;
-        await summaryDocRef.update({
-          'total_attendance': scheduleNames.length, // schedule_names 리스트의 길이를 total_attendance에 저장
-        });
-        print('attendance_summary의 total_attendance가 업데이트되었습니다.');
-      } else {
-        print('해당 student_id에 대한 attendance_summary 문서를 찾을 수 없습니다.');
-      }
-    } else {
-      print('해당 student_id로 출석 기록을 찾을 수 없습니다.');
-    }
-  } catch (e) {
-    print('attendance_summary 업데이트 중 오류 발생: $e');
-  }
+// role: '',id: '',
+// HomeScreen으로 이동하는 함수
+void _navigateToHomeScreen(BuildContext context) {
+  Navigator.of(context).pushReplacementNamed('/home'); // 홈 화면으로 이동
 }
