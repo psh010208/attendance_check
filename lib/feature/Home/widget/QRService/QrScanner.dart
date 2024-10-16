@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../../homeScreen.dart';
 import 'ViewModel/QrViewModel.dart'; // Firestore를 사용하기 위한 import
 
 class QrScanner extends StatefulWidget {
@@ -59,13 +60,12 @@ class _QrScannerState extends State<QrScanner> {
         controller.pauseCamera(); // 스캔 후 카메라 일시 중지
 
         // Firestore에 출석 정보를 추가/업데이트하는 함수 호출
-        await addOrUpdateAttendance( widget.studentId, result!.code!);
+        await addOrUpdateAttendance(context, widget.studentId, result!.code!);
+
 
         // Firestore 작업 후 카메라 재시작 (필요시)
         // controller.resumeCamera(); // 필요하면 다시 카메라 재시작
       }
     });
   }
-
-
 }
