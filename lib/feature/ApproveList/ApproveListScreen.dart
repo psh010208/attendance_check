@@ -59,8 +59,10 @@ class _ApproveListScreenState extends State<ApproveListScreen> {
   // 관리자 카드 UI
   Widget _buildAdminCard(BuildContext context, Approvemodel admin, int index) {
     return Padding(
+
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
       child: GestureDetector(
+
         onTap: () => _showDetailsDialog(admin),
         child: Container(
           decoration: _buildCardDecoration(context),
@@ -196,25 +198,30 @@ class _ApproveListScreenState extends State<ApproveListScreen> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              controller: _scrollController,
-              itemCount: _pendingAdmins.length + 1,
-              itemBuilder: (context, index) {
-                if (index == _pendingAdmins.length) {
-                  return _isLoading
-                      ? Center(child: CircularProgressIndicator())
-                      : SizedBox.shrink();
-                }
-                final admin = _pendingAdmins[index];
-                return _buildAdminCard(context, admin, index);
-              },
+      body: Container(
+        color: Theme.of(context).secondaryHeaderColor,
+        child: Column(
+
+          children: [
+
+            Expanded(
+              child: ListView.builder(
+                controller: _scrollController,
+                itemCount: _pendingAdmins.length + 1,
+                itemBuilder: (context, index) {
+                  if (index == _pendingAdmins.length) {
+                    return _isLoading
+                        ? Center(child: CircularProgressIndicator())
+                        : SizedBox.shrink();
+                  }
+                  final admin = _pendingAdmins[index];
+                  return _buildAdminCard(context, admin, index);
+                },
+              ),
             ),
-          ),
-          if (_isLoading) CircularProgressIndicator(),
-        ],
+            if (_isLoading) CircularProgressIndicator(),
+          ],
+        ),
       ),
     );
   }
