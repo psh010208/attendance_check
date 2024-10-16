@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:attendance_check/feature/Home/widget/card/SchedulCard.dart';
 import 'package:attendance_check/feature/Home/model/homeModel.dart';
-
 import '../../../Drawer/model/AttendanceViewModel.dart'; // ScheduleViewModel import
 
 class ScheduleCardBuilder extends StatelessWidget {
@@ -25,7 +24,15 @@ class ScheduleCardBuilder extends StatelessWidget {
         }
 
         List<Schedule> schedules = snapshot.data!;
-        return ScheduleCard(schedules: schedules);
+
+        // scheduleCount 데이터 가져오기
+        int totalScheduleCount = schedules.fold(0, (sum, schedule) => sum + schedule.scheduleCount);
+
+        return Column(
+          children: [            // 일정 카드 표시
+            ScheduleCard(schedules: schedules),
+          ],
+        );
       },
     );
   }
