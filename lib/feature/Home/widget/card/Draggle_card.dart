@@ -28,7 +28,7 @@ class DraggableCard extends StatelessWidget {
         margin: EdgeInsets.only(top: 20.0), // 카드 사이의 간격 설정
         child: Column(
           children: [
-           // ScheduleCardInfo(schedule: schedule), // 카드 정보
+            // ScheduleCardInfo(schedule: schedule), // 카드 정보
           ],
         ),
       ),

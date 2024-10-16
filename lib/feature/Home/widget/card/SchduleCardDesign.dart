@@ -47,8 +47,6 @@ class ScheduleCardDesign extends StatelessWidget {
               ),
             ),
           ),
-          // 카드 정보 추가
-
         ],
       ),
     );

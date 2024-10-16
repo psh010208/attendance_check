@@ -74,10 +74,10 @@ class HomeScreen extends HookWidget {
       body: SingleChildScrollView(
         child: SizedBox(
           width: 500,
-          height: 500,
+          height: 1000,
           child: Stack(
             children: [
-              SoonCheckWidget(bottom: 400, left: 45),
+              SoonCheckWidget(bottom: 800, left: 45),
               // 일정 카드 표시
               buildScheduleCard(context),
 
