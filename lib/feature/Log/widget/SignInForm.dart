@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:attendance_check/feature/Log/widget/LogInButton.dart'; // LogInButton 임포트
 import 'package:attendance_check/feature/Log/ViewModel/logViewModel.dart'; // LogViewModel 임포트
+import 'package:attendance_check/feature/Log/logPage.dart'; // LogPage 임포트
 
 import '../../Home/widget/SoonCheck.dart';
 import '../Model/logModel.dart';
@@ -99,6 +100,23 @@ class _SignInFormState extends State<SignInForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent, // 투명한 배경
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.black),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => HomeScreen(
+                    role: '',
+                    id: '_studentId!',
+                  ),
+                ),
+              );
+            }),
+      ),
+
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 30.w),
         child: Form(
@@ -107,7 +125,7 @@ class _SignInFormState extends State<SignInForm> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               _buildHeaderWidget(),
-              SizedBox(height: _selectedRole == '관리자' ? 100.h : 70.h),
+              SizedBox(height: _selectedRole == '관리자' ? 100.h : 50.h),  //학부생일 때 여백 크기 수정
               _buildRoleDropdown(),
               if (_selectedRole == '학부생') ...[
                 SizedBox(height: 20.h),
@@ -117,7 +135,9 @@ class _SignInFormState extends State<SignInForm> {
               _buildStudentIdField(),
               SizedBox(height: 30.h),
               _buildLoginButton(),
-              SizedBox(height: 50.h),
+              //SizedBox(height: 10.h), // 로그인 버튼과 아래 텍스트 버튼 사이 간격
+              _buildSignUpPrompt(context), // 회원가입으로 전환하는 버튼 추가
+              SizedBox(height: 30.h), //크기 수정
             ],
           ),
         ),
@@ -128,7 +148,7 @@ class _SignInFormState extends State<SignInForm> {
   // 헤더 위젯 빌드 함수
   Widget _buildHeaderWidget() {
     return Flexible(
-      child: SoonCheckWidget(bottom: -5.h, left: -10.w),
+        child: SoonCheckWidget(bottom: -5.h, left: -10.w)
     );
   }
 
@@ -188,6 +208,27 @@ class _SignInFormState extends State<SignInForm> {
       ),
     );
   }
+
+  // '계정이 없으신가요?' 버튼을 빌드하는 함수
+  Widget _buildSignUpPrompt(BuildContext context) {
+    return TextButton(
+      onPressed: () {
+        // 회원가입 폼으로 이동하도록 logPage의 isLogin을 false로 변경
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => logPage(isLogin: false)),
+        );
+      },
+      child: Text(
+        '계정이 없으신가요? 회원가입',
+        style: TextStyle(
+          fontSize: 15.sp, // 텍스트 크기 반응형으로 설정
+          color: Theme.of(context).colorScheme.primary,
+        ),
+      ),
+    );
+  }
+
 
   // Custom TextField widget to avoid conflicts
   Widget buildCustomTextField(String labelText, TextInputType keyboardType, bool obscureText, FormFieldSetter<String>? onSaved) {

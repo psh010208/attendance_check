@@ -110,9 +110,9 @@ class _SignUpFormState extends State<SignUpForm> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
-
       body: SafeArea(
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 30.w),
@@ -121,37 +121,27 @@ class _SignUpFormState extends State<SignUpForm> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                Flexible(child: SoonCheckWidget(bottom: -5.h, left: 5.w)),
-
+                Flexible(child: SoonCheckWidget(bottom: -5.h, left: -5.w)),  //로고 중앙으로
                 SizedBox(height: _getRoleBasedSpacing()),
-
                 _buildRoleDropdown(),
-
                 if (_selectedRole == '학부생') ...[
                   SizedBox(height: 20.h),
                   _buildDepartmentDropdown(),
                 ],
-
                 SizedBox(height: 20.h),
-
                 _buildCustomTextField('이름', TextInputType.text, (value) => _name = value),
-
                 SizedBox(height: 20.h),
-
                 _buildCustomTextField('학번', TextInputType.number, (value) => _studentId = value),
-
                 SizedBox(height: 30.h),
-
-                Flexible(
-                  child: Center(
-                    child: LogUpButton(
-                      onPressed: () => _submitForm(context),
-                      text: '회원가입',
-                    ),
+                Flexible(child: Center(
+                  child: LogUpButton(
+                    onPressed: () => _submitForm(context),
+                    text: '회원가입',
                   ),
-                ),
-
-                SizedBox(height: 130.h),
+                )),
+                //SizedBox(height: 5.h), // 회원가입 버튼과 아래 텍스트 버튼 사이 간격
+                _buildSignInPrompt(context), // 로그인으로 전환하는 버튼 추가
+                SizedBox(height: 60.h),
               ],
             ),
           ),
@@ -162,7 +152,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
   // 역할 선택에 따라 간격 설정
   double _getRoleBasedSpacing() {
-    return _selectedRole == '관리자' ? 100.h : 70.h;
+    return _selectedRole == '관리자' ? 100.h : 50.h; //학부생일 때 여백 크기 변경
   }
 
   // 사용자 유형 드롭다운 빌드 함수
@@ -209,6 +199,31 @@ class _SignUpFormState extends State<SignUpForm> {
       obscureText: false,
       onSaved: onSaved,
       validator: (value) => value == null || value.isEmpty ? '$labelText을 입력하세요' : null,
+    );
+  }
+
+  // '이미 계쩡이 있으신가요?' 버튼을 빌드하는 함수
+  Widget _buildSignInPrompt(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.only(top: 5.h), // 로그인 버튼 바로 아래 붙도록 여백을 최소화
+      child: Center(
+        child: TextButton(
+          onPressed: () {
+            // 로그인 폼으로 이동하도록 logPage의 isLogin을 false로 변경
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => logPage(isLogin: true)),
+            );
+          },
+          child: Text(
+            '이미 계정이 있으신가요? 로그인',
+            style: TextStyle(
+              fontSize: 15.sp, // 텍스트 크기 반응형으로 설정
+              color: Theme.of(context).colorScheme.primary,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
