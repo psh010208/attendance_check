@@ -25,7 +25,7 @@ class Schedule {
       scheduleName: data['schedule_name'],
       location: data['location'],
       instructorName: data['instructor_name'] ?? '강사 미정',
-      startTime: (data['start_time'] as Timestamp).toDate().toString(), // DateTime을 String으로 변환
+      startTime: (data['start_time'] as Timestamp).toDate().toString(),
       endTime: (data['end_time'] as Timestamp).toDate(),
       scheduleCount: data['schedule_count'] ?? 0,
     );
