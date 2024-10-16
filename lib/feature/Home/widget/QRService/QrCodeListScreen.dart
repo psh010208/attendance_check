@@ -1,8 +1,16 @@
 import 'package:attendance_check/feature/Home/widget/QRService/widget/qr_code_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:attendance_check/feature/Drawer/drawerScreen.dart';
+import 'package:attendance_check/feature/Home/homeScreen.dart';
 
 class QrCodeListScreen extends StatefulWidget {
+  final String role;
+  final String id;
+
+  QrCodeListScreen({required this.role, required this.id});
+
   @override
   _QrCodeListScreenState createState() => _QrCodeListScreenState();
 }
@@ -77,6 +85,37 @@ class _QrCodeListScreenState extends State<QrCodeListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        toolbarHeight: 50.h, // 반응형으로 상단바의 높이를 설정
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        title: Text('QR 코드 확인', style: Theme.of(context).textTheme.titleMedium),
+        centerTitle: true,
+        elevation: 1,
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back,
+                color: Theme.of(context).iconTheme.color),
+            onPressed: () {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          HomeScreen(role: widget.role, id: widget.id)));
+            }),
+        actions: [
+          Builder(
+            builder: (context) {
+              return IconButton(
+                icon: Icon(Icons.menu),
+                onPressed: () {
+                  Scaffold.of(context).openEndDrawer();
+                },
+                color: Theme.of(context).iconTheme.color,
+              );
+            },
+          ),
+        ],
+      ),
+      endDrawer: DrawerScreen(role: widget.role, id: widget.id),
       body: FutureBuilder<List<Map<String, dynamic>>>(
         future: _fetchSchedules(),
         builder: (context, snapshot) => _buildContent(snapshot),
