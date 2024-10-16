@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 class InfoTextField extends StatelessWidget {
   final String labelText;
   final TextInputType keyboardType;
   final List<TextInputFormatter>? inputFormatters;
   final bool obscureText;
   final FormFieldSetter<String>? onSaved;
-  final FormFieldValidator<String>? validator;
+  final FormFieldValidator<String>? validator; // validator 추가
 
   InfoTextField({
     required this.labelText,
@@ -44,7 +45,7 @@ class InfoTextField extends StatelessWidget {
       inputFormatters: inputFormatters,
       obscureText: obscureText,
       onSaved: onSaved,
-      validator: validator,
+      validator: validator, // TextFormField에 validator 추가
     );
   }
 }

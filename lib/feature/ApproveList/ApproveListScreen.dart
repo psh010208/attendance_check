@@ -59,8 +59,10 @@ class _ApproveListScreenState extends State<ApproveListScreen> {
   // 관리자 카드 UI
   Widget _buildAdminCard(BuildContext context, Approvemodel admin, int index) {
     return Padding(
+
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
       child: GestureDetector(
+
         onTap: () => _showDetailsDialog(admin),
         child: Container(
           decoration: _buildCardDecoration(context),
@@ -68,7 +70,7 @@ class _ApproveListScreenState extends State<ApproveListScreen> {
             padding: const EdgeInsets.all(16.0),
             child: Row(
               children: [
-                Icon(Icons.person, color: Theme.of(context).colorScheme.onSurface, size: 50),
+                Icon(Icons.person, color: Theme.of(context).colorScheme.surfaceBright, size: 50),
                 SizedBox(width: 16),
                 _buildAdminInfo(context, admin),
                 Spacer(),
@@ -170,7 +172,7 @@ class _ApproveListScreenState extends State<ApproveListScreen> {
           children: [
             SizedBox(width: 17.w),
             IconButton(
-              icon: Icon(Icons.arrow_back_ios, color: Theme.of(context).colorScheme.onSurface, size: 30),
+              icon: Icon(Icons.arrow_back_ios, color: Theme.of(context).colorScheme.scrim, size: 30),
               onPressed: () {
                 Navigator.pushReplacement(
                     context,
@@ -180,14 +182,14 @@ class _ApproveListScreenState extends State<ApproveListScreen> {
               },
             ),
             Spacer(),
-            CustomText(id: '관리자 승인 대기 목록', size: 20, color: Theme.of(context).colorScheme.onSurface),
+            CustomText(id: '관리자 승인 대기 목록', size: 20, color: Theme.of(context).colorScheme.scrim),
             Spacer(),
           ],
         ),
         centerTitle: true,
         actions: [
           IconButton(
-            icon: Icon(_isRejectionMode ? Icons.check : Icons.edit, color: Theme.of(context).colorScheme.onSurface, size: 30),
+            icon: Icon(_isRejectionMode ? Icons.check : Icons.edit, color: Theme.of(context).colorScheme.scrim, size: 30),
             onPressed: () {
               setState(() {
                 _isRejectionMode = !_isRejectionMode;
@@ -196,25 +198,30 @@ class _ApproveListScreenState extends State<ApproveListScreen> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              controller: _scrollController,
-              itemCount: _pendingAdmins.length + 1,
-              itemBuilder: (context, index) {
-                if (index == _pendingAdmins.length) {
-                  return _isLoading
-                      ? Center(child: CircularProgressIndicator())
-                      : SizedBox.shrink();
-                }
-                final admin = _pendingAdmins[index];
-                return _buildAdminCard(context, admin, index);
-              },
+      body: Container(
+        color: Theme.of(context).secondaryHeaderColor,
+        child: Column(
+
+          children: [
+
+            Expanded(
+              child: ListView.builder(
+                controller: _scrollController,
+                itemCount: _pendingAdmins.length + 1,
+                itemBuilder: (context, index) {
+                  if (index == _pendingAdmins.length) {
+                    return _isLoading
+                        ? Center(child: CircularProgressIndicator())
+                        : SizedBox.shrink();
+                  }
+                  final admin = _pendingAdmins[index];
+                  return _buildAdminCard(context, admin, index);
+                },
+              ),
             ),
-          ),
-          if (_isLoading) CircularProgressIndicator(),
-        ],
+            if (_isLoading) CircularProgressIndicator(),
+          ],
+        ),
       ),
     );
   }

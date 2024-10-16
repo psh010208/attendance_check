@@ -34,7 +34,7 @@ class _LotteryView extends State<LotteryView> {
         elevation: 1,
 
         leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios, color: Theme.of(context).colorScheme.onSurface, size: 30),
+            icon: Icon(Icons.arrow_back_ios_new, color: Theme.of(context).colorScheme.onSurface, size: 30),
             onPressed: () {
               Navigator.pushReplacement(
                   context,
@@ -200,6 +200,7 @@ class _LotteryView extends State<LotteryView> {
           ),
           DataCell(
             LotteryDeleteButton(
+
               onPressed: () async {
                 bool confirmDelete = await _showConfirmationDialog(context);
                 if (confirmDelete) {

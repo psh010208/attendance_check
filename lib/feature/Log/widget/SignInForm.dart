@@ -99,19 +99,7 @@ class _SignInFormState extends State<SignInForm> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Colors.transparent, // 투명한 배경
-        leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: Colors.black),
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => HomeScreen(
-                    role: '',
-                    id: '_studentId!',
-                  ),
-                ),
-              );
-            }),
+
       ),
 
       body: Padding(
