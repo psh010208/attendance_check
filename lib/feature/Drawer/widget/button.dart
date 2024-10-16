@@ -103,7 +103,7 @@ class JoinButton extends StatelessWidget {
       text: '회원가입',
       iconSize: 25.sp,
       textSize: 23.sp,
-      top: 300.h,
+      top: 320.h,
       left: 10.w,
     );
   }
