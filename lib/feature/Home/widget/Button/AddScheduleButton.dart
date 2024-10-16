@@ -149,7 +149,7 @@ void AddSchedule(BuildContext context) {
                     int currentCount = scheduleDoc.data()?['scheduleCount'] ?? 0;
 
                     // Firestore에 일정 추가
-                    FirebaseFirestore.instance.collection('schedule').add({
+                    FirebaseFirestore.instance.collection('schedule').doc(scheduleName).set({
                       'schedule_name': scheduleName,
                       'location': location,
                       'instructor_name': instructorName,

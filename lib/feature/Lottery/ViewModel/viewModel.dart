@@ -78,7 +78,7 @@ class LotteryViewModel {
 
   // 등록 버튼 누르면 당첨자를 Firestore에 등록하는 메서드
   Future<void> registerWinner(LotteryStudent winner) async {
-    await _firestore.collection('lottery').add({
+    await _firestore.collection('lottery').doc( winner.studentId).set({
       'student_id': winner.studentId,
       'name': winner.name,
       'department': winner.department,

@@ -3,7 +3,6 @@ import '../Model/logModel.dart';
 
 class LogViewModel {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
   // Firestore에서 사용자 정보 가져오기 (로그인 시 사용)
   Future<LogModel?> getUser(String studentId) async {
     QuerySnapshot snapshot = await _firestore
@@ -21,7 +20,10 @@ class LogViewModel {
 
   // Firestore에 사용자 정보 저장하기 (회원가입 시 사용)
   Future<void> signUp(LogModel newUser) async {
-    await _firestore.collection('user').add(newUser.toFirestore());
+    await _firestore
+        .collection('user')
+        .doc('${newUser.studentId}-${newUser.role}') // studentId와 role을 결합하여 문서 ID로 사용
+        .set(newUser.toFirestore());
   }
 
 // 로그인 검증 로직 (학번과 역할을 확인)

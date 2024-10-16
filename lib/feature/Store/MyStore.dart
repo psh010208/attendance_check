@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class MyStore extends ChangeNotifier {
-  var isDarkMode = true;
+  var isDarkMode = false;
 
   changeMode() {
     isDarkMode = !isDarkMode;
