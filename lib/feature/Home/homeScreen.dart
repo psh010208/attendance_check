@@ -48,9 +48,9 @@ class HomeScreen extends HookWidget {
             Builder(
               builder: (BuildContext context) {
                 return AdminIcon(
-                  onPressed: () async {
-                     AddSchedule(context); // 일정 추가 다이얼로그 호출,
-                  }
+                    onPressed: () async {
+                      AddSchedule(context); // 일정 추가 다이얼로그 호출,
+                    }
                 );
               },
             ),
@@ -92,7 +92,7 @@ class HomeScreen extends HookWidget {
           height: 1000.h,
           child: Stack(
             children: [
-              SoonCheckWidget(bottom: 850.h, left: 45.w),
+              SoonCheckWidget(bottom: 850.h, left: 40.w),
               // 일정 카드 표시
               buildScheduleCard(context),
 
@@ -117,12 +117,12 @@ class HomeScreen extends HookWidget {
                           context,
                           MaterialPageRoute(
                             builder: (context) => QrScanner(studentId: id), // studentId 전달
-                        ),
-                      );
-                    },
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ),
-              ),
             ],
           ),
         ),
