@@ -34,7 +34,7 @@ class _LotteryView extends State<LotteryView> {
         elevation: 1,
         leading: IconButton(
             icon: Icon(Icons.arrow_back,
-                color: Theme.of(context).colorScheme.onSurface),
+                color: Theme.of(context).iconTheme.color),
             onPressed: () {
               Navigator.pushReplacement(
                   context,
@@ -50,7 +50,7 @@ class _LotteryView extends State<LotteryView> {
                 onPressed: () {
                   Scaffold.of(context).openEndDrawer();
                 },
-                color: Theme.of(context).colorScheme.onSurface,
+                color: Theme.of(context).iconTheme.color,
               );
             },
           ),
