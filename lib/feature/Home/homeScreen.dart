@@ -97,26 +97,28 @@ class HomeScreen extends HookWidget {
               buildScheduleCard(context),
 
               // '학부생' 역할인 경우 QR 코드 스캐너 애니메이션 버튼 추가
+              // QR 코드 버튼을 일정 카드 바로 아래에 위치하도록 수정
               if (role == '학부생')
-                Align(
-                  alignment: Alignment.bottomCenter,
+                Positioned(
+                  bottom: 250.h, // 카드 아래 위치 조정
+                  left: MediaQuery.of(context).size.width * 0.368.w, // 중앙 정렬
                   child: Padding(
                     padding: const EdgeInsets.all(10.0),
                     child: animationButton(
-                      icon: Icons.qr_code_scanner, // QR 코드 아이콘 직접 사용
-                      iconSize: 40.w, // 아이콘 크기 설정
-                      iconColor: Theme.of(context).colorScheme.onSurface, // 아이콘 색상 설정
-                      defaultSize: const Offset(80, 80), // 버튼 기본 크기 설정
-                      clickedSize: const Offset(70, 70), // 버튼 클릭 시 크기
-                      defaultButtonColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.1), // 버튼 색상
-                      clickedButtonColor: Theme.of(context).colorScheme.primary, // 클릭 시 버튼 색상
+                      icon: Icons.qr_code_scanner,
+                      iconSize: 40.w,
+                      iconColor: Theme.of(context).colorScheme.onSurface,
+                      defaultSize: const Offset(80, 80),
+                      clickedSize: const Offset(70, 70),
+                      defaultButtonColor:
+                      Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
+                      clickedButtonColor: Theme.of(context).colorScheme.primary,
                       circularRadius: 50.r,
                       onTap: () {
-                        // QrScanner로 이동하면서 student_id를 넘김
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => QrScanner(studentId: id), // studentId 전달
+                            builder: (context) => QrScanner(studentId: id),
                           ),
                         );
                       },
