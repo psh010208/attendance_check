@@ -132,7 +132,7 @@ class HomeScreen extends HookWidget {
       ),
     );
   }
-
+//ㅎㅎㅇㅎㅇ
   Widget buildScheduleCard(BuildContext context) {
     return StreamBuilder<List<Schedule>>(
       stream: scheduleViewModel.getScheduleStream(), // Firestore에서 일정 데이터 가져오기
