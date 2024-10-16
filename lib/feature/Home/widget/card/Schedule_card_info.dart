@@ -39,18 +39,45 @@ class ScheduleCardInfo extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Padding(
-                  padding: EdgeInsets.only(left: 20.w), // 왼쪽에 50픽셀만큼 공간 추가
-                  child: CustomText(
-                    id: schedule.scheduleName.isNotEmpty
-                        ? schedule.scheduleName
-                        : "이름 없음",
-                    size: 16.sp,
+                Flexible(
+                  child: GestureDetector(
+                    onTap: () {
+                      showDialog( // 이름을 클릭하면 전체 이름을 보여주는 알림창이 두둥탁!
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text('전체 이름', style: TextStyle(color: Colors.black, fontSize: 23.sp, fontWeight: FontWeight.bold)),
+                            content: Text(schedule.scheduleName.isNotEmpty
+                                ? schedule.scheduleName
+                                : "이름 없음"),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text('닫기', style: TextStyle(color: Colors.black, fontSize: 16.sp, fontWeight: FontWeight.normal)),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 15.w), // 왼쪽과 카드 제목 사이 공간
+                      child: CustomText(
+                        id: schedule.scheduleName.isNotEmpty
+                            ? schedule.scheduleName
+                            : "이름 없음",
+                        size: 16.sp,
+                        overflow: TextOverflow.ellipsis, // 텍스트가 길면 "..."으로 표시
+                        maxLines: 1, // 한 줄까지만 표시
+                      ),
+                    ),
                   ),
                 ),
                 SizedBox(width: 20.w),
                 Padding(
-                  padding: EdgeInsets.only(right: 10.w),
+                  padding: EdgeInsets.only(right: 10.w), // 오른쪽과 시간 사이 공간
                   child: CustomText(
                     // 시작시간 ~ 끝나는시간을 포맷한 값을 사용
                     id: schedule.startTime.isNotEmpty

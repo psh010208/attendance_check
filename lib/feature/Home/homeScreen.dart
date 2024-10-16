@@ -92,7 +92,7 @@ class HomeScreen extends HookWidget {
           height: 1000.h,
           child: Stack(
             children: [
-              SoonCheckWidget(bottom: 850.h, left: 45.w),
+              SoonCheckWidget(bottom: 850.h, left: 40.w),
               // 일정 카드 표시
               buildScheduleCard(context),
 
