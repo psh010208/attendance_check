@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-// import 'model/model.dart';
 import 'ParticipationData.dart';
 import 'package:attendance_check/feature/Drawer/drawerScreen.dart';
 import 'package:attendance_check/feature/Home/homeScreen.dart';
+import 'package:intl/intl.dart'; // 추가
 
 class ParticipationStatus extends StatefulWidget {
   final String role;
@@ -255,6 +254,12 @@ class _StudentDataTableState extends State<ParticipationStatus> {
     );
   }
 
+  // DateTime을 원하는 형식으로 변환하는 함수
+  String formatDateTime(String timeString) {
+    DateTime dateTime = DateTime.parse(timeString); // 문자열을 DateTime 객체로 변환
+    return DateFormat('MM/dd h:mm a').format(dateTime);  // 날짜와 12시간 형식으로 변환하고 AM/PM 추가
+  }
+
 // 표 내용(ParticipationData.dart에서 불러옴)
   List<DataRow> _createRows(double screenHeight, double screenWidth) {
     // 필터링 추가
@@ -298,105 +303,84 @@ class _StudentDataTableState extends State<ParticipationStatus> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('일정 1',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold)),
-                              Divider(),
-                              Text('입실   ' + e.time,
-                                  style: TextStyle(color: Colors.white)),
-                              SizedBox(height: 5.h),
-                              Text('퇴실   2024 / 10 / 9 / 16:30',
-                                  style: TextStyle(color: Colors.white)),
-                              SizedBox(height: 10.h),
-                              Text('일정 2',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold)),
-                              Divider(),
-                              Text('입실   ' + e.time,
-                                  style: TextStyle(color: Colors.white)),
-                              SizedBox(height: 5.h),
-                              Text('퇴실   2024 / 10 / 9 / 16:30',
-                                  style: TextStyle(color: Colors.white)),
-                              SizedBox(height: 10.h),
-                              Text('일정 3',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold)),
-                              Divider(),
-                              Text('입실   ' + e.time,
-                                  style: TextStyle(color: Colors.white)),
-                              SizedBox(height: 5.h),
-                              Text('퇴실   2024 / 10 / 9 / 16:30',
-                                  style: TextStyle(color: Colors.white)),
-                              SizedBox(height: 10.h),
-                              Text('일정 4',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold)),
-                              Divider(),
-                              Text('입실   ' + e.time,
-                                  style: TextStyle(color: Colors.white)),
-                              SizedBox(height: 5.h),
-                              Text('퇴실   2024 / 10 / 9 / 16:30',
-                                  style: TextStyle(color: Colors.white)),
-                              SizedBox(height: 10.h),
-                              Text('일정 5',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold)),
-                              Divider(),
-                              Text('입실   ' + e.time,
-                                  style: TextStyle(color: Colors.white)),
-                              SizedBox(height: 5.h),
-                              Text('퇴실   2024 / 10 / 9 / 16:30',
-                                  style: TextStyle(color: Colors.white)),
-                              SizedBox(height: 10.h),
-                              Text('일정 6',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold)),
-                              Divider(),
-                              Text('입실   ' + e.time,
-                                  style: TextStyle(color: Colors.white)),
-                              SizedBox(height: 5.h),
-                              Text('퇴실   2024 / 10 / 9 / 16:30',
-                                  style: TextStyle(color: Colors.white)),
-                              SizedBox(height: 10.h),
-                              Text('일정 7',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold)),
-                              Divider(),
-                              Text('입실   ' + e.time,
-                                  style: TextStyle(color: Colors.white)),
-                              SizedBox(height: 5.h),
-                              Text('퇴실   2024 / 10 / 9 / 16:30',
-                                  style: TextStyle(color: Colors.white)),
-                              SizedBox(height: 10.h),
-                              Text('일정 8',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold)),
-                              Divider(),
-                              Text('입실   ' + e.time,
-                                  style: TextStyle(color: Colors.white)),
-                              SizedBox(height: 5.h),
-                              Text('퇴실   2024 / 10 / 9 / 16:30',
-                                  style: TextStyle(color: Colors.white)),
-                              SizedBox(height: 10.h),
-                              Text('일정 9',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold)),
-                              Divider(),
-                              Text('입실   ' + e.time,
-                                  style: TextStyle(color: Colors.white)),
-                              SizedBox(height: 5.h),
-                              Text('퇴실   2024 / 10 / 9 / 16:30',
-                                  style: TextStyle(color: Colors.white)),
-                              SizedBox(height: 10.h),
+                              Text('일정 1', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                              SizedBox(height: 8),
+                              Text('입실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
+                              SizedBox(height: 5),
+                              Text('퇴실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
+                              SizedBox(height: 5),
+                              Divider( color: Colors.white, thickness: 1 ),
+                              SizedBox(height: 10),
+
+                              Text('일정 2', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                              SizedBox(height: 8),
+                              Text('입실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
+                              SizedBox(height: 5),
+                              Text('퇴실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
+                              SizedBox(height: 5),
+                              Divider( color: Colors.white, thickness: 1 ),
+                              SizedBox(height: 10),
+
+                              Text('일정 3', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                              SizedBox(height: 8),
+                              Text('입실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
+                              SizedBox(height: 5),
+                              Text('퇴실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
+                              SizedBox(height: 5),
+                              Divider( color: Colors.white, thickness: 1 ),
+                              SizedBox(height: 10),
+
+                              Text('일정 4', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                              SizedBox(height: 8),
+                              Text('입실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
+                              SizedBox(height: 5),
+                              Text('퇴실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
+                              SizedBox(height: 5),
+                              Divider( color: Colors.white, thickness: 1 ),
+                              SizedBox(height: 10),
+
+                              Text('일정 5', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                              SizedBox(height: 8),
+                              Text('입실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
+                              SizedBox(height: 5),
+                              Text('퇴실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
+                              SizedBox(height: 5),
+                              Divider( color: Colors.white, thickness: 1 ),
+                              SizedBox(height: 10),
+
+                              Text('일정 6', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                              SizedBox(height: 8),
+                              Text('입실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
+                              SizedBox(height: 5),
+                              Text('퇴실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
+                              SizedBox(height: 5),
+                              Divider( color: Colors.white, thickness: 1 ),
+                              SizedBox(height: 10),
+
+                              Text('일정 7', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                              SizedBox(height: 8),
+                              Text('입실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
+                              SizedBox(height: 5),
+                              Text('퇴실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
+                              SizedBox(height: 5),
+                              Divider( color: Colors.white, thickness: 1 ),
+                              SizedBox(height: 10),
+
+                              Text('일정 8', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                              SizedBox(height: 8),
+                              Text('입실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
+                              SizedBox(height: 5),
+                              Text('퇴실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
+                              SizedBox(height: 5),
+                              Divider( color: Colors.white, thickness: 1 ),
+                              SizedBox(height: 10),
+
+                              Text('일정 9', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                              SizedBox(height: 8),
+                              Text('입실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
+                              SizedBox(height: 5),
+                              Text('퇴실   ' + formatDateTime(e.time), style: TextStyle(color: Colors.white)),
+                              SizedBox(height: 10),
                             ],
                           ),
                         ),
