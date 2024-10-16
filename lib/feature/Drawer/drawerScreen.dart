@@ -1,8 +1,6 @@
-import 'package:attendance_check/feature/Drawer/model/SchedulesModel.dart';
 import 'package:attendance_check/feature/Drawer/widget/IdText.dart';
 import 'package:attendance_check/feature/Drawer/widget/button.dart';
 import 'package:attendance_check/feature/Drawer/widget/currentBar.dart';
-import 'package:attendance_check/feature/Home/widget/QRService/QrCodeListScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../Home/model/homeModel.dart';
@@ -51,28 +49,28 @@ class _DrawerScreenState extends State<DrawerScreen> {
                     ),
                     if (widget.role != '관리자' && widget.role != '학부생')
                       Positioned(
-                        top: 80.h, // 반응형 높이 설정
-                        left: 82.w,
+                        top: 80.r, // 반응형 높이 설정
+                        left: 82.r,
                         child: CustomText(
                           id: '정보없음',
-                          size: 30.w, // 역할 표시
+                          size: 30.r, // 역할 표시
                         ),
                       ),
                     if (widget.role == '관리자' || widget.role == '학부생') ... [
                       Positioned(
-                        top: 70.h, // 반응형 높이 설정
-                        left: 94.w,
+                        top: 70.r, // 반응형 높이 설정
+                        left: 94.r,
                         child: CustomText(
                           id: widget.role,
-                          size: 30.w, // 역할 표시
+                          size: 30.r, // 역할 표시
                         ),
                       ),
                       Positioned(
-                        top: 110.h, // 반응형 높이 설정
-                        left: 94.w,
+                        top: 110.r, // 반응형 높이 설정
+                        left: 94.r,
                         child: CustomText(
                           id: widget.id,
-                          size: 20.sp, // 아이디 표시
+                          size: 20.r, // 아이디 표시
                         ),
                       ),
                     ]
@@ -86,7 +84,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
               right: 0,
               child: Divider(
                 color: Colors.grey,
-                thickness: 3,
+                thickness: 3.r,
               ),
             ),
             if (widget.role == '관리자') ...[
