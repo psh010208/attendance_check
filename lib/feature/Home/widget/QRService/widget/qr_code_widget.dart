@@ -129,6 +129,7 @@ class QrCodeTile extends StatelessWidget {
         ),
         trailing: IconButton(
           icon: Icon(Icons.save_alt),
+
           color: Theme.of(context).colorScheme.shadow,
           onPressed: () => _saveQrCodeAsPng(context, qrCode),
         ),

@@ -68,13 +68,13 @@ class _QrScannerState extends State<QrScanner> {
                               Container(
                                 width: 4,
                                 height: 40,
-                                color: Colors.redAccent,
+                                color: Theme.of(context).primaryColor,
                               ),
                               // 가로선
                               Container(
                                 width: 40,
                                 height: 4,
-                                color: Colors.redAccent,
+                                color: Theme.of(context).primaryColor,
                               ),
                             ],
                           ),

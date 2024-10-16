@@ -34,20 +34,17 @@ class _SignInFormState extends State<SignInForm> {
     _selectedRole = widget.initialRole ?? '학부생'; // 초기 역할 설정
     _studentId = widget.initialStudentId ?? '20225524'; // 초기 학번 설정
   }
-
   Future<void> _submitForm(BuildContext context) async {
     if (!_formKey.currentState!.validate()) return;
     _formKey.currentState!.save();
 
-    // Firestore에서 학번과 역할을 통해 로그인 검증
-    bool isLoggedIn = await logViewModel.logIn(_studentId!, _selectedRole!);
+    // Firestore에서 학번, 역할, 학과를 통해 로그인 검증
+    bool isLoggedIn = await logViewModel.logIn(_studentId!, _selectedRole!, _department!);
 
     if (isLoggedIn) {
-      // 로그인 성공 시 InfoModel에 정보 저장
-      // print(_selectedRole);
       _navigateToDrawerScreen(); // 홈 화면으로 이동
     } else {
-      _handleLoginFailure(context);
+      _handleLoginFailure(context); // 실패 처리
     }
   }
 
