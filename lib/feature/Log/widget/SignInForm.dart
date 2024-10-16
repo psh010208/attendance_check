@@ -1,10 +1,9 @@
-import 'package:attendance_check/feature/Drawer/model/AttendanceViewModel.dart';
 import 'package:attendance_check/feature/Home/homeScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:attendance_check/feature/Log/widget/LogInButton.dart'; // LogInButton 임포트
 import 'package:attendance_check/feature/Log/ViewModel/logViewModel.dart'; // LogViewModel 임포트
-import 'package:attendance_check/feature/Log/logPage.dart'; // LogInButton 임포트
+import 'package:attendance_check/feature/Log/logPage.dart'; // LogPage 임포트
 
 import '../../Home/widget/SoonCheck.dart';
 import '../Model/logModel.dart';
@@ -101,16 +100,32 @@ class _SignInFormState extends State<SignInForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent, // 투명한 배경
+        leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.black),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => HomeScreen(
+                    role: '',
+                    id: '_studentId!',
+                  ),
+                ),
+              );
+            }),
+      ),
+
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 30.w),
         child: Form(
           key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.min, // Column의 크기를 최소한으로 줄임
             children: [
               _buildHeaderWidget(),
-              SizedBox(height: _selectedRole == '관리자' ? 100.h : 70.h),
+              SizedBox(height: _selectedRole == '관리자' ? 100.h : 50.h),  //학부생일 때 여백 크기 수정
               _buildRoleDropdown(),
               if (_selectedRole == '학부생') ...[
                 SizedBox(height: 20.h),
@@ -122,7 +137,7 @@ class _SignInFormState extends State<SignInForm> {
               _buildLoginButton(),
               //SizedBox(height: 10.h), // 로그인 버튼과 아래 텍스트 버튼 사이 간격
               _buildSignUpPrompt(context), // 회원가입으로 전환하는 버튼 추가
-              SizedBox(height: 50.h),
+              SizedBox(height: 30.h), //크기 수정
             ],
           ),
         ),
@@ -133,7 +148,7 @@ class _SignInFormState extends State<SignInForm> {
   // 헤더 위젯 빌드 함수
   Widget _buildHeaderWidget() {
     return Flexible(
-      child: SoonCheckWidget(bottom: -5.h, left: -10.w),
+        child: SoonCheckWidget(bottom: -5.h, left: -10.w)
     );
   }
 
@@ -207,12 +222,13 @@ class _SignInFormState extends State<SignInForm> {
       child: Text(
         '계정이 없으신가요? 회원가입',
         style: TextStyle(
-          fontSize: 14.sp, // 텍스트 크기 반응형으로 설정
+          fontSize: 15.sp, // 텍스트 크기 반응형으로 설정
           color: Theme.of(context).colorScheme.primary,
         ),
       ),
     );
   }
+
 
   // Custom TextField widget to avoid conflicts
   Widget buildCustomTextField(String labelText, TextInputType keyboardType, bool obscureText, FormFieldSetter<String>? onSaved) {
