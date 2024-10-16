@@ -30,20 +30,22 @@ class _ScheduleCardState extends State<ScheduleCard> {
       Theme.of(context).colorScheme.secondary,
     ];
 
-    return Center(
-      child: Column(
-        children: [
-          Container(
-            height: isExpandedList.contains(true)
-                ? MediaQuery.of(context).size.height * 0.05
-                : MediaQuery.of(context).size.height * 0.25,
-          ),
-          Stack(
-            clipBehavior: Clip.none, // 카드가 영역을 벗어나도 잘리지 않도록 설정
-            alignment: Alignment.topCenter,
-            children: buildOverlappingCards(context, widget.schedules, barColors),
-          ),
-        ],
+    return SingleChildScrollView(
+      child: Center(
+        child: Column(
+          children: [
+            Container(
+              height: isExpandedList.contains(true)
+                  ? MediaQuery.of(context).size.height * 0.05
+                  : MediaQuery.of(context).size.height * 0.25,
+            ),
+            Stack(
+              clipBehavior: Clip.none,
+              alignment: Alignment.topCenter,
+              children: buildOverlappingCards(context, widget.schedules, barColors),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -61,17 +63,19 @@ class _ScheduleCardState extends State<ScheduleCard> {
     return GestureDetector(
       onVerticalDragUpdate: (details) {
         // 드래그할 때 카드 상태 업데이트
-        if (details.delta.dy > 10) {
-          // 아래로 드래그 시 카드 펼치기
-          setState(() {
-            isExpandedList[index] = true;
-          });
-        } else if (details.delta.dy < -10) {
-          // 위로 드래그 시 카드 접기
-          setState(() {
-            isExpandedList[index] = false;
-          });
-        }
+        setState(() {
+          if (details.delta.dy > 10) {
+            // 아래로 드래그 시 모든 카드를 펼치기
+            for (int i = 0; i < isExpandedList.length; i++) {
+              isExpandedList[i] = true;
+            }
+          } else if (details.delta.dy < -10) {
+            // 위로 드래그 시 모든 카드를 접기
+            for (int i = 0; i < isExpandedList.length; i++) {
+              isExpandedList[i] = false;
+            }
+          }
+        });
       },
       child: AnimatedContainer(
         duration: Duration(milliseconds: 500),
