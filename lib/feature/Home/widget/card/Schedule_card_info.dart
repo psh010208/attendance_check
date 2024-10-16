@@ -9,11 +9,17 @@ class ScheduleCardInfo extends StatelessWidget {
 
   const ScheduleCardInfo({Key? key, required this.schedule}) : super(key: key);
 
-  // 시간을 포맷하는 함수 추가
-  String _formatTime(String startTime) {
-    // DateTime을 파싱하여 12시간 형식으로 변환
-    DateTime parsedTime = DateTime.parse(startTime);
-    return DateFormat('hh:mm a').format(parsedTime); // 12시간 형식, AM/PM 표시
+  // 시간을 포맷하는 함수 (시작 시간과 끝나는 시간 모두 포맷)
+  String _formatTime(String startTime, DateTime endTime) {
+    // 시작 시간 포맷
+    DateTime parsedStartTime = DateTime.parse(startTime);
+    String formattedStartTime = DateFormat('hh:mm a').format(parsedStartTime);
+
+    // 끝나는 시간 포맷
+    String formattedEndTime = DateFormat('hh:mm a').format(endTime);
+
+    // 시작시간 ~ 끝나는시간 형식으로 반환
+    return "$formattedStartTime ~ $formattedEndTime";
   }
 
   @override
@@ -44,10 +50,11 @@ class ScheduleCardInfo extends StatelessWidget {
                 ),
                 SizedBox(width: 20.w),
                 Padding(
-                  padding: EdgeInsets.only(right: 10.w), // 오른쪽에 50픽셀만큼 공간 추가
+                  padding: EdgeInsets.only(right: 10.w),
                   child: CustomText(
+                    // 시작시간 ~ 끝나는시간을 포맷한 값을 사용
                     id: schedule.startTime.isNotEmpty
-                        ? _formatTime(schedule.startTime)  // 포맷된 시간 출력
+                        ? _formatTime(schedule.startTime, schedule.endTime) // 포맷된 시간 출력
                         : "시간 없음",
                     size: 16.sp,
                   ),
