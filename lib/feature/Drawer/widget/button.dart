@@ -259,7 +259,7 @@ class LogOutButton extends StatelessWidget {
       iconSize: 23.sp,
       textSize: 17.sp,
       top: 680.h,
-      left: 75.w,
+      left: 77.w,
     );
   }
 }
@@ -274,7 +274,7 @@ class Logo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Positioned(
       top: 750.h,
-      left: 75.w,
+      left: 70.w,
       child: GestureDetector(
         onTap: onPressed,
         child: Image.asset(
