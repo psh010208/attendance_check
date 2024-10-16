@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart'; // 추가: DateFormat 사용을 위해 intl 패키지 임포트
 import '../../model/homeModel.dart';
 import 'package:attendance_check/feature/Home/widget/Text/IdText.dart';
 
@@ -7,6 +8,13 @@ class ScheduleCardInfo extends StatelessWidget {
   final Schedule schedule;
 
   const ScheduleCardInfo({Key? key, required this.schedule}) : super(key: key);
+
+  // 시간을 포맷하는 함수 추가
+  String _formatTime(String startTime) {
+    // DateTime을 파싱하여 12시간 형식으로 변환
+    DateTime parsedTime = DateTime.parse(startTime);
+    return DateFormat('hh:mm a').format(parsedTime); // 12시간 형식, AM/PM 표시
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +31,7 @@ class ScheduleCardInfo extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 10),
             color: Theme.of(context).scaffoldBackgroundColor,
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Padding(
                   padding: EdgeInsets.only(left: 30.w), // 왼쪽에 50픽셀만큼 공간 추가
@@ -38,7 +47,7 @@ class ScheduleCardInfo extends StatelessWidget {
                   padding: EdgeInsets.only(right: 10.w), // 오른쪽에 50픽셀만큼 공간 추가
                   child: CustomText(
                     id: schedule.startTime.isNotEmpty
-                        ? schedule.startTime
+                        ? _formatTime(schedule.startTime)  // 포맷된 시간 출력
                         : "시간 없음",
                     size: 16.sp,
                   ),
@@ -52,7 +61,7 @@ class ScheduleCardInfo extends StatelessWidget {
             height: 2.h, // 직접 높이 설정
             margin: EdgeInsets.symmetric(vertical: 0.0), // 위아래 여백 조정
             child: Divider(
-              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.5), // 색상 설정
+              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.2), // 색상 설정
               thickness: 2.w, // 두께 설정
             ),
           ),
