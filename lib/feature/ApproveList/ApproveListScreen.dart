@@ -70,7 +70,7 @@ class _ApproveListScreenState extends State<ApproveListScreen> {
             padding: const EdgeInsets.all(16.0),
             child: Row(
               children: [
-                Icon(Icons.person, color: Theme.of(context).colorScheme.onSurface, size: 50),
+                Icon(Icons.person, color: Theme.of(context).colorScheme.surfaceBright, size: 50),
                 SizedBox(width: 16),
                 _buildAdminInfo(context, admin),
                 Spacer(),
