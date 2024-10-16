@@ -78,7 +78,7 @@ class LogInButton extends StatelessWidget {
       text: '로그인',
       iconSize: 25.sp,
       textSize: 23.sp,
-      top: 250.h,
+      top: 230.h,
       left: 10.w,
     );
   }
@@ -103,7 +103,7 @@ class JoinButton extends StatelessWidget {
       text: '회원가입',
       iconSize: 25.sp,
       textSize: 23.sp,
-      top: 320.h,
+      top: 300.h,
       left: 10.w,
     );
   }
@@ -136,7 +136,7 @@ class ParticipationButton extends StatelessWidget {
       text: '승인 대기 현황',
       iconSize: 33.sp,
       textSize: 23.sp,
-      top: 250.h,
+      top: 230.h,
       left: 10.w,
     );
   }
@@ -168,7 +168,7 @@ class CurrentButton extends StatelessWidget {
       text: '참여 학생 현황',
       iconSize: 33.sp,
       textSize: 23.sp,
-      top: 330.h,
+      top: 310.h,
       left: 10.w,
     );
   }
@@ -200,7 +200,37 @@ class RaffleButton extends StatelessWidget {
       text: '상품 추첨',
       iconSize: 33.sp,
       textSize: 23.sp,
-      top: 410.h,
+      top: 390.h,
+      left: 10.w,
+    );
+  }
+}
+
+// QR 코드 현황 버튼
+class QrScreenButton extends StatelessWidget {
+  final VoidCallback onPressed;
+
+  QrScreenButton({required this.onPressed});
+
+
+  @override
+  Widget build(BuildContext context) {
+    return CommonButton(
+      onPressed: () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => QrCodeListScreen(
+
+            ),
+          ),
+        );
+      },
+      icon: Icons.qr_code_2,
+      text: 'QR코드 확인',
+      iconSize: 33.sp,
+      textSize: 23.sp,
+      top: 470.h,
       left: 10.w,
     );
   }
@@ -255,33 +285,5 @@ class Logo extends StatelessWidget {
 }
 
 
-// 상품 추첨 버튼
-class QrScreenButton extends StatelessWidget {
-  final VoidCallback onPressed;
 
-  QrScreenButton({required this.onPressed});
-
-
-  @override
-  Widget build(BuildContext context) {
-    return CommonButton(
-      onPressed: () {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => QrCodeListScreen(
-             
-            ),
-          ),
-        );
-      },
-      icon: Icons.qr_code_2,
-      text: 'QR코드 확인',
-      iconSize: 33.sp,
-      textSize: 23.sp,
-      top: 490.h,
-      left: 10.w,
-    );
-  }
-}
 
