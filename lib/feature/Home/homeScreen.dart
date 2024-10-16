@@ -91,11 +91,11 @@ class HomeScreen extends HookWidget {
       drawerScrimColor: Colors.black.withOpacity(0.5),
       body: SingleChildScrollView(
         child: SizedBox(
-          width: 500,
-          height: 1000,
+          width: 500.w,
+          height: 1000.h,
           child: Stack(
             children: [
-              SoonCheckWidget(bottom: 820.h, left: 45.w),
+              SoonCheckWidget(bottom: 970.h, left: 45.w),
               // 일정 카드 표시
               buildScheduleCard(context),
 
