@@ -47,6 +47,7 @@ dependencies:
   image: ^3.0.1
 
   flutter_hooks: ^0.20.5
+  image_gallery_saver: '^2.0.3'
 
 dev_dependencies:
   flutter_test:
