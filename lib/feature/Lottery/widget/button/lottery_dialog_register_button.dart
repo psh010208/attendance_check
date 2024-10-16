@@ -9,19 +9,9 @@ class LotteryDialogRegisterButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
+    return TextButton(
       onPressed: onPressed,
-      child: Text('등록', style: TextStyle(fontSize: 16.sp)),
-      style: ElevatedButton.styleFrom(
-        backgroundColor:Theme.of(context).colorScheme.onSurface,
-        foregroundColor: Theme.of(context).colorScheme.surface,
-        minimumSize: Size(55.w, 40.h),
-        elevation: 4,
-        shadowColor: Theme.of(context).colorScheme.onSurface.withOpacity(1),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.r),
-        ),
-      ),
+      child: Text('등록', style: TextStyle(color: Colors.black, fontSize: 16.sp, fontWeight: FontWeight.normal)),
     );
   }
 }

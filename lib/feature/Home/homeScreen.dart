@@ -3,12 +3,15 @@ import 'package:attendance_check/feature/Home/widget/Button/QrButton.dart';
 import 'package:attendance_check/feature/Home/widget/QRService/QrScanner.dart';
 import 'package:attendance_check/feature/Home/widget/SoonCheck.dart';
 import 'package:attendance_check/feature/Home/widget/card/SchedulCard.dart';
+import 'package:attendance_check/main.dart';
 import 'package:flutter/material.dart';
 import 'package:attendance_check/feature/Home/model/homeModel.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:attendance_check/feature/Home/view_model/HomeViewModel.dart';
 import 'package:attendance_check/feature/Drawer/drawerScreen.dart';
 import 'package:attendance_check/feature/Home/widget/Button/AddScheduleButton.dart'; // 카드 위젯 임포트
+import 'package:provider/provider.dart';
+import 'package:attendance_check/feature/Store/MyStore.dart';
 
 class HomeScreen extends HookWidget {
   final String role;
@@ -23,6 +26,7 @@ class HomeScreen extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -53,6 +57,20 @@ class HomeScreen extends HookWidget {
                 );
               },
             ),
+          Builder(
+            builder: (BuildContext context) {
+              final isDarkMode = context.watch<MyStore>().isDarkMode; // 현재 모드 상태 확인
+              return IconButton(
+                icon: Icon(
+                  isDarkMode ? Icons.light_mode : Icons.dark_mode, // 다크 모드이면 태양 아이콘, 아니면 밝기 아이콘
+                ),
+                onPressed: () {
+                  context.read<MyStore>().changeMode();
+                },
+                color: Theme.of(context).iconTheme.color, // 테마에 따라 아이콘 색상 설정
+              );
+            },
+          ),
           Builder(
             builder: (BuildContext context) {
               return IconButton(
