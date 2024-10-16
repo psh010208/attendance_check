@@ -43,34 +43,33 @@ class _DrawerScreenState extends State<DrawerScreen> {
                       top: -5.h, // 반응형 높이 설정
                       left: 99.w,
                       child: CircleAvatar(
-                        radius: 0,
                         child: Icon(Icons.account_circle, size: 70.w),
                       ),
                     ),
                     if (widget.role != '관리자' && widget.role != '학부생')
                       Positioned(
-                        top: 80.r, // 반응형 높이 설정
-                        left: 82.r,
+                        top: 80.h, // 반응형 높이 설정
+                        left: 82.w,
                         child: CustomText(
                           id: '정보없음',
-                          size: 30.r, // 역할 표시
+                          size: 30.w, // 역할 표시
                         ),
                       ),
                     if (widget.role == '관리자' || widget.role == '학부생') ... [
                       Positioned(
-                        top: 70.r, // 반응형 높이 설정
-                        left: 94.r,
+                        top: 70.h, // 반응형 높이 설정
+                        left: 94.w,
                         child: CustomText(
                           id: widget.role,
-                          size: 30.r, // 역할 표시
+                          size: 30.w, // 역할 표시
                         ),
                       ),
                       Positioned(
-                        top: 110.r, // 반응형 높이 설정
-                        left: 94.r,
+                        top: 110.h, // 반응형 높이 설정
+                        left: 94.w,
                         child: CustomText(
                           id: widget.id,
-                          size: 20.r, // 아이디 표시
+                          size: 20.w, // 아이디 표시
                         ),
                       ),
                     ]
@@ -80,11 +79,11 @@ class _DrawerScreenState extends State<DrawerScreen> {
             ),
             Positioned(
               top: 184.h, // 첫 번째 버튼의 위치를 조정
-              left: 0,
-              right: 0,
+              left: 0.w,
+              right: 0.w,
               child: Divider(
                 color: Colors.grey,
-                thickness: 3.r,
+                thickness: 3,
               ),
             ),
             if (widget.role == '관리자') ...[
