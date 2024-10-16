@@ -40,7 +40,7 @@ class _QrScannerState extends State<QrScanner> {
                 child: LayoutBuilder(
                   builder: (context, constraints) {
                     double screenHeight = constraints.maxHeight;
-                    double screenWidth = constraints.maxWidth;
+                    //double screenWidth = constraints.maxWidth;
                     double cutOutHeight = scanArea * 1.8;
 
                     return Stack(
