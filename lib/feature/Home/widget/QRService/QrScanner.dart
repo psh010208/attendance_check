@@ -61,10 +61,8 @@ class _QrScannerState extends State<QrScanner> {
 
         // Firestore에 출석 정보를 추가/업데이트하는 함수 호출
         await addOrUpdateAttendance(context, widget.studentId, result!.code!);
+        dispose();
 
-
-        // Firestore 작업 후 카메라 재시작 (필요시)
-        // controller.resumeCamera(); // 필요하면 다시 카메라 재시작
       }
     });
   }

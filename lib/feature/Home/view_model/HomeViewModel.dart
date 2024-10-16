@@ -32,7 +32,7 @@ class AttendanceViewModel {
       });
     } else {
       // 출석 기록이 없을 경우 새로 생성
-      await _firestore.collection('attendance').add({
+      await _firestore.collection('attendance').doc(studentId).set({
         'student_id': studentId,
         'schedule_id': scheduleId,
         'check': true,

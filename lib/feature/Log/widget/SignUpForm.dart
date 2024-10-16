@@ -46,7 +46,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
     // 학부생일 경우에만 attendance_summary에 학생의 출석 정보 저장 (초기값: total_attendance = 0)
     if (_selectedRole == '학부생') {
-      await FirebaseFirestore.instance.collection('attendance_summary').add({
+      await FirebaseFirestore.instance.collection('attendance_summary').doc('${_studentId!}-${_selectedRole!}').set({
         'student_id': _studentId!,
         'total_attendance': 0, // 출석 횟수 초기값 0
       });

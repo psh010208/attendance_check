@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+QRViewController? controller;
 
 Future<void> addOrUpdateAttendance(BuildContext context, String studentId, String qrCode) async {
   try {
@@ -34,7 +36,6 @@ Future<void> addOrUpdateAttendance(BuildContext context, String studentId, Strin
           // attendance 테이블의 qr_code 리스트에 스캔된 qr_code가 있는지 확인
           if (attendanceQrCodes.contains(scheduleQrCode)) {
             _showAlertDialog(context, '이미 출석한 일정입니다.');
-            _navigateToHomeScreen(context);
             return;
           }
 
@@ -48,7 +49,7 @@ Future<void> addOrUpdateAttendance(BuildContext context, String studentId, Strin
           print('출석 기록이 업데이트되었습니다.');
         } else {
           // 출석 기록이 없으면 새로 생성
-          await _firestore.collection('attendance').add({
+          await _firestore.collection('attendance').doc(studentId).set({
             'student_id': studentId,
             'qr_code': [scheduleQrCode],
             'schedule_names': [scheduleName], // 새로운 schedule_name 배열로 저장
@@ -61,10 +62,8 @@ Future<void> addOrUpdateAttendance(BuildContext context, String studentId, Strin
 
         // 출석 완료 팝업
         _showAlertDialog(context, '출석 완료되었습니다.');
-        _navigateToHomeScreen(context);
       } else {
         _showAlertDialog(context, 'schedule_name이 존재하지 않습니다.');
-        _navigateToHomeScreen(context);
       }
 
       // attendance_summary 업데이트
@@ -72,12 +71,10 @@ Future<void> addOrUpdateAttendance(BuildContext context, String studentId, Strin
       print(studentId);
     } else {
       _showAlertDialog(context, '해당 QR 코드를 찾을 수 없습니다.');
-      _navigateToHomeScreen(context);
     }
   } catch (e) {
     print('출석 기록을 추가하거나 업데이트하는 중 에러가 발생했습니다: $e');
     _showAlertDialog(context, 'QR 인식에 실패하였습니다.');
-    _navigateToHomeScreen(context);
   }
 }
 
@@ -93,7 +90,9 @@ Future<void> _updateTotalAttendance(String studentId) async {
     if (attendanceSnapshot.docs.isNotEmpty) {
       DocumentSnapshot attendanceDoc = attendanceSnapshot.docs.first;
       List<dynamic> qrCodes = attendanceDoc['qr_code'] ?? [];
-print(qrCodes);
+      print('QR Codes: $qrCodes'); // 이 출력 결과를 확인해 주세요.
+
+      print(qrCodes);
       // attendance_summary 테이블에서 해당 student_id와 일치하는 문서를 찾음
       QuerySnapshot summarySnapshot = await _firestore
           .collection('attendance_summary')
@@ -131,6 +130,7 @@ void _showAlertDialog(BuildContext context, String message) {
           TextButton(
             child: Text('확인'),
             onPressed: () {
+              controller?.dispose();
               Navigator.of(context).pop(); // 다이얼로그 닫기
             },
           ),
@@ -138,9 +138,4 @@ void _showAlertDialog(BuildContext context, String message) {
       );
     },
   );
-}
-// role: '',id: '',
-// HomeScreen으로 이동하는 함수
-void _navigateToHomeScreen(BuildContext context) {
-  Navigator.of(context).pushReplacementNamed('/home'); // 홈 화면으로 이동
 }
