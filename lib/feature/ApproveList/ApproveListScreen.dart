@@ -30,7 +30,8 @@ class _ApproveListScreenState extends State<ApproveListScreen> {
   }
 
   void _scrollListener() {
-    if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
       _loadPendingAdmins();
     }
   }
@@ -70,7 +71,10 @@ class _ApproveListScreenState extends State<ApproveListScreen> {
             padding: const EdgeInsets.all(16.0),
             child: Row(
               children: [
-                Icon(Icons.person, color: Theme.of(context).colorScheme.inverseSurface, size: 50),
+                Icon(Icons.person, color: Theme
+                    .of(context)
+                    .colorScheme
+                    .inverseSurface, size: 50),
                 SizedBox(width: 16),
                 _buildAdminInfo(context, admin),
                 Spacer(),
@@ -92,32 +96,46 @@ class _ApproveListScreenState extends State<ApproveListScreen> {
         CustomText(id: admin.name, size: 22.sp),
         SizedBox(width: 13.w,),
         Column(
-          children: [
-            CustomText(id: '학과: ${admin.department}', size: 13.sp),
-            CustomText(id: '학번: ${admin.studentId}', size: 13.sp),
-          ]
+            children: [
+              CustomText(id: '학과: ${admin.department}', size: 13.sp),
+              CustomText(id: '학번: ${admin.studentId}', size: 13.sp),
+            ]
         ),
       ],
     );
   }
 
   // 승인 및 거절 버튼
-  Widget _buildActionButton(BuildContext context, Approvemodel admin, int index) {
+  Widget _buildActionButton(BuildContext context, Approvemodel admin,
+      int index) {
     return ElevatedButton(
       onPressed: () async {
         if (_isRejectionMode) {
           await _viewModel.rejectAdmin(admin.studentId);
         } else {
-          await _viewModel.approveAdmin(admin.studentId,widget.role);
+          await _viewModel.approveAdmin(admin.studentId, widget.role);
         }
         setState(() {
           _pendingAdmins.removeAt(index); // 승인 또는 거절 후 리스트에서 제거
         });
       },
-      child: CustomText(id: _isRejectionMode ? '거절' : '승인', color: Theme.of(context).colorScheme.scrim, size: 20.sp),
+      child: CustomText(id: _isRejectionMode ? '거절' : '승인', color: Theme
+          .of(context)
+          .colorScheme
+          .scrim, size: 20.sp),
       style: ElevatedButton.styleFrom(
-        backgroundColor: _isRejectionMode ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.inversePrimary,
-        shadowColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
+        backgroundColor: _isRejectionMode ? Theme
+            .of(context)
+            .colorScheme
+            .error : Theme
+            .of(context)
+            .colorScheme
+            .inversePrimary,
+        shadowColor: Theme
+            .of(context)
+            .colorScheme
+            .onSurface
+            .withOpacity(0.7),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         elevation: 5,
       ),
@@ -128,7 +146,14 @@ class _ApproveListScreenState extends State<ApproveListScreen> {
   BoxDecoration _buildCardDecoration(BuildContext context) {
     return BoxDecoration(
       gradient: LinearGradient(
-        colors: [Theme.of(context).secondaryHeaderColor.withOpacity(0.8),Theme.of(context).primaryColorDark.withOpacity(0.8)],
+        colors: [Theme
+            .of(context)
+            .secondaryHeaderColor
+            .withOpacity(0.8), Theme
+            .of(context)
+            .primaryColorDark
+            .withOpacity(0.8)
+        ],
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
         stops: [0.1, 0.9],
@@ -173,31 +198,43 @@ class _ApproveListScreenState extends State<ApproveListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).primaryColorLight,
+        backgroundColor: Theme
+            .of(context)
+            .primaryColorLight,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             SizedBox(width: 17.w),
             IconButton(
               icon: Icon(Icons.arrow_back_ios,
-                  color: Theme.of(context).colorScheme.scrim,
+                  color: Theme
+                      .of(context)
+                      .colorScheme
+                      .scrim,
                   size: 25.sp),
               onPressed: () {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => HomeScreen(role: widget.role, id: widget.id),
+                    builder: (context) =>
+                        HomeScreen(role: widget.role, id: widget.id),
                   ),
                 );
               },
             ),
             Spacer(),
-            CustomText(id: '관리자 승인 대기 목록', size: 20, color: Theme.of(context).colorScheme.scrim),
+            CustomText(id: '관리자 승인 대기 목록', size: 20, color: Theme
+                .of(context)
+                .colorScheme
+                .scrim),
             Spacer(),
             IconButton(
               icon: Icon(
                   _isRejectionMode ? Icons.check : Icons.edit,
-                  color: Theme.of(context).colorScheme.scrim,
+                  color: Theme
+                      .of(context)
+                      .colorScheme
+                      .scrim,
                   size: 25.sp),
               onPressed: () {
                 setState(() {
@@ -213,8 +250,13 @@ class _ApproveListScreenState extends State<ApproveListScreen> {
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Theme.of(context).colorScheme.onInverseSurface,
-              Theme.of(context).primaryColorLight,
+              Theme
+                  .of(context)
+                  .colorScheme
+                  .onInverseSurface,
+              Theme
+                  .of(context)
+                  .primaryColorLight,
             ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -223,6 +265,7 @@ class _ApproveListScreenState extends State<ApproveListScreen> {
         ),
         child: Column(
           children: [
+            SizedBox(height: 30.h), // AppBar와 body 사이에 간격 추가
             Expanded(
               child: ListView.builder(
                 controller: _scrollController,

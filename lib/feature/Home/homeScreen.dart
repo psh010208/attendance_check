@@ -29,18 +29,8 @@ class HomeScreen extends HookWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Theme.of(context).colorScheme.onInverseSurface,
         flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Theme.of(context).primaryColorLight,
-                Theme.of(context).colorScheme.onInverseSurface,
-              ],
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-            ),
-          ),
           padding: EdgeInsets.only(
             top: MediaQuery.of(context).padding.top.h,
             left: MediaQuery.of(context).size.width * 0.05.w,
