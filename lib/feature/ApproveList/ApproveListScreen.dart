@@ -70,7 +70,7 @@ class _ApproveListScreenState extends State<ApproveListScreen> {
             padding: const EdgeInsets.all(16.0),
             child: Row(
               children: [
-                Icon(Icons.person, color: Theme.of(context).colorScheme.surfaceBright, size: 50),
+                Icon(Icons.person, color: Theme.of(context).colorScheme.inverseSurface, size: 50),
                 SizedBox(width: 16),
                 _buildAdminInfo(context, admin),
                 Spacer(),
@@ -85,12 +85,18 @@ class _ApproveListScreenState extends State<ApproveListScreen> {
 
   // 관리자 정보 출력
   Widget _buildAdminInfo(BuildContext context, Approvemodel admin) {
-    return Column(
+    return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CustomText(id: admin.name, size: 22),
-        CustomText(id: '학과: ${admin.department}', size: 16),
-        CustomText(id: '학번: ${admin.studentId}', size: 16),
+        SizedBox(width: 5.w,),
+        CustomText(id: admin.name, size: 22.sp),
+        SizedBox(width: 13.w,),
+        Column(
+          children: [
+            CustomText(id: '학과: ${admin.department}', size: 13.sp),
+            CustomText(id: '학번: ${admin.studentId}', size: 13.sp),
+          ]
+        ),
       ],
     );
   }
@@ -108,7 +114,7 @@ class _ApproveListScreenState extends State<ApproveListScreen> {
           _pendingAdmins.removeAt(index); // 승인 또는 거절 후 리스트에서 제거
         });
       },
-      child: CustomText(id: _isRejectionMode ? '거절' : '승인', color: Theme.of(context).colorScheme.scrim, size: 20),
+      child: CustomText(id: _isRejectionMode ? '거절' : '승인', color: Theme.of(context).colorScheme.scrim, size: 20.sp),
       style: ElevatedButton.styleFrom(
         backgroundColor: _isRejectionMode ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.inversePrimary,
         shadowColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),
@@ -122,9 +128,10 @@ class _ApproveListScreenState extends State<ApproveListScreen> {
   BoxDecoration _buildCardDecoration(BuildContext context) {
     return BoxDecoration(
       gradient: LinearGradient(
-        colors: [Colors.white.withOpacity(0.8), Colors.blueAccent.withOpacity(0.2)],
+        colors: [Theme.of(context).secondaryHeaderColor.withOpacity(0.8),Theme.of(context).primaryColorDark.withOpacity(0.8)],
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
+        stops: [0.1, 0.9],
       ),
       borderRadius: BorderRadius.circular(15),
       boxShadow: [
@@ -172,38 +179,50 @@ class _ApproveListScreenState extends State<ApproveListScreen> {
           children: [
             SizedBox(width: 17.w),
             IconButton(
-              icon: Icon(Icons.arrow_back_ios, color: Theme.of(context).colorScheme.scrim, size: 30),
+              icon: Icon(Icons.arrow_back_ios,
+                  color: Theme.of(context).colorScheme.scrim,
+                  size: 25.sp),
               onPressed: () {
                 Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            HomeScreen(role: widget.role, id: widget.id)));
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HomeScreen(role: widget.role, id: widget.id),
+                  ),
+                );
               },
             ),
             Spacer(),
             CustomText(id: '관리자 승인 대기 목록', size: 20, color: Theme.of(context).colorScheme.scrim),
             Spacer(),
+            IconButton(
+              icon: Icon(
+                  _isRejectionMode ? Icons.check : Icons.edit,
+                  color: Theme.of(context).colorScheme.scrim,
+                  size: 25.sp),
+              onPressed: () {
+                setState(() {
+                  _isRejectionMode = !_isRejectionMode;
+                });
+              },
+            ),
           ],
         ),
         centerTitle: true,
-        actions: [
-          IconButton(
-            icon: Icon(_isRejectionMode ? Icons.check : Icons.edit, color: Theme.of(context).colorScheme.scrim, size: 30),
-            onPressed: () {
-              setState(() {
-                _isRejectionMode = !_isRejectionMode;
-              });
-            },
-          ),
-        ],
       ),
       body: Container(
-        color: Theme.of(context).secondaryHeaderColor,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Theme.of(context).colorScheme.onInverseSurface,
+              Theme.of(context).primaryColorLight,
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            stops: [0.3, 0.9],
+          ),
+        ),
         child: Column(
-
           children: [
-
             Expanded(
               child: ListView.builder(
                 controller: _scrollController,

@@ -43,6 +43,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                       top: -5.h, // 반응형 높이 설정
                       left: 99.w,
                       child: CircleAvatar(
+                        radius: 0,
                         child: Icon(Icons.account_circle, size: 70.w),
                       ),
                     ),

@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:attendance_check/feature/Home/homeScreen.dart';
 import '../../Home/widget/SoonCheck.dart';
 import '../Model/logModel.dart';
 import '../ViewModel/logViewModel.dart';
@@ -112,33 +111,41 @@ class _SignUpFormState extends State<SignUpForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent, // 투명한 배경
-
-      ),
-
-      bottomSheet: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 30.w),
-        child: Form(
-          key: _formKey,
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                _buildHeaderWidget(),
-              SizedBox(height: _getRoleBasedSpacing()),
-              _buildRoleDropdown(),
-              if (_selectedRole == '학부생') ...[
-                _buildDepartmentDropdown(),
-              ],
-              SizedBox(height: 20.h),
-                  _buildStudentNameField(),
-              SizedBox(height: 20.h),
-                  _buildStudentIdField(),
-              SizedBox(height: 20.h),
-            _buildSignupButton(),
-              //SizedBox(height: 5.h), // 회원가입 버튼과 아래 텍스트 버튼 사이 간격
-              _buildSignInPrompt(context), // 로그인으로 전환하는 버튼 추가
+      bottomSheet: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Theme.of(context).colorScheme.onInverseSurface,
+              Theme.of(context).primaryColorLight,
             ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            stops: [0.3,0.9],
+          ),
+        ),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 30.w),
+          child: Form(
+            key: _formKey,
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                  _buildHeaderWidget(),
+                SizedBox(height: _getRoleBasedSpacing()),
+                _buildRoleDropdown(),
+                if (_selectedRole == '학부생') ...[
+                  _buildDepartmentDropdown(),
+                ],
+                SizedBox(height: 20.h),
+                    _buildStudentNameField(),
+                SizedBox(height: 20.h),
+                    _buildStudentIdField(),
+                SizedBox(height: 20.h),
+              _buildSignupButton(),
+                //SizedBox(height: 5.h), // 회원가입 버튼과 아래 텍스트 버튼 사이 간격
+                _buildSignInPrompt(context), // 로그인으로 전환하는 버튼 추가
+              ],
+            ),
           ),
         ),
       ),

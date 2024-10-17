@@ -97,32 +97,43 @@ class _SignInFormState extends State<SignInForm> {
   Widget build(BuildContext context) {
 
     return Scaffold(
+
       resizeToAvoidBottomInset : false,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent, // 투명한 배경
-      ),
-      bottomSheet: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 30.w),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              _buildHeaderWidget(),
-              SizedBox(height: _selectedRole == '관리자' ? 100.h : 50.h),  //학부생일 때 여백 크기 수정
-              _buildRoleDropdown(),
-              if (_selectedRole == '학부생') ...[
-                SizedBox(height: 20.h),
-                _buildDepartmentDropdown(),
-              ],
-              SizedBox(height: 20.h),
-              _buildStudentIdField(),
-              SizedBox(height: 30.h),
-              _buildLoginButton(),
-              //SizedBox(height: 10.h), // 로그인 버튼과 아래 텍스트 버튼 사이 간격
-              _buildSignUpPrompt(context), // 회원가입으로 전환하는 버튼 추가
-              SizedBox(height: 30.h), //크기 수정
+      bottomSheet: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Theme.of(context).colorScheme.onInverseSurface,
+              Theme.of(context).primaryColorLight,
             ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            stops: [0.3,0.9],
+          ),
+        ),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 30.w),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _buildHeaderWidget(),
+                SizedBox(height: _selectedRole == '관리자' ? 100.h : 50.h),  //학부생일 때 여백 크기 수정
+                _buildRoleDropdown(),
+                if (_selectedRole == '학부생') ...[
+                  SizedBox(height: 20.h),
+                  _buildDepartmentDropdown(),
+                ],
+                SizedBox(height: 20.h),
+                _buildStudentIdField(),
+                SizedBox(height: 30.h),
+                _buildLoginButton(),
+                //SizedBox(height: 10.h), // 로그인 버튼과 아래 텍스트 버튼 사이 간격
+                _buildSignUpPrompt(context), // 회원가입으로 전환하는 버튼 추가
+                SizedBox(height: 30.h), //크기 수정
+              ],
+            ),
           ),
         ),
       ),

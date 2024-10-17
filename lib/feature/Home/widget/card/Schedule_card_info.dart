@@ -29,13 +29,18 @@ class ScheduleCardInfo extends StatelessWidget {
       //color: Theme.of(context).scaffoldBackgroundColor,
       padding: EdgeInsets.symmetric(vertical: 0.h, horizontal: 15.w),
       child: Column(
+
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           // 상단 수업 이름 부분
           Container(
+            color: Theme.of(context).brightness == Brightness.dark
+                ? Theme.of(context).secondaryHeaderColor
+                : Colors.white, // 라이트 모드 색상
+            // color: Theme.of(context).secondaryHeaderColor,
             height: 40.h,
             padding: EdgeInsets.symmetric(horizontal: 10.w),
-            color: Theme.of(context).scaffoldBackgroundColor,
+
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -103,8 +108,9 @@ class ScheduleCardInfo extends StatelessWidget {
 
           // 메인 정보 영역
           Expanded(
-            child: Container(
-              color: Theme.of(context).scaffoldBackgroundColor,
+            child: Container(color: Theme.of(context).brightness == Brightness.dark
+                ? Theme.of(context).secondaryHeaderColor
+                : Colors.white,
               padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 15.w),
               child: Stack(
                 children: [

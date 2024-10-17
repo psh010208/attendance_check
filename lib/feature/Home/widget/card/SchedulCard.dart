@@ -29,6 +29,8 @@ class _ScheduleCardState extends State<ScheduleCard> {
       Theme.of(context).colorScheme.inversePrimary,
       Theme.of(context).colorScheme.secondary,
     ];
+    final double cardHeight = MediaQuery.of(context).size.height * 0.25.h;
+    final double totalHeight = cardHeight * widget.schedules.length;
 
     return SingleChildScrollView(
       child: Center(
@@ -94,15 +96,16 @@ class _ScheduleCardState extends State<ScheduleCard> {
     final cardWidth = screenSize.width * 0.80.w; // Responsive card width
 
     Color barColor = barColors[index % barColors.length];
-    double borderRadiusValue = 10.0; // 카드의 모서리 둥글기 값을 설정
+    double borderRadiusValue = 20.0; // 카드의 모서리 둥글기 값을 설정
 
     return Container(
+      color: Colors.transparent,
       width: cardWidth,
       height: cardHeight,
       margin: EdgeInsets.symmetric(vertical: 20.h), // 반응형 여백 설정
       child: Card(
         elevation: 15, // 카드 색상 설정
-        color: Theme.of(context).cardColor,
+
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(borderRadiusValue),
         ),

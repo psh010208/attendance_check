@@ -242,7 +242,7 @@ class _LotteryView extends State<LotteryView> {
                     Navigator.of(context).pop(false);
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).colorScheme.onSurface,
+                    backgroundColor: Theme.of(context).colorScheme.error,
                     foregroundColor: Theme.of(context).colorScheme.surface,
                     minimumSize: Size(55.w, 40.h),
                     elevation: 4.sw,
@@ -259,8 +259,8 @@ class _LotteryView extends State<LotteryView> {
                     Navigator.of(context).pop(true);
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).colorScheme.onSurface,
-                    foregroundColor: Theme.of(context).colorScheme.surface,
+                    backgroundColor: Theme.of(context).primaryColorLight,
+                    foregroundColor: Theme.of(context).canvasColor,
                     minimumSize: Size(55.w, 40.h),
                     elevation: 4.sw,
                     shadowColor:
@@ -292,7 +292,11 @@ class _LotteryView extends State<LotteryView> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('추첨 완료', style: TextStyle(color: Colors.black, fontSize: 23.sp, fontWeight: FontWeight.bold)),
+            title: Text('추첨 완료', style: TextStyle(
+                color: Colors.black,
+                fontSize: 23.sp,
+                fontWeight: FontWeight.bold
+            )),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [

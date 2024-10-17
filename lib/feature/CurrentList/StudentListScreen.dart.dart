@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../ApproveList/widget/CustomText.dart';
 import 'ViewModel/viewModel.dart';
 import 'model/model.dart';
@@ -170,62 +169,77 @@ class _StudentListScreenState extends State<StudentListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('참여 학생 명단', style: TextStyle(fontSize: 22)),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () {
-              // 검색 기능 로직
-            },
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Theme.of(context).colorScheme.onInverseSurface,
+              Theme.of(context).primaryColorLight,
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            stops: [0.3, 0.9],
           ),
-        ],
-      ),
-      body: Column(
-        children: [
-          // 필터 버튼들
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _buildFilterButton('학과별 정렬', () {
-                  setState(() {
-                    _selectedDepartment = '의료IT공학과'; // 필터 예시
-                    _loadPendingStudents();
-                  });
-                }),
-                _buildFilterButton('이름 검색', () {
-                  _searchByName();
-                }),
-                _buildFilterButton('학번 검색', () {
-                  _searchByStudentId();
-                }),
-                _buildFilterButton('출석 횟수별 정렬', () {
-                  setState(() {
-                    _sortByAttendance = !_sortByAttendance;
-                    _loadPendingStudents();
-                  });
-                }),
+        ),
+        child: Column(
+          children: [
+            // 앱바
+            AppBar(
+              title: Text('참여 학생 명단', style: TextStyle(fontSize: 22)),
+              centerTitle: true,
+              actions: [
+                IconButton(
+                  icon: Icon(Icons.search),
+                  onPressed: () {
+                    // 검색 기능 로직
+                  },
+                ),
               ],
             ),
-          ),
-          Expanded(
-            child: _isLoading
-                ? Center(child: CircularProgressIndicator())
-                : ListView.builder(
-              itemCount: _pendingStudents.length,
-              itemBuilder: (context, index) {
-                final student = _pendingStudents[index];
-                return _buildStudentCard(context, student);
-              },
+            // 필터 버튼들
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  _buildFilterButton('학과별 정렬', () {
+                    setState(() {
+                      _selectedDepartment = '의료IT공학과'; // 필터 예시
+                      _loadPendingStudents();
+                    });
+                  }),
+                  _buildFilterButton('이름 검색', () {
+                    _searchByName();
+                  }),
+                  _buildFilterButton('학번 검색', () {
+                    _searchByStudentId();
+                  }),
+                  _buildFilterButton('출석 횟수별 정렬', () {
+                    setState(() {
+                      _sortByAttendance = !_sortByAttendance;
+                      _loadPendingStudents();
+                    });
+                  }),
+                ],
+              ),
             ),
-          ),
-        ],
+            Expanded(
+              child: _isLoading
+                  ? Center(child: CircularProgressIndicator())
+                  : ListView.builder(
+                itemCount: _pendingStudents.length,
+                itemBuilder: (context, index) {
+                  final student = _pendingStudents[index];
+                  return _buildStudentCard(context, student);
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
+
 
   // 이름 검색
   void _searchByName() {

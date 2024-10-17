@@ -11,9 +11,22 @@ class logPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: isLogin ? SignInForm() : SignUpForm(),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Theme.of(context).colorScheme.onInverseSurface,
+              Theme.of(context).primaryColorLight,
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            stops: [0.3,0.9],
+          ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: isLogin ? SignInForm() : SignUpForm(),
+        ),
       ),
     );
   }
