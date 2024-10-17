@@ -103,7 +103,7 @@ class _StudentListScreenState extends State<StudentListScreen> {
               padding: const EdgeInsets.all(16.0),
               child: Row(
                 children: [
-                  Icon(Icons.person, size: 50, color: Colors.blueAccent),
+                  Icon(Icons.person, size: 50, color: Theme.of(context).colorScheme.onTertiaryContainer,),
                   SizedBox(width: 20.w),
 
                   // department와 name을 가로 정렬

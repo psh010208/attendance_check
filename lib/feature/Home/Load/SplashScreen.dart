@@ -3,8 +3,6 @@ import 'dart:async';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../Home/widget/SoonCheck.dart';
-import '../../Log/logPage.dart'; // Log Page import
-import '../../Drawer/drawerScreen.dart'; // Drawer import
 import 'package:attendance_check/feature/Home/homeScreen.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -20,26 +18,39 @@ class SplashScreen extends StatelessWidget {
     });
 
     return Scaffold(
-      body: Center(
-        child: Stack(
-          children: [
-            // 로고 이미지 위치 및 크기
-            Positioned(
-              top: (ScreenUtil().screenWidth / 1.w) - (200.w / 2.w), // 반응형 높이 설정
-              left: (ScreenUtil().screenWidth / 2.w) - (70.w), // 중앙 정렬을 위한 좌표 계산
-              child: Image.asset(
-                'assets/appLogo.png', // 로고 파일 경로
-                width: 150.w, // 반응형 너비 설정
-                height: 150.h, // 반응형 높이 설정
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Theme.of(context).colorScheme.onInverseSurface,
+              Theme.of(context).primaryColorLight,
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            stops: [0.3, 0.9],
+          ),
+        ),
+        child: Center(
+          child: Stack(
+            children: [
+              // 로고 이미지 위치 및 크기
+              Positioned(
+                top: (ScreenUtil().screenWidth / 1.w) - (200.w / 2.w), // 반응형 높이 설정
+                left: (ScreenUtil().screenWidth / 2.w) - (70.w), // 중앙 정렬을 위한 좌표 계산
+                child: Image.asset(
+                  'assets/appLogo.png', // 로고 파일 경로
+                  width: 150.w, // 반응형 너비 설정
+                  height: 150.h, // 반응형 높이 설정
+                ),
               ),
-            ),
 
-            // 재사용 가능한 SoonCheckWidget
-            SoonCheckWidget(
-              bottom: (ScreenUtil().screenWidth / 1.w) - (150.w /1.w ), // 반응형 설정
-              left: (ScreenUtil().screenWidth / 2.w) - (300.w / 2.w), // 중앙 정렬을 위한 계산
-            ),
-          ],
+              // 재사용 가능한 SoonCheckWidget
+              SoonCheckWidget(
+                bottom: (ScreenUtil().screenWidth / 1.w) - (150.w /1.w ), // 반응형 설정
+                left: (ScreenUtil().screenWidth / 2.w) - (300.w / 2.w), // 중앙 정렬을 위한 계산
+              ),
+            ],
+          ),
         ),
       ),
     );
