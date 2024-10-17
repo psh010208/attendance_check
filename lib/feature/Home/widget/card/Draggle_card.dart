@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:attendance_check/feature/Home/model/homeModel.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'Schedule_card_info.dart';
 
 class DraggableCard extends StatelessWidget {
   final Schedule schedule;
@@ -27,11 +26,6 @@ class DraggableCard extends StatelessWidget {
         duration: Duration(milliseconds: 300),
         curve: Curves.easeInOut,
         margin: EdgeInsets.only(top: 20.0.h), // 카드 사이의 간격 설정
-        child: Column(
-          children: [
-            // ScheduleCardInfo(schedule: schedule), // 카드 정보
-          ],
-        ),
       ),
     );
   }

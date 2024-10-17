@@ -25,14 +25,7 @@ class ScheduleCardBuilder extends StatelessWidget {
 
         List<Schedule> schedules = snapshot.data!;
 
-        // scheduleCount 데이터 가져오기
-        int totalScheduleCount = schedules.fold(0, (sum, schedule) => sum + schedule.scheduleCount);
-
-        return Column(
-          children: [            // 일정 카드 표시
-            ScheduleCard(schedules: schedules),
-          ],
-        );
+        return ScheduleCard(schedules: schedules); // ScheduleCard에 데이터 전달
       },
     );
   }

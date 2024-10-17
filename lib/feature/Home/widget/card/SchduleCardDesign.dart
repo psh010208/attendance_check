@@ -22,12 +22,14 @@ class ScheduleCardDesign extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double borderRadiusValue = 9.0; // 카드 모서리 둥글기 설정
+    double borderRadiusValue = 9.0.sp; // 카드 모서리 둥글기 설정
 
     return Container(
       height: cardHeight, // 카드 높이 설정
       decoration: BoxDecoration(
-        color: Theme.of(context).scaffoldBackgroundColor,
+        color: Theme.of(context).brightness == Brightness.dark
+            ? Theme.of(context).secondaryHeaderColor
+            : Colors.white,
         borderRadius: BorderRadius.circular(borderRadiusValue),
       ),
       child: Stack(
