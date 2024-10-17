@@ -28,7 +28,74 @@ class HomeScreen extends HookWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      // 공통 그라데이션 배경
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Theme.of(context).primaryColorLight,
+                Theme.of(context).colorScheme.onInverseSurface,
+              ],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+            ),
+          ),
+          padding: EdgeInsets.only(
+            top: MediaQuery.of(context).padding.top.h,
+            left: MediaQuery.of(context).size.width * 0.05.w,
+            right: MediaQuery.of(context).size.width * 0.5.w,
+          ),
+          child: Image.asset(
+            'assets/logo.png',
+            height: MediaQuery.of(context).size.height * 0.1.h,
+            fit: BoxFit.contain,
+          ),
+        ),
+        elevation: 1,
+        actions: [
+          if (role == '관리자')
+            Builder(
+              builder: (BuildContext context) {
+                return AdminIcon(
+                  onPressed: () async {
+                    AddSchedule(context); // 일정 추가 다이얼로그 호출,
+                  },
+                );
+              },
+            ),
+          Builder(
+            builder: (BuildContext context) {
+              final isDarkMode = context.watch<MyStore>().isDarkMode;
+              return IconButton(
+                icon: Icon(
+                  isDarkMode ? Icons.light_mode : Icons.dark_mode,
+                ),
+                onPressed: () {
+                  context.read<MyStore>().changeMode();
+                },
+                color: Theme.of(context).iconTheme.color,
+              );
+            },
+          ),
+          Builder(
+            builder: (BuildContext context) {
+              return IconButton(
+                icon: Icon(Icons.menu),
+                onPressed: () {
+                  Scaffold.of(context).openEndDrawer();
+                },
+                color: Theme.of(context).iconTheme.color,
+              );
+            },
+          ),
+        ],
+      ),
+      endDrawer: DrawerScreen(
+        role: role,
+        id: id,
+      ),
+      drawerScrimColor: Colors.black.withOpacity(0.5),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -38,136 +105,53 @@ class HomeScreen extends HookWidget {
             ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            stops: [0.3,0.9],
+            stops: [0.3, 0.9],
           ),
         ),
-        child: Column(
-          children: [
-            // AppBar를 Container로 감싸서 그라데이션 적용
-            Container(
-              height: kToolbarHeight, // AppBar 기본 높이
-              child: AppBar(
-                backgroundColor: Colors.transparent, // 투명하게 설정
-                elevation: 0, // 그림자 제거
-                flexibleSpace: Padding(
-                  padding: EdgeInsets.only(
-                    top: MediaQuery.of(context).padding.top.h,
-                    left: MediaQuery.of(context).size.width * 0.05.w,
-                    right: MediaQuery.of(context).size.width * 0.5.w,
-                  ),
-                  child: Image.asset(
-                    'assets/logo.png',
-                    height: MediaQuery.of(context).size.height * 0.1.h,
-                    fit: BoxFit.contain,
-                  ),
-                ),
-                actions: [
-                  if (role == '관리자')
-                    Builder(
-                      builder: (BuildContext context) {
-                        return AdminIcon(
-                          onPressed: () async {
-                            AddSchedule(context); // 일정 추가 다이얼로그 호출
-                          },
-                        );
-                      },
-                    ),
-                  Builder(
-                    builder: (BuildContext context) {
-                      final isDarkMode = context.watch<MyStore>().isDarkMode;
-                      return IconButton(
-                        icon: Icon(
-                          isDarkMode ? Icons.light_mode : Icons.dark_mode,
-                        ),
-                        onPressed: () {
-                          context.read<MyStore>().changeMode();
-                        },
-                        color: Theme.of(context).iconTheme.color,
-                      );
-                    },
-                  ),
-                  Builder(
-                    builder: (BuildContext context) {
-                      return IconButton(
-                        icon: Icon(Icons.menu),
-                        onPressed: () {
-                          Scaffold.of(context).openEndDrawer();
-                        },
-                        color: Theme.of(context).iconTheme.color,
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: SingleChildScrollView(
-                child: FutureBuilder<double>(
-                  future: buildScheduleCardHeight(context),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
-                    }
-
-                    if (snapshot.hasError) {
-                      return Center(child: Text('오류 발생: ${snapshot.error}'));
-                    }
-
-                    final totalHeight = snapshot.data ?? 1000.h;
-
-                    return SizedBox(
-                      width: 500.w,
-                      height: totalHeight,
-                      child: Stack(
-                        children: [
-                          SoonCheckWidget(bottom: totalHeight - 150.h, left: 40.w),
-                          buildScheduleCard(context),
-                          if (role == '학부생')
-                            Positioned(
-                              bottom: 250.h,
-                              left: MediaQuery.of(context).size.width * 0.368.w,
-                              child: Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: animationButton(
-                                  icon: Icons.qr_code_scanner,
-                                  iconSize: 40.w,
-                                  iconColor: Theme.of(context).colorScheme.onSurface,
-                                  defaultSize: const Offset(80, 80),
-                                  clickedSize: const Offset(70, 70),
-                                  defaultButtonColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
-                                  clickedButtonColor: Theme.of(context).colorScheme.primary,
-                                  circularRadius: 50.r,
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => QrScanner(studentId: id),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
+        child: SingleChildScrollView(
+          child: SizedBox(
+            width: 500.w,
+            height: 1000.h,
+            child: Stack(
+              children: [
+                SoonCheckWidget(bottom: 850.h, left: 40.w),
+                buildScheduleCard(context),
+                if (role == '학부생')
+                  Positioned(
+                    bottom: 250.h,
+                    left: MediaQuery.of(context).size.width * 0.368.w,
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: animationButton(
+                        icon: Icons.qr_code_scanner,
+                        iconSize: 40.w,
+                        iconColor: Theme.of(context).colorScheme.onSurface,
+                        defaultSize: const Offset(80, 80),
+                        clickedSize: const Offset(70, 70),
+                        defaultButtonColor:
+                        Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
+                        clickedButtonColor: Theme.of(context).colorScheme.primary,
+                        circularRadius: 50.r,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => QrScanner(studentId: id),
                             ),
-                        ],
+                          );
+                        },
                       ),
-                    );
-                  },
-                ),
-              ),
+                    ),
+                  ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
-      endDrawer: DrawerScreen(
-        role: role,
-        id: id,
-      ),
-      drawerScrimColor: Colors.black.withOpacity(0.5),
     );
   }
 
   Future<double> buildScheduleCardHeight(BuildContext context) async {
-    // 일정 데이터를 가져오고 카드 높이를 계산
     List<Schedule> schedules = await scheduleViewModel.getScheduleStream().first;
     final double cardHeight = MediaQuery.of(context).size.height * 0.25.h;
     final double totalHeight = cardHeight * schedules.length;
@@ -176,10 +160,10 @@ class HomeScreen extends HookWidget {
 
   Widget buildScheduleCard(BuildContext context) {
     return StreamBuilder<List<Schedule>>(
-      stream: scheduleViewModel.getScheduleStream(), // Firestore에서 일정 데이터 가져오기
+      stream: scheduleViewModel.getScheduleStream(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator()); // 로딩 중일 때
+          return Center(child: CircularProgressIndicator());
         }
         if (snapshot.hasError) {
           print('오류 세부사항: ${snapshot.error}');
@@ -190,13 +174,7 @@ class HomeScreen extends HookWidget {
         }
 
         List<Schedule> schedules = snapshot.data!;
-        final double cardHeight = MediaQuery.of(context).size.height * 0.25.h;
-        final double totalHeight = cardHeight * schedules.length + 300.w;
-
-        return SizedBox(
-          height: totalHeight, // 총 카드 높이만큼 증가
-          child: ScheduleCard(schedules: schedules), // 일정 데이터를 카드로 표시
-        );
+        return ScheduleCard(schedules: schedules);
       },
     );
   }
