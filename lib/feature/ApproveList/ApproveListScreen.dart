@@ -124,13 +124,8 @@ class _ApproveListScreenState extends State<ApproveListScreen> {
           .colorScheme
           .scrim, size: 20.sp),
       style: ElevatedButton.styleFrom(
-        backgroundColor: _isRejectionMode ? Theme
-            .of(context)
-            .colorScheme
-            .error : Theme
-            .of(context)
-            .colorScheme
-            .inversePrimary,
+        backgroundColor: _isRejectionMode ?
+        Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.secondaryFixedDim,
         shadowColor: Theme
             .of(context)
             .colorScheme
