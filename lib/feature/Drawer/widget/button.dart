@@ -7,7 +7,7 @@ import 'package:attendance_check/feature/Log/logPage.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:attendance_check/feature/Drawer/widget/IdText.dart';
 import 'package:attendance_check/feature/Lottery/lottery_view.dart';
-import 'package:attendance_check/feature/CurrentList/ParticipationStatus.dart';
+import 'package:attendance_check/feature/CurrentList/StudentListScreen.dart.dart';
 
 class CommonButton extends StatelessWidget {
   final VoidCallback onPressed;
@@ -158,8 +158,7 @@ class CurrentButton extends StatelessWidget {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            //경로 변경예정
-              builder: (context) => HomeScreen(
+              builder: (context) => StudentListScreen(
                 role: role, // widget.role 사용
                 id: id,
               ),

@@ -95,14 +95,13 @@ class _SignInFormState extends State<SignInForm> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset : false,
       appBar: AppBar(
         backgroundColor: Colors.transparent, // 투명한 배경
-
       ),
-
-      body: Padding(
+      bottomSheet: Padding(
         padding: EdgeInsets.symmetric(horizontal: 30.w),
         child: Form(
           key: _formKey,
@@ -185,11 +184,9 @@ class _SignInFormState extends State<SignInForm> {
   // 로그인 버튼 빌드 함수
   Widget _buildLoginButton() {
     return Flexible(
-      child: Center(
-        child: LogInButton(
-          onPressed: () => _submitForm(context),
-          text: '로그인',
-        ),
+      child: LogInButton(
+        onPressed: () => _submitForm(context),
+        text: '로그인',
       ),
     );
   }

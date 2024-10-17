@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
             home:  SplashScreen(), // 메인 페이지 설정
             debugShowCheckedModeBanner: false, // 디버그 마크 제거
             theme: FlexThemeData.light(
-      //
+      
                 scheme: FlexScheme.blueM3, // M3 Blue Delight 테마 선택
                 useMaterial3: false,
                 colorScheme: ColorScheme.fromSeed(

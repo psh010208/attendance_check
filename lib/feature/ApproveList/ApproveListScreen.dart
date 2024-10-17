@@ -108,7 +108,7 @@ class _ApproveListScreenState extends State<ApproveListScreen> {
           _pendingAdmins.removeAt(index); // 승인 또는 거절 후 리스트에서 제거
         });
       },
-      child: CustomText(id: _isRejectionMode ? '거절' : '승인', color: Theme.of(context).colorScheme.onSurface, size: 20),
+      child: CustomText(id: _isRejectionMode ? '거절' : '승인', color: Theme.of(context).colorScheme.scrim, size: 20),
       style: ElevatedButton.styleFrom(
         backgroundColor: _isRejectionMode ? Theme.of(context).colorScheme.error : Theme.of(context).colorScheme.inversePrimary,
         shadowColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.7),

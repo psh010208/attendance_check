@@ -114,52 +114,31 @@ class _SignUpFormState extends State<SignUpForm> {
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Colors.transparent, // 투명한 배경
-        leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios_new, color: Theme.of(context).colorScheme.onSurface),
-            onPressed: () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => HomeScreen(
-                    role: '',
-                    id: '_studentId!',
-                  ),
-                ),
-              );
-            }),
+
       ),
 
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 30.w),
-          child: Form(
-            key: _formKey,
+      bottomSheet: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 30.w),
+        child: Form(
+          key: _formKey,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Flexible(child: SoonCheckWidget(bottom: -5.h, left: 0.w)),  //로고 중앙으로
-                SizedBox(height: _getRoleBasedSpacing()),
-                _buildRoleDropdown(),
-                if (_selectedRole == '학부생') ...[
-                  SizedBox(height: 20.h),
-                  _buildDepartmentDropdown(),
-                ],
-                SizedBox(height: 20.h),
-                _buildCustomTextField('이름', TextInputType.text, (value) => _name = value),
-                SizedBox(height: 20.h),
-                _buildCustomTextField('학번', TextInputType.number, (value) => _studentId = value),
-                SizedBox(height: 30.h),
-                Flexible(child: Center(
-                  child: LogUpButton(
-                    onPressed: () => _submitForm(context),
-                    text: '회원가입',
-                  ),
-                )),
-                //SizedBox(height: 5.h), // 회원가입 버튼과 아래 텍스트 버튼 사이 간격
-                _buildSignInPrompt(context), // 로그인으로 전환하는 버튼 추가
-                SizedBox(height: 30.h),
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                _buildHeaderWidget(),
+              SizedBox(height: _getRoleBasedSpacing()),
+              _buildRoleDropdown(),
+              if (_selectedRole == '학부생') ...[
+                _buildDepartmentDropdown(),
               ],
-            ),
+              SizedBox(height: 20.h),
+                  _buildStudentNameField(),
+              SizedBox(height: 20.h),
+                  _buildStudentIdField(),
+              SizedBox(height: 20.h),
+            _buildSignupButton(),
+              //SizedBox(height: 5.h), // 회원가입 버튼과 아래 텍스트 버튼 사이 간격
+              _buildSignInPrompt(context), // 로그인으로 전환하는 버튼 추가
+            ],
           ),
         ),
       ),
@@ -170,7 +149,18 @@ class _SignUpFormState extends State<SignUpForm> {
   double _getRoleBasedSpacing() {
     return _selectedRole == '관리자' ? 100.h : 50.h; //학부생일 때 여백 크기 변경
   }
-
+// 회원가입 버튼 빌드 함수
+  Widget _buildSignupButton() {
+    return Flexible(
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 30.w,vertical: 10.h), // 좌우 여백을 조정
+        child: LogUpButton(
+          onPressed: () => _submitForm(context),
+          text: '회원가입',
+        ),
+      ),
+    );
+  }
   // 사용자 유형 드롭다운 빌드 함수
   Widget _buildRoleDropdown() {
     return CustomDropdownFormField(
@@ -205,41 +195,59 @@ class _SignUpFormState extends State<SignUpForm> {
       },
     );
   }
-
-  // 텍스트 필드 빌드 함수
-  Widget _buildCustomTextField(
-      String labelText, TextInputType keyboardType, FormFieldSetter<String> onSaved) {
-    return InfoTextField(
-      labelText: labelText,
-      keyboardType: keyboardType,
-      obscureText: false,
-      onSaved: onSaved,
-      validator: (value) => value == null || value.isEmpty ? '$labelText을 입력하세요' : null,
+  // 이름 입력 필드 빌드 함수
+  Widget _buildStudentNameField() {
+    return buildCustomTextField(
+      '이름',
+      TextInputType.text,
+      false,
+          (value) => _name = value,
     );
   }
-
+  // 학번 입력 필드 빌드 함수
+  Widget _buildStudentIdField() {
+    return buildCustomTextField(
+      '학번',
+      TextInputType.number,
+      false,
+          (value) => _studentId = value,
+    );
+  }
+  // 헤더 위젯 빌드 함수
+  Widget _buildHeaderWidget() {
+    return Flexible(
+        child: SoonCheckWidget(bottom: -5.h, left: 0.w)
+    );
+  }
   // '이미 계쩡이 있으신가요?' 버튼을 빌드하는 함수
   Widget _buildSignInPrompt(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(top: 5.h), // 로그인 버튼 바로 아래 붙도록 여백을 최소화
-      child: Center(
-        child: TextButton(
-          onPressed: () {
-            // 로그인 폼으로 이동하도록 logPage의 isLogin을 false로 변경
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => logPage(isLogin: true)),
-            );
-          },
-          child: Text(
-            '이미 계정이 있으신가요? 로그인',
-            style: TextStyle(
-              fontSize: 15.sp, // 텍스트 크기 반응형으로 설정
-              color: Theme.of(context).colorScheme.primary,
-            ),
+    return Flexible(
+      child: TextButton(
+        onPressed: () {
+          // 로그인 폼으로 이동하도록 logPage의 isLogin을 false로 변경
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => logPage(isLogin: true)),
+          );
+        },
+        child: Text(
+          '이미 계정이 있으신가요? 로그인',
+          style: TextStyle(
+            fontSize: 15.sp, // 텍스트 크기 반응형으로 설정
+            color: Theme.of(context).colorScheme.primary,
           ),
         ),
       ),
+    );
+  }
+  // Custom TextField widget to avoid conflicts
+  Widget buildCustomTextField(String labelText, TextInputType keyboardType, bool obscureText, FormFieldSetter<String>? onSaved) {
+    return InfoTextField(
+      labelText: labelText,
+      keyboardType: keyboardType,
+      obscureText: obscureText,
+      onSaved: onSaved,
+      validator: (value) => value == null || value.isEmpty ? '$labelText을 입력하세요' : null,
     );
   }
 }
