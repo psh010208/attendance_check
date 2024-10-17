@@ -218,7 +218,7 @@ class _ApproveListScreenState extends State<ApproveListScreen> {
               },
             ),
             Spacer(),
-            CustomText(id: '관리자 승인 대기 목록', size: 20, color: Theme
+            CustomText(id: '관리자 승인 대기 목록', size: 20.sp, color: Theme
                 .of(context)
                 .colorScheme
                 .scrim),

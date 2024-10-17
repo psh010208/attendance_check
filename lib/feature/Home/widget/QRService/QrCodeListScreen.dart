@@ -5,6 +5,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:attendance_check/feature/Drawer/drawerScreen.dart';
 import 'package:attendance_check/feature/Home/homeScreen.dart';
 
+import '../../../ApproveList/widget/CustomText.dart';
+
 class QrCodeListScreen extends StatefulWidget {
   final String role;
   final String id;
@@ -87,13 +89,16 @@ class _QrCodeListScreenState extends State<QrCodeListScreen> {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 50.h, // 반응형으로 상단바의 높이를 설정
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        title: Text('QR 코드 확인', style: Theme.of(context).textTheme.titleMedium),
+        backgroundColor: Theme.of(context).primaryColorLight,
+        title: CustomText(
+          id : 'QR 코드 확인',
+          color : Theme.of(context).colorScheme.scrim,),
         centerTitle: true,
         elevation: 1,
         leading: IconButton(
-            icon: Icon(Icons.arrow_back,
-                color: Theme.of(context).iconTheme.color),
+            icon: Icon(Icons.arrow_back_ios_new,
+                color: Theme.of(context).colorScheme.scrim,
+                size: 25.sp),
             onPressed: () {
               Navigator.pushReplacement(
                   context,
@@ -103,22 +108,35 @@ class _QrCodeListScreenState extends State<QrCodeListScreen> {
             }),
         actions: [
           Builder(
-            builder: (context) {
+            builder: (BuildContext context) {
               return IconButton(
                 icon: Icon(Icons.menu),
                 onPressed: () {
                   Scaffold.of(context).openEndDrawer();
                 },
-                color: Theme.of(context).iconTheme.color,
+                color: Theme.of(context).colorScheme.scrim,
               );
             },
           ),
         ],
       ),
       endDrawer: DrawerScreen(role: widget.role, id: widget.id),
-      body: FutureBuilder<List<Map<String, dynamic>>>(
-        future: _fetchSchedules(),
-        builder: (context, snapshot) => _buildContent(snapshot),
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Theme.of(context).colorScheme.onInverseSurface,
+              Theme.of(context).primaryColorLight,
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            stops: [0.3, 0.9],
+          ),
+        ),
+        child: FutureBuilder<List<Map<String, dynamic>>>(
+          future: _fetchSchedules(),
+          builder: (context, snapshot) => _buildContent(snapshot),
+        ),
       ),
     );
   }
