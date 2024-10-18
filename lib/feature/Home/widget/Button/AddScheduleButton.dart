@@ -150,7 +150,7 @@ void AddSchedule(BuildContext context) {
 
                     // Firestore에서 현재 일정 개수를 가져옴
                     DocumentSnapshot<Map<String, dynamic>> scheduleDoc = await FirebaseFirestore.instance
-                        .collection('scheduleMeta')
+                        .collection('schedules')
                         .doc('scheduleCountDoc')
                         .get();
 

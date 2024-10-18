@@ -3,22 +3,18 @@ final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
 class AttendanceSummary {
   final String studentId;
-  final String studentName;
-  final String department;
+
   final int totalAttendance;
 
   AttendanceSummary({
     required this.studentId,
-    required this.studentName,
-    required this.department,
+
     required this.totalAttendance,
   });
 
   factory AttendanceSummary.fromFirestore(Map<String, dynamic> data) {
     return AttendanceSummary(
       studentId: data['student_id'] ?? '',
-      studentName: data['student_name'] ?? '',
-      department: data['department'] ?? '',
       totalAttendance: data['total_attendance'] ?? 0,
     );
   }
