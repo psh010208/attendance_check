@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-//일정 추가
 void AddSchedule(BuildContext context) {
   String scheduleName = '';
   String location = '';
@@ -9,6 +8,11 @@ void AddSchedule(BuildContext context) {
   DateTime? selectedDate;
   TimeOfDay? startTime;
   TimeOfDay? endTime;
+
+  // QR 코드 생성 (랜덤 값 또는 시간 기반)
+  String generateQrCode() {
+    return DateTime.now().millisecondsSinceEpoch.toString(); // QR 코드 생성 방식
+  }
 
   Future<void> _pickDate(BuildContext context, StateSetter setState) async {
     final DateTime? pickedDate = await showDatePicker(
@@ -125,6 +129,10 @@ void AddSchedule(BuildContext context) {
                       startTime != null &&
                       endTime != null &&
                       location.isNotEmpty) {
+
+                    // QR 코드 생성
+                    String qrCode = generateQrCode();
+
                     final startDateTime = DateTime(
                       selectedDate!.year,
                       selectedDate!.month,
@@ -148,13 +156,14 @@ void AddSchedule(BuildContext context) {
 
                     int currentCount = scheduleDoc.data()?['scheduleCount'] ?? 0;
 
-                    // Firestore에 일정 추가
+                    // Firestore에 일정 추가, QR 코드 포함
                     FirebaseFirestore.instance.collection('schedules').doc(scheduleName).set({
                       'schedule_name': scheduleName,
                       'location': location,
                       'instructor_name': instructorName,
                       'start_time': Timestamp.fromDate(startDateTime),
                       'end_time': Timestamp.fromDate(endDateTime),
+                      'qr_code': qrCode, // QR 코드 필드 추가
                       'schedule_count': currentCount + 1,
                     }).then((_) {
                       Navigator.of(context).pop();
@@ -180,4 +189,3 @@ void AddSchedule(BuildContext context) {
     },
   );
 }
-

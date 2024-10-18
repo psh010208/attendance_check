@@ -44,7 +44,6 @@ class AttendanceViewModel {
 
 }
 
-
 class ScheduleViewModel {
   String scheduleName = '';
   String location = '';
@@ -54,12 +53,12 @@ class ScheduleViewModel {
   TimeOfDay? endTime;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // QR 코드 생성
+  // QR 코드 생성 (랜덤 값 예시)
   String generateQrCode() {
-    return DateTime.now().millisecondsSinceEpoch.toString();
+    return DateTime.now().millisecondsSinceEpoch.toString(); // 현재 시간 기반으로 QR 코드 생성
   }
 
-  // 일정 정보를 Firestore에 추가하는 메서드
+  // 일정 정보를 Firestore에 추가하는 메서드 (QR 코드 포함)
   Future<void> addSchedule() async {
     if (scheduleName.isEmpty ||
         selectedDate == null ||
@@ -95,10 +94,11 @@ class ScheduleViewModel {
       'instructor_name': instructorName,
       'start_time': Timestamp.fromDate(startDateTime),
       'end_time': Timestamp.fromDate(endDateTime),
-      'qr_code': qrCode,  // QR 코드 추가vf
+      'qr_code': qrCode,  // QR 코드 추가
     });
   }
 
+  // 일정 스트림을 받아오는 메서드
   Stream<List<Schedule>> getScheduleStream() {
     return _firestore.collection('schedules')
         .snapshots()
