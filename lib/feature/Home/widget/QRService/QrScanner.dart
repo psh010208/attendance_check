@@ -106,7 +106,7 @@ class _QrScannerState extends State<QrScanner> {
                             ),
                             Positioned(
                               top: ((screenHeight - cutOutHeight) / 2 +
-                                  cutOutHeight / 1.6 - 1)
+                                  cutOutHeight / 2.2 - 1)
                                   .h,
                               child: Stack(
                                 alignment: Alignment.center,
@@ -177,7 +177,7 @@ class _QrScannerState extends State<QrScanner> {
         });
         controller.pauseCamera();
 
-        // Firestore에 출석 정보를 추가/업데이트하는 함수 호출
+        // Firestore에 출석 정보를 추가/업데이트하는 함수 호출 (학생_ID/QR_CODE)
         await addOrUpdateAttendance(context, widget.studentId, result!.code!);
         dispose();
       }

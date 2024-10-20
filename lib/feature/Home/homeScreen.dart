@@ -2,6 +2,7 @@ import 'package:attendance_check/feature/Home/widget/Button/AnimationButton.dart
 import 'package:attendance_check/feature/Home/widget/Icon/AdminIcon.dart';
 import 'package:attendance_check/feature/Home/widget/QRService/QrScanner.dart';
 import 'package:attendance_check/feature/Home/widget/SoonCheck.dart';
+import 'package:attendance_check/feature/Home/widget/card/BuildScheduleCard.dart';
 import 'package:attendance_check/feature/Home/widget/card/SchedulCard.dart';
 import 'package:flutter/material.dart';
 import 'package:attendance_check/feature/Home/model/homeModel.dart';
@@ -115,12 +116,12 @@ class HomeScreen extends HookWidget {
                       child: animationButton(
                         icon: Icons.qr_code_scanner,
                         iconSize: 40.w,
-                        iconColor: Theme.of(context).colorScheme.onSurface,
+                        iconColor: Theme.of(context).colorScheme.surface,
                         defaultSize: const Offset(80, 80),
                         clickedSize: const Offset(70, 70),
                         defaultButtonColor:
-                        Theme.of(context).colorScheme.onSurface.withOpacity(0.1),
-                        clickedButtonColor: Theme.of(context).colorScheme.primary,
+                        Theme.of(context).colorScheme.primary.withOpacity(0.8),
+                        clickedButtonColor: Theme.of(context).colorScheme.inversePrimary,
                         circularRadius: 50.r,
                         onTap: () {
                           Navigator.push(

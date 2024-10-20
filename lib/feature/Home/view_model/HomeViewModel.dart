@@ -68,6 +68,7 @@ class ScheduleViewModel {
       throw Exception('모든 필드를 입력해주세요.');
     }
 
+
     final startDateTime = DateTime(
       selectedDate!.year,
       selectedDate!.month,
@@ -87,7 +88,7 @@ class ScheduleViewModel {
     // QR 코드 생성
     String qrCode = generateQrCode();
 
-    // Firestore에 일정 추가
+    // 관리자 모드로 일정 추가시, 데이터 베이스에 일정 등록
     await _firestore.collection('schedules').add({
       'schedule_name': scheduleName,
       'location': location,
@@ -98,9 +99,10 @@ class ScheduleViewModel {
     });
   }
 
-  // 일정 스트림을 받아오는 메서드
+// 일정 스트림을 받아오는 메서드 (일정 시작 시간 (start_time) 기준으로 정렬)
   Stream<List<Schedule>> getScheduleStream() {
     return _firestore.collection('schedules')
+        .orderBy('start_time', descending: true)
         .snapshots()
         .map((snapshot) =>
         snapshot.docs.map((doc) => Schedule.fromFirestore(doc)).toList());

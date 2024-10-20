@@ -76,7 +76,9 @@ class QrCodeTile extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          backgroundColor:Colors.white ,
           content: Container(
+            color: Colors.white,
             height: 300.h,
             width: 300.w,
             child: CustomPaint(

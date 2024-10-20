@@ -15,7 +15,7 @@ class CurrentBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Positioned(
       top: 222.h,
-      left: 30.w,
+      left: 70.w,
       child: Column(
         children: [
           Text(

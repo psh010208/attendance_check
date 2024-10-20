@@ -5,12 +5,16 @@ class CustomText extends StatelessWidget {
   final String id;
   final double? size;
   final Color? color; // 색상 인자 추가
+  final TextOverflow? overflow; // overflow 속성 추가
+  final int? maxLines; // maxLines 속성 추가
 
   const CustomText({
     Key? key,
     required this.id,
     this.size,
     this.color, // 색상 인자 추가
+    this.overflow,
+    this.maxLines
   }) : super(key: key);
 
   @override
@@ -22,6 +26,8 @@ class CustomText extends StatelessWidget {
         fontSize: size,
         fontWeight: FontWeight.bold,
       ),
+      overflow: overflow,
+      maxLines: maxLines,
     );
   }
 }

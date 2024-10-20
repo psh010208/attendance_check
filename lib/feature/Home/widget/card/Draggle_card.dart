@@ -25,11 +25,12 @@ class DraggableCard extends StatelessWidget {
       child: AnimatedContainer(
         duration: Duration(milliseconds: 300),
         curve: Curves.easeInOut,
-        margin: EdgeInsets.only(top: 20.0.h), // 카드 사이의 간격 설정
+        margin: EdgeInsets.only(top: 50.0.h), // 카드 사이의 간격 설정
       ),
     );
   }
 
+    //카드의 상태
   void updateExpansionState(DragUpdateDetails details) {
     if (isExpandedList.every((isExpanded) => isExpanded)) {
       if (details.delta.dy < -10 && index == isExpandedList.length - 1) {

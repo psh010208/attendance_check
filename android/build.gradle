@@ -18,12 +18,27 @@ allprojects {
 
 rootProject.buildDir = "../build"
 subprojects {
+    // 모든 하위 프로젝트에 대해 처리
+    afterEvaluate { project ->
+        // 하위 프로젝트가 Android 애플리케이션 또는 라이브러리 플러그인을 가지고 있을 경우에만 실행
+        if (project.plugins.hasPlugin("com.android.application") ||
+                project.plugins.hasPlugin("com.android.library")) {
+            // 하위 프로젝트의 Android 설정을 구성
+            project.android {
+                // compileSdkVersion을 34로 설정 (Android SDK 버전 34로 컴파일하도록 설정)
+                compileSdkVersion 34
+
+                // Android 빌드 도구 버전을 34.0.0으로 설정
+                buildToolsVersion "34.0.0"
+            }
+        }
+    }
+}
+
+
+subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
 }
 subprojects {
-    project.evaluationDependsOn(":app")
-}
-
-tasks.register("clean", Delete) {
-    delete rootProject.buildDir
+    project.evaluationDependsOn(':app')
 }

@@ -1,15 +1,15 @@
 plugins {
     id "com.android.application"
     id "kotlin-android"
-    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
+    // Flutter Gradle Plugin 적용
     id "dev.flutter.flutter-gradle-plugin"
 }
 apply plugin: 'com.google.gms.google-services'
 
 android {
     namespace = "com.example.attendance_check"
-    compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    compileSdkVersion 34  // 직접 설정
+    ndkVersion "21.3.6528147"  // NDK 버전도 직접 설정
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -17,27 +17,25 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8
+        jvmTarget = "1.8"
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId = "com.example.attendance_check"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = flutter.minSdkVersion
-//        targetSdk = flutter.targetSdkVersion
-        targetSdk 31
-        versionCode = flutter.versionCode
-        versionName = flutter.versionName
+        minSdkVersion 21  // 직접 설정
+        targetSdkVersion 34  // 직접 설정
+        versionCode 1  // 직접 설정
+        versionName "1.0.0"  // 직접 설정
     }
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.debug
+            signingConfig signingConfigs.debug
         }
+    }
+
+    lintOptions {
+        abortOnError false  // Lint 오류가 있어도 빌드 중단 방지
     }
 }
 

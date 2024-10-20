@@ -16,6 +16,10 @@ class LotteryViewModel {
 
     List<LotteryStudent> students = [];
 
+    // 'schedules' 컬렉션에서 총 스케줄 개수 가져오기
+    QuerySnapshot scheduleSnapshot = await _firestore.collection('schedules').get();
+    int totalSchedules = scheduleSnapshot.size;
+
     for (var doc in userSnapshot.docs) {
       final studentData = doc.data() as Map<String, dynamic>;
 
@@ -32,16 +36,18 @@ class LotteryViewModel {
         totalAttendance = attendanceData['total_attendance'] ?? 0; // total_attendance 값 가져오기
       }
 
-      // 학생 데이터와 함께 LotteryStudent 객체 생성 (attendanceCount에 totalAttendance 할당)
-      students.add(LotteryStudent.fromFirestore(studentData, attendanceCount: totalAttendance));
+      // 스케줄 개수와 출석 횟수가 같은 사람만 리스트에 추가
+      if (totalAttendance == totalSchedules) {
+        students.add(LotteryStudent.fromFirestore(studentData, attendanceCount: totalAttendance));
+      }
     }
 
     return students;
   }
 
-  // 학부생들 대상으로 추첨을 실행하는 메서드
+  // 학부생들 대상으로 추첨을 실행 + 출석 횟수가 일정 갯수와 같은 사람만
   Future<LotteryStudent> runLottery() async {
-    // 모든 학부생 데이터를 가져옴 (user 컬렉션에서 'role'이 '학부생'인 사람들)
+    // 모든 학부생 데이터를 가져옴 (스케줄 개수와 출석 횟수가 같은 사람들)
     List<LotteryStudent> students = await getAllStudents();
 
     // Firestore에서 이미 추첨된 학생들의 ID를 가져옴
@@ -67,7 +73,6 @@ class LotteryViewModel {
     if (weightedPool.isEmpty) {
       throw Exception("추첨할 수 있는 학생이 없습니다.");
     }
-
     // 랜덤 추첨
     Random random = Random();
     int winnerIndex = random.nextInt(weightedPool.length);
@@ -78,7 +83,7 @@ class LotteryViewModel {
 
   // 등록 버튼 누르면 당첨자를 Firestore에 등록하는 메서드
   Future<void> registerWinner(LotteryStudent winner) async {
-    await _firestore.collection('lottery').doc( winner.studentId).set({
+    await _firestore.collection('lottery').doc(winner.studentId).set({
       'student_id': winner.studentId,
       'name': winner.name,
       'department': winner.department,
@@ -87,7 +92,7 @@ class LotteryViewModel {
     });
   }
 
-// Firestore에서 학부생 중 추첨된 학생 리스트 가져오기
+  // Firestore에서 학부생 중 추첨된 학생 리스트 가져오기
   Stream<List<LotteryStudent>> getLotteryResults() {
     return _firestore
         .collection('lottery')
@@ -101,7 +106,7 @@ class LotteryViewModel {
           data,
           attendanceCount: data['attendance_count'] ?? 0, // Firestore에서 출석 횟수 가져오기
         );
-      }).toList();
+      ;}).toList();
     });
   }
 

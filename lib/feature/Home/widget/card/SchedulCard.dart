@@ -1,16 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 import '../../model/homeModel.dart';
+import 'BuildScheduleCard.dart';
 import 'SchduleCardDesign.dart';
-
-class ScheduleCard extends StatefulWidget {
-  final List<Schedule> schedules;
-
-  ScheduleCard({required this.schedules});
-
-  @override
-  _ScheduleCardState createState() => _ScheduleCardState();
-}
 
 class _ScheduleCardState extends State<ScheduleCard> {
   late List<bool> isExpandedList;
@@ -24,13 +18,12 @@ class _ScheduleCardState extends State<ScheduleCard> {
   @override
   Widget build(BuildContext context) {
     final List<Color> barColors = [
-      Theme.of(context).colorScheme.onPrimaryFixedVariant,
-      Theme.of(context).colorScheme.onPrimaryContainer,
+      Theme.of(context).primaryColorLight,
+      Theme.of(context).colorScheme.outline,
       Theme.of(context).colorScheme.inversePrimary,
       Theme.of(context).colorScheme.secondary,
     ];
     final double cardHeight = MediaQuery.of(context).size.height * 0.25.h;
-    final double totalHeight = cardHeight * widget.schedules.length;
 
     return SingleChildScrollView(
       child: Center(
@@ -83,7 +76,8 @@ class _ScheduleCardState extends State<ScheduleCard> {
         duration: Duration(milliseconds: 500), // 카드 펼치고 접히는 속도
         curve: Curves.easeInOut,
         margin: EdgeInsets.only(
-          top: isExpandedList[index] ? MediaQuery.of(context).size.height * 0.25.h * index : MediaQuery.of(context).size.height * 0.045.h * index, // 카드끼리의 간격
+          top: isExpandedList[index] ? MediaQuery.of(context).size.height * 0.45.h * index :
+          MediaQuery.of(context).size.height * 0.15.h * index, // 카드끼리의 간격
         ),
         child: buildScheduleCard(schedule, index, isExpandedList[index], barColors),
       ),
@@ -92,7 +86,7 @@ class _ScheduleCardState extends State<ScheduleCard> {
 
   Widget buildScheduleCard(Schedule schedule, int index, bool isExpanded, List<Color> barColors) {
     final screenSize = MediaQuery.of(context).size;
-    final cardHeight = screenSize.height * 0.25.h; // Responsive card height
+    final cardHeight = screenSize.height * 0.35.h; // Responsive card height
     final cardWidth = screenSize.width * 0.80.w; // Responsive card width
 
     Color barColor = barColors[index % barColors.length];

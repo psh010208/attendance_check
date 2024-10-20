@@ -106,23 +106,19 @@ Future<void> _updateTotalAttendance(String studentId) async {
     if (attendanceSnapshot.docs.isNotEmpty) {
       DocumentSnapshot attendanceDoc = attendanceSnapshot.docs.first;
       List<dynamic> qrCodes = attendanceDoc['qr_code'] ?? [];
-      print('QR Codes: $qrCodes'); // 이 출력 결과를 확인해 주세요.
-
-      print(qrCodes);
       // attendance_summary 테이블에서 해당 student_id와 일치하는 문서를 찾음
       QuerySnapshot summarySnapshot = await _firestore
           .collection('attendance_summary')
           .where('student_id', isEqualTo: studentId)
           .limit(1)
           .get();
-
       if (summarySnapshot.docs.isNotEmpty) {
         // 문서가 존재하면 해당 문서의 document ID로 업데이트
         DocumentReference summaryDocRef = summarySnapshot.docs.first.reference;
         await summaryDocRef.update({
           'total_attendance': qrCodes.length, // qrCode 리스트의 길이를 total_attendance에 저장
         });
-        print('attendance_summary의 total_attendance가 업데이트되었습니다.');
+        print('출석 횟수가 저장 되었습니다');
       } else {
         print('해당 student_id에 대한 attendance_summary 문서를 찾을 수 없습니다.');
       }

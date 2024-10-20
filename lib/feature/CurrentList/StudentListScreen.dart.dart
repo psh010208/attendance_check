@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import '../ApproveList/widget/CustomText.dart';
 import '../Home/homeScreen.dart';
 import 'ViewModel/viewModel.dart';
@@ -50,46 +52,93 @@ class _StudentListScreenState extends State<StudentListScreen> {
     });
   }
 
-  // 출석 횟수 버튼 클릭 시 일정표 보여주기
-  void _showAttendanceSchedule() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: CustomText(
-            id: '출석 일정',
-            color: Theme.of(context).secondaryHeaderColor,
-            size: 15,
-          ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              // 일정표 표시
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: 5,
-                itemBuilder: (context, index) {
-                  return Card(
-                    color: index % 2 == 0 ? Colors.blue[50] : Colors.transparent,
-                    child: ListTile(
-                      title: Text('일정 ${index + 1}'),
-                      subtitle: Text('2024 / 10 / 9 / 14:30'),
-                    ),
-                  );
-                },
+// 출석 횟수 버튼 클릭 시 일정표 보여주기
+  void _showAttendanceSchedule(String studentId) async {
+    try {
+      // attendance 테이블에서 해당 학생의 출석 기록 가져오기
+      QuerySnapshot attendanceSnapshot = await FirebaseFirestore.instance
+          .collection('attendance')
+          .where('student_id', isEqualTo: studentId)
+          .get();
+
+      // 출석한 일정의 QR 코드 목록 가져오기 (List<dynamic>으로 처리)
+      List<dynamic> attendedQrCodes = attendanceSnapshot.docs
+          .map((doc) => doc['qr_code'] as List<dynamic>)
+          .expand((qrCodes) => qrCodes) // List<List> 형태를 1차원 List로 변환
+          .toList();
+
+      // QR 코드 목록이 비어 있는지 확인
+      if (attendedQrCodes.isEmpty) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('해당 학생의 출석 기록이 없습니다.')),
+        );
+        return;
+      }
+
+      // schedules 테이블에서 해당 QR 코드에 해당하는 일정 가져오기
+      QuerySnapshot schedulesSnapshot = await FirebaseFirestore.instance
+          .collection('schedules')
+          .get();
+
+      List<QueryDocumentSnapshot> matchingSchedules = schedulesSnapshot.docs.where((doc) {
+        String scheduleQrCode = doc['qr_code'] as String;
+        return attendedQrCodes.contains(scheduleQrCode); // QR 코드 비교
+      }).toList();
+
+      // 일정 데이터를 다이얼로그로 표시
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: CustomText(
+              id: '출석 일정',
+              color: Theme.of(context).colorScheme.outline,
+              size: 15.sp,
+            ),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // 출석한 일정표 표시
+                ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: matchingSchedules.length,
+                  itemBuilder: (context, index) {
+                    final scheduleData = matchingSchedules[index].data() as Map<String, dynamic>;
+
+                    // 시간을 원하는 형식으로 변환
+                    DateTime parsedStartTime = scheduleData['start_time'].toDate();
+                    String formattedStartTime = DateFormat('hh:mm a').format(parsedStartTime);
+
+                    return Card(
+                      color: index % 2 == 0 ?
+                      Theme.of(context).primaryColorLight :
+                      Theme.of(context).secondaryHeaderColor,
+                      child: ListTile(
+                        title: Text(scheduleData['schedule_name']),
+                        subtitle: Text(formattedStartTime),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text('닫기'),
               ),
             ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text('닫기'),
-            ),
-          ],
-        );
-      },
-    );
+          );
+        },
+      );
+    } catch (e) {
+      print('Error loading attendance schedule: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('일정 로드 중 오류가 발생했습니다: $e')),
+      );
+    }
   }
+
 
   // 카드 디자인
   Widget _buildStudentCard(BuildContext context, currentListModel student) {
@@ -97,75 +146,87 @@ class _StudentListScreenState extends State<StudentListScreen> {
       padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
       child: Container(
         decoration: _buildCardDecoration(context),
-        child: Stack(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(Icons.person, size: 50, color: Theme.of(context).colorScheme.onTertiaryContainer,),
+              SizedBox(width: 15.w),
+
+              // department와 name을 각각 따로 정렬
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start, // 왼쪽 정렬 설정
                 children: [
-                  Icon(Icons.person, size: 50, color: Theme.of(context).colorScheme.onTertiaryContainer,),
-                  SizedBox(width: 20.w),
-
-                  // department와 name을 가로 정렬
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  // 첫 번째 그룹: 학과, 학번
+                  Row(
                     children: [
-                      Row(
-                        children: [
-                          CustomText(id: student.department, size: 20.sp),
-                          SizedBox(width: 30.w), // department와 name 사이의 간격
-                          CustomText(id: student.name, size: 22.sp),
-                        ],
-                      ),
-
-                      SizedBox(height: 20.h), // department/name과 학번/출석 횟수 간격
-
-                      // 학번과 출석 횟수 세로 정렬
-                      CustomText(id: '학번: ${student.studentId}', size: 16.sp),
-                      CustomText(id: '출석 횟수: ${student.attendanceCount}', size: 16.sp),
+                      CustomText(id: student.department, size: 27.sp), // 학과
+                      SizedBox(width: 10.w),
+                      CustomText(id: ' ${student.studentId}', size: 16.sp), // 학번
                     ],
+                  ),
+
+                  // 두 번째 그룹: 이름
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10.0), // 이름과 첫 번째 그룹 사이의 간격 설정
+                    child: CustomText(
+                      id: student.name,
+                      size: 22.sp,
+                      overflow: TextOverflow.ellipsis, // 텍스트가 길면 "..."으로 표시
+                      maxLines: 1, // 한 줄까지만 표시
+                    ),
+                  ),
+
+                  // 세 번째 그룹: 출석 횟수 및 버튼을 하나의 Row로 정렬
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10.0), // 출석 횟수와 이름 사이의 간격 설정
+                    child: Row(
+                      children: [
+                        // 출석 횟수 텍스트
+                        CustomText(
+                            id: '출석 횟수: ${student.attendanceCount}',
+                            size: 16.sp,
+                          color: Theme.of(context).disabledColor,
+                        ),
+                        SizedBox(width: 50.w), // 버튼과 출석 횟수 간 간격
+
+                        // Container로 감싸서 그라데이션 버튼 적용
+                        Container(
+                          width: 110.w,
+                          height: 30.h,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                Theme.of(context).colorScheme.surfaceTint,
+                                Theme.of(context).disabledColor,
+                              ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              stops: [0.3, 0.9],
+                            ),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: ElevatedButton(
+                            onPressed: () => _showAttendanceSchedule(student.studentId),
+                            child: Text('출석 확인'),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.transparent, // 투명하게 설정
+                              shadowColor: Colors.transparent, // 그림자 제거
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
-            ),
-
-            // Container로 감싸서 그라데이션 버튼 적용
-            Positioned(
-              right: 16.w, // 오른쪽 여백
-              top: 90.h, // 위쪽 여백
-              child: Container(
-                width: 95.w,
-                height: 30.h,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Theme.of(context).colorScheme.surfaceTint,
-                      Theme.of(context).disabledColor,
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    stops: [0.3, 0.9],
-                  ),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: ElevatedButton(
-                  onPressed: _showAttendanceSchedule,
-                  child: Text('출석 횟수'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.transparent, // 투명하게 설정
-                    shadowColor: Colors.transparent, // 그림자 제거
-                  ),
-                ),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
-
-
-
 
   // 카드 디자인
   BoxDecoration _buildCardDecoration(BuildContext context) {
@@ -215,7 +276,6 @@ class _StudentListScreenState extends State<StudentListScreen> {
     );
   }
 
-
   // 이름 검색
   void _searchByName() {
     showDialog(
@@ -223,11 +283,24 @@ class _StudentListScreenState extends State<StudentListScreen> {
       builder: (context) {
         return AlertDialog(
           title: Text('이름으로 검색'),
-          content: TextField(
-            onChanged: (value) {
-              _searchName = value;
-            },
-            decoration: InputDecoration(hintText: '이름 입력'),
+          content: Container(
+            decoration: BoxDecoration( // BoxDecoration을 사용하여 그라데이션 추가
+              gradient: LinearGradient(
+                colors: [
+                  Theme.of(context).secondaryHeaderColor.withOpacity(0.8),
+                  Theme.of(context).colorScheme.secondary.withOpacity(0.8),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                stops: [0.3, 0.9],
+              ),
+            ),
+            child: TextField(
+              onChanged: (value) {
+                _searchName = value;
+              },
+              decoration: InputDecoration(hintText: '이름 입력'),
+            ),
           ),
           actions: [
             TextButton(
@@ -243,6 +316,7 @@ class _StudentListScreenState extends State<StudentListScreen> {
     );
   }
 
+
   // 학번 검색
   void _searchByStudentId() {
     showDialog(
@@ -250,11 +324,24 @@ class _StudentListScreenState extends State<StudentListScreen> {
       builder: (context) {
         return AlertDialog(
           title: Text('학번으로 검색'),
-          content: TextField(
-            onChanged: (value) {
-              _searchStudentId = value;
-            },
-            decoration: InputDecoration(hintText: '학번 입력'),
+          content: Container(
+            decoration: BoxDecoration( // BoxDecoration을 사용하여 그라데이션 추가
+              gradient: LinearGradient(
+                colors: [
+                  Theme.of(context).secondaryHeaderColor.withOpacity(0.8),
+                  Theme.of(context).colorScheme.secondary.withOpacity(0.8),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                stops: [0.3, 0.9],
+              ),
+            ),
+            child: TextField(
+              onChanged: (value) {
+                _searchStudentId = value;
+              },
+              decoration: InputDecoration(hintText: '학번 입력'),
+            ),
           ),
           actions: [
             TextButton(
@@ -336,7 +423,7 @@ class _StudentListScreenState extends State<StudentListScreen> {
                     padding: const EdgeInsets.all(8.0),
                     child: Container(
                       decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.onInverseSurface
+                          color: Theme.of(context).colorScheme.onInverseSurface
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

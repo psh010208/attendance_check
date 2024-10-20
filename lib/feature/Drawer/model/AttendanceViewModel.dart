@@ -54,11 +54,12 @@ class ScheduleViewModel {
   String instructorName = '강사 미정'; // 기본값 설정
   DateTime? selectedDate;
   TimeOfDay? startTime;
-  TimeOfDay? endTime;
 
 
+// 일정 스트림을 받아오는 메서드 (start_time 기준으로 내림차순 정렬)
   Stream<List<Schedule>> getScheduleStream() {
     return _firestore.collection('schedules')
+        .orderBy('start_time', descending: true)
         .snapshots()
         .map((snapshot) =>
         snapshot.docs.map((doc) => Schedule.fromFirestore(doc)).toList());

@@ -112,13 +112,12 @@ class _DrawerScreenState extends State<DrawerScreen> {
               FutureBuilder<int?>(
                 future: viewModel.getTotalAttendanceByStudentId(widget.id), // student_id를 통해 데이터 가져옴
                 builder: (context, snapshot) {
+
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return CircularProgressIndicator(); // 로딩 상태 표시
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else if (snapshot.hasData) {
-                    int currentProgress = snapshot.data ?? 0; // Firestore에서 가져온 출석 데이터
-
                     // StreamBuilder로 일정 데이터에서 totalProgress 가져오기
                     return StreamBuilder<List<Schedule>>(
                       stream: scheduleViewModel.getScheduleStream(), // 일정 스트림을 구독
@@ -128,12 +127,16 @@ class _DrawerScreenState extends State<DrawerScreen> {
                         } else if (scheduleSnapshot.hasError) {
                           return Text('Error: ${scheduleSnapshot.error}');
                         } else if (scheduleSnapshot.hasData) {
-                          int totalProgress = scheduleSnapshot.data!.length; // 일정 수를 총 출석 가능 횟수로 사용
 
+
+                     int currentProgress = snapshot.data ?? 0; // Firestore에서 가져온 출석 데이터
+                     int totalProgress = scheduleSnapshot.data!.length; // 일정 수를 총 출석 가능 횟수로 사용
                           return CurrentBar(
                             currentProgress: currentProgress, // Firestore 출석 값 반영
                             totalProgress: totalProgress, // Firestore 일정 수 반영
                           );
+
+
                         } else {
                           return Text('No schedule data available');
                         }

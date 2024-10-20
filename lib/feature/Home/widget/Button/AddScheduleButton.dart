@@ -47,70 +47,85 @@ void AddSchedule(BuildContext context) {
       return StatefulBuilder(
         builder: (BuildContext context, StateSetter setState) {
           return AlertDialog(
-            title: Text('새 일정 추가'),
+            title: Text(
+                '새 일정 추가',
+            ),
             content: SingleChildScrollView(
               child: Form(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    TextFormField(
-                      decoration: InputDecoration(labelText: '일정 이름'),
-                      onChanged: (value) {
-                        scheduleName = value;
-                      },
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Theme.of(context).colorScheme.outline.withOpacity(0.5),
+                        Theme.of(context).secondaryHeaderColor.withOpacity(0.8),
+                      ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      stops: [0.3, 0.7],
                     ),
-                    TextFormField(
-                      readOnly: true,
-                      decoration: InputDecoration(
-                        labelText: selectedDate == null
-                            ? '날짜 선택 (YYYY-MM-DD)'
-                            : '선택된 날짜: ${selectedDate!.toLocal().toString().split(' ')[0]}',
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      TextFormField(
+                        decoration: InputDecoration(labelText: '일정 이름'),
+                        onChanged: (value) {
+                          scheduleName = value;
+                        },
                       ),
-                      onTap: () => _pickDate(context, setState),
-                    ),
-                    TextFormField(
-                      readOnly: true,
-                      decoration: InputDecoration(
-                        labelText: startTime == null
-                            ? '시작 시간 선택 (HH:MM)'
-                            : '시작 시간: ${startTime!.format(context)}',
+                      TextFormField(
+                        readOnly: true,
+                        decoration: InputDecoration(
+                          labelText: selectedDate == null
+                              ? '날짜 선택 (YYYY-MM-DD)'
+                              : '선택된 날짜: ${selectedDate!.toLocal().toString().split(' ')[0]}',
+                        ),
+                        onTap: () => _pickDate(context, setState),
                       ),
-                      onTap: () {
-                        _selectTime(context, (TimeOfDay pickedTime) {
-                          setState(() {
-                            startTime = pickedTime;
-                          });
-                        }, setState);
-                      },
-                    ),
-                    TextFormField(
-                      readOnly: true,
-                      decoration: InputDecoration(
-                        labelText: endTime == null
-                            ? '종료 시간 선택 (HH:MM)'
-                            : '종료 시간: ${endTime!.format(context)}',
+                      TextFormField(
+                        readOnly: true,
+                        decoration: InputDecoration(
+                          labelText: startTime == null
+                              ? '시작 시간 선택 (HH:MM)'
+                              : '시작 시간: ${startTime!.format(context)}',
+                        ),
+                        onTap: () {
+                          _selectTime(context, (TimeOfDay pickedTime) {
+                            setState(() {
+                              startTime = pickedTime;
+                            });
+                          }, setState);
+                        },
                       ),
-                      onTap: () {
-                        _selectTime(context, (TimeOfDay pickedTime) {
-                          setState(() {
-                            endTime = pickedTime;
-                          });
-                        }, setState);
-                      },
-                    ),
-                    TextFormField(
-                      decoration: InputDecoration(labelText: '장소'),
-                      onChanged: (value) {
-                        location = value;
-                      },
-                    ),
-                    TextFormField(
-                      decoration: InputDecoration(labelText: '강사 이름 (선택 사항)'),
-                      onChanged: (value) {
-                        instructorName = value;
-                      },
-                    ),
-                  ],
+                      TextFormField(
+                        readOnly: true,
+                        decoration: InputDecoration(
+                          labelText: endTime == null
+                              ? '종료 시간 선택 (HH:MM)'
+                              : '종료 시간: ${endTime!.format(context)}',
+                        ),
+                        onTap: () {
+                          _selectTime(context, (TimeOfDay pickedTime) {
+                            setState(() {
+                              endTime = pickedTime;
+                            });
+                          }, setState);
+                        },
+                      ),
+                      TextFormField(
+                        decoration: InputDecoration(labelText: '장소'),
+                        onChanged: (value) {
+                          location = value;
+                        },
+                      ),
+                      TextFormField(
+                        decoration: InputDecoration(labelText: '강사 이름 (선택 사항)'),
+                        onChanged: (value) {
+                          instructorName = value;
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -165,7 +180,9 @@ void AddSchedule(BuildContext context) {
                       'end_time': Timestamp.fromDate(endDateTime),
                       'qr_code': qrCode, // QR 코드 필드 추가
                       'schedule_count': currentCount + 1,
-                    }).then((_) {
+                    })
+
+                        .then((_) {
                       Navigator.of(context).pop();
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text('일정이 추가되었습니다.')),

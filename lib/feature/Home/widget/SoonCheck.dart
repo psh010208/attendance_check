@@ -53,7 +53,7 @@ class SoonCheckWidget extends StatelessWidget {
             color: Theme.of(context).colorScheme.onSurface,
           ),
           bottom: bottom,  // bottom 값 전달
-          left: left + 43, // 왼쪽 오프셋 조정
+          left: left + 42.7, // 왼쪽 오프셋 조정
         ),
 
         // 오른쪽 일부 텍스트
@@ -64,7 +64,7 @@ class SoonCheckWidget extends StatelessWidget {
             color: Theme.of(context).colorScheme.onSurface,
           ),
           bottom: bottom,  // bottom 값 전달
-          left: left + 14, // 왼쪽 오프셋 조정
+          left: left + 16, // 왼쪽 오프셋 조정
         ),
       ],
     );
