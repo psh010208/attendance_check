@@ -20,9 +20,9 @@ void main() async {
     await NotificationService.init();  // 로컬 알림 초기화
     print('Firebase 초기화 성공');
 
-    // NotificationServiceViewModel 인스턴스를 생성하고 알림 예약 호출
+    // NotificationServiceViewModel 인스턴스를 생성하고 알림 예약 리스너 시작
     final notificationServiceViewModel = NotificationServiceViewModel();
-    await notificationServiceViewModel.scheduleNotifications();  // 모든 일정에 대해 알림 예약
+    notificationServiceViewModel.listenToScheduleChanges();  // 일정 변경 리스너 시작
   } catch (e) {
     print('Firebase 초기화 중 오류 발생: $e');
   }
