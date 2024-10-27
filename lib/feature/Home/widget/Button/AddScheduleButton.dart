@@ -223,9 +223,10 @@ class _AddScheduleDialogState extends State<AddScheduleDialog> {
         return Theme(
           data: ThemeData.light().copyWith(
             colorScheme: ColorScheme.light(
-              primary: Theme.of(context).colorScheme.inversePrimary,
+              primary: Colors.white60,
               onPrimary: Theme.of(context).colorScheme.outline,
               surface: Theme.of(context).colorScheme.secondaryContainer,
+
               secondary: Theme.of(context).colorScheme.inversePrimary
 
 
@@ -237,7 +238,9 @@ class _AddScheduleDialogState extends State<AddScheduleDialog> {
                 textStyle: TextStyle(fontSize: 15),
               ),
             ),
+
           ),
+
           child: child!,
         );
       },
