@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:intl/intl.dart'; // 추가: DateFormat 사용을 위해 intl 패키지 임포트
+import 'package:intl/intl.dart';
 
 class AddScheduleDialog extends StatefulWidget {
   @override
@@ -27,119 +27,174 @@ class _AddScheduleDialogState extends State<AddScheduleDialog> {
         borderRadius: BorderRadius.circular(20.0), // 모서리 둥글게
       ),
       elevation: 0,
-      backgroundColor: Colors.transparent, // 배경 투명
+      backgroundColor: Theme.of(context).colorScheme.scrim, // 배경 투명
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20.0),
-          gradient: LinearGradient(
-            colors: [
-              Theme.of(context).shadowColor,
-              Theme.of(context).colorScheme.outline
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
+
         ),
         padding: EdgeInsets.all(20.0), // 여백 추가
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              '새 일정 추가',
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white),
-            ),
-            Divider(color: Theme.of(context).primaryColor, thickness: 5),
-            TextFormField(
-              decoration: InputDecoration(labelText: '일정 이름', labelStyle: TextStyle(color: Colors.white)),
-              onChanged: (value) {
-                scheduleName = value;
-              },
-            ),
-            TextFormField(
-              readOnly: true,
-              decoration: InputDecoration(
-                labelText: selectedDate == null
-                    ? '날짜 선택 (YYYY-MM-DD)'
-                    : '선택된 날짜: ${selectedDate!.toLocal().toString().split(' ')[0]}',
-                labelStyle: TextStyle(color: Colors.white),
+        child: SingleChildScrollView( // 키보드 오버플로우 방지
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                '일정 추가',
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white),
               ),
-              onTap: () => _pickDate(context),
-            ),
-            TextFormField(
-              readOnly: true,
-              decoration: InputDecoration(
-                labelText: startTime == null
-                    ? '시작 시간 선택 (HH:MM)'
-                    : '시작 시간: ${startTime!.format(context)}',
-                labelStyle: TextStyle(color: Colors.white),
-              ),
-              onTap: () {
-                _selectTime(context, (TimeOfDay pickedTime) {
-                  setState(() {
-                    startTime = pickedTime;
-                  });
-                });
-              },
-            ),
-            TextFormField(
-              readOnly: true,
-              decoration: InputDecoration(
-                labelText: endTime == null
-                    ? '종료 시간 선택 (HH:MM)'
-                    : '종료 시간: ${endTime!.format(context)}',
-                labelStyle: TextStyle(color: Colors.white),
-              ),
-              onTap: () {
-                _selectTime(context, (TimeOfDay pickedTime) {
-                  setState(() {
-                    endTime = pickedTime;
-                  });
-                });
-              },
-            ),
-            TextFormField(
-              decoration: InputDecoration(labelText: '장소', labelStyle: TextStyle(color: Colors.white)),
-              onChanged: (value) {
-                location = value;
-              },
-            ),
-            TextFormField(
-              decoration: InputDecoration(labelText: '강사 이름 (선택 사항)', labelStyle: TextStyle(color: Colors.white)),
-              onChanged: (value) {
-                instructorName = value;
-              },
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(); // 다이얼로그 닫기
-                  },
-                  child: Text('취소', style: TextStyle(color: Colors.white)),
+              Divider(color: Colors.white.withOpacity(0.7), thickness: 2),
+              TextFormField(
+                decoration: InputDecoration(
+                  fillColor: Colors.white.withOpacity(0.2),
+                  labelText: '일정 이름',
+                  labelStyle: TextStyle(color: Colors.white, fontSize: 20),
+                  filled: true,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: BorderSide.none,
+                  ),
                 ),
-                TextButton(
-                  onPressed: () {
-                    _addSchedule(); // 일정 추가 함수 호출
-                  },
-                  child: Text('추가', style: TextStyle(color: Colors.white)),
+                onChanged: (value) {
+                  scheduleName = value;
+                },
+              ),
+              TextFormField(
+                readOnly: true,
+                decoration: InputDecoration(
+                  fillColor: Colors.white.withOpacity(0.2),
+                  labelText: selectedDate == null
+                      ? '날짜 선택 (YYYY-MM-DD)'
+                      : '선택된 날짜: ${selectedDate!.toLocal().toString().split(' ')[0]}',
+                  labelStyle: TextStyle(color: Colors.white, fontSize: 20),
+                  filled: true,
+                  border: OutlineInputBorder(
+
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: BorderSide.none,
+                  ),
                 ),
-              ],
-            ),
-          ],
+                onTap: () => _pickDate(context),
+              ),
+              TextFormField(
+                readOnly: true,
+                decoration: InputDecoration(
+                  fillColor: Colors.white.withOpacity(0.2),
+                  labelText: startTime == null
+                      ? '시작 시간 선택 (HH:MM)'
+                      : '시작 시간: ${startTime!.format(context)}',
+                  labelStyle: TextStyle(color: Colors.white, fontSize: 20),
+                  filled: true,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+                onTap: () {
+                  _selectTime(context, (TimeOfDay pickedTime) {
+                    setState(() {
+                      startTime = pickedTime;
+                    });
+                  });
+                },
+              ),
+              TextFormField(
+                readOnly: true,
+                decoration: InputDecoration(
+                  fillColor: Colors.white.withOpacity(0.2),
+                  labelText: endTime == null
+                      ? '종료 시간 선택 (HH:MM)'
+                      : '종료 시간: ${endTime!.format(context)}',
+                  labelStyle: TextStyle(color: Colors.white, fontSize: 20),
+                  filled: true,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+                onTap: () {
+                  _selectTime(context, (TimeOfDay pickedTime) {
+                    setState(() {
+                      endTime = pickedTime;
+                    });
+                  });
+                },
+              ),
+              TextFormField(
+                decoration: InputDecoration(
+                  fillColor: Colors.white.withOpacity(0.2),
+                  labelText: '장소',
+                  labelStyle: TextStyle(color: Colors.white, fontSize: 20),
+                  filled: true,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+                onChanged: (value) {
+                  location = value;
+                },
+              ),
+              TextFormField(
+                decoration: InputDecoration(
+                  fillColor: Colors.white.withOpacity(0.2),
+                  labelText: '강사 이름 (선택 사항)',
+                  labelStyle: TextStyle(color: Colors.white, fontSize: 20),
+                  filled: true,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
+                onChanged: (value) {
+                  instructorName = value;
+                },
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop(); // 다이얼로그 닫기
+                    },
+                    child: Text('취소', style: TextStyle(color: Colors.white)),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      _addSchedule(); // 일정 추가 함수 호출
+                    },
+                    child: Text('추가', style: TextStyle(color: Colors.white)),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  // 날짜 선택기 함수
   void _pickDate(BuildContext context) async {
     DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: selectedDate ?? DateTime.now(),
       firstDate: DateTime(2000),
       lastDate: DateTime(2101),
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+            colorScheme: ColorScheme.dark(
+              primary: Theme.of(context).colorScheme.secondaryContainer, // Set the top bar color to blue
+              onPrimary: Theme.of(context).colorScheme.onSurface, // Set the text color to white on the blue top bar
+              surface: Theme.of(context).colorScheme.secondaryContainer, // Background color of the calendar area
+              onSurface: Colors.black, // Text color of the calendar days
+            ),
+            dialogBackgroundColor: Colors.blue, // Background color for the dialog
+          ),
+          child: child!,
+        );
+      },
     );
+
     if (pickedDate != null && pickedDate != selectedDate) {
       setState(() {
         selectedDate = pickedDate;
@@ -147,18 +202,18 @@ class _AddScheduleDialogState extends State<AddScheduleDialog> {
     }
   }
 
-  // 시간 선택기 함수
   void _selectTime(BuildContext context, Function(TimeOfDay) onTimeSelected) async {
     TimeOfDay? pickedTime = await showTimePicker(
       context: context,
       initialTime: startTime ?? TimeOfDay.now(),
+      initialEntryMode: TimePickerEntryMode.input, // Starts with the input mode (second image)
+
     );
     if (pickedTime != null) {
       onTimeSelected(pickedTime);
     }
   }
 
-  // 일정 추가 함수
   void _addSchedule() async {
     if (scheduleName.isNotEmpty && selectedDate != null && startTime != null && endTime != null && location.isNotEmpty) {
       final startDateTime = DateTime(
@@ -176,7 +231,6 @@ class _AddScheduleDialogState extends State<AddScheduleDialog> {
         endTime!.minute,
       );
 
-      // Firestore에 일정 추가
       await FirebaseFirestore.instance.collection('schedules').doc(scheduleName).set({
         'schedule_name': scheduleName,
         'location': location,
