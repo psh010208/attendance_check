@@ -135,6 +135,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                           return CurrentBar(
                             currentProgress: currentProgress, // Firestore 출석 값 반영
                             totalProgress: totalProgress, // Firestore 일정 수 반영
+                            schedules: scheduleSnapshot.data!, // Schedule 리스트 전달
                           );
 
 
