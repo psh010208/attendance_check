@@ -63,11 +63,11 @@ class _ScheduleCardState extends State<Buildschedulecard> {
             ),
             AnimatedPositioned(
               top: isExpandedList.contains(true) ? -MediaQuery.of(context).size.height : -0.5, // 카드가 펼쳐지면 위로 이동
-              duration: Duration(milliseconds: 500), // 애니메이션 지속 시간
+              duration: Duration(milliseconds: 400), // 애니메이션 지속 시간
               curve: Curves.easeInOut, // 애니메이션 곡선
               child: AnimatedOpacity(
                 opacity: isExpandedList.contains(true) ? 0 : 1, // 카드가 펼쳐지면 숨김
-                duration: Duration(milliseconds: 500), // 애니메이션 지속 시간
+                duration: Duration(milliseconds: 200), // 애니메이션 지속 시간
                 child: Container(
                   width: MediaQuery.of(context).size.width, // 원하는 너비 지정
                   height: MediaQuery.of(context).size.height, // 원하는 높이 지정

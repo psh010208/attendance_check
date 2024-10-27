@@ -232,7 +232,14 @@ class _SignUpFormState extends State<SignUpForm> {
   // 헤더 위젯 빌드 함수
   Widget _buildHeaderWidget() {
     return Flexible(
-        child: SoonCheckWidget(bottom: -5.h, left: 0.w)
+      child: Container(
+        width: MediaQuery.of(context).size.width, // 원하는 너비 지정
+        height: MediaQuery.of(context).size.height, // 원하는 높이 지정
+        child: SoonCheckWidget(
+          bottom: MediaQuery.of(context).size.height * -0.01, // 비례 조정
+          left: MediaQuery.of(context).size.width * 0.09, // 원하는 SoonCheckWidget 추가
+        ),
+      ),
     );
   }
   // '이미 계쩡이 있으신가요?' 버튼을 빌드하는 함수
