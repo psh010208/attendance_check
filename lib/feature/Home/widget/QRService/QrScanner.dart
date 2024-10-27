@@ -103,26 +103,7 @@ class _QrScannerState extends State<QrScanner> {
                                 cutOutSize: cutOutHeight,
                               ),
                             ),
-                            Positioned(
-                              top: ((screenHeight - cutOutHeight) / 2 +
-                                  cutOutHeight / 2.2 - 1)
-                                  .h,
-                              child: Stack(
-                                alignment: Alignment.center,
-                                children: [
-                                  Container(
-                                    width: 4.w,
-                                    height: 40.h,
-                                    color: Theme.of(context).primaryColor,
-                                  ),
-                                  Container(
-                                    width: 40.w,
-                                    height: 4.h,
-                                    color: Theme.of(context).primaryColor,
-                                  ),
-                                ],
-                              ),
-                            ),
+
                           ],
                         );
                       },

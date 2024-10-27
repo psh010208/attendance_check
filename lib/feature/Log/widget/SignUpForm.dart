@@ -23,8 +23,9 @@ class _SignUpFormState extends State<SignUpForm> {
 
   // 회원가입 폼 제출
   Future<void> _submitForm(BuildContext context) async {
+
     if (!_formKey.currentState!.validate()) {
-      _showErrorDialog(context, '회원가입 실패', '입력되지 않은 정보가 있습니다.');
+      _showErrorDialog(context, '회원가입 실패','다시 시도해주세요');
       return;
     }
 
