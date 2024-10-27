@@ -58,7 +58,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                       ),
                     if (widget.role == '관리자' || widget.role == '학부생') ... [
                       Positioned(
-                        top: 70.h, // 반응형 높이 설정
+                        top: 75.h, // 반응형 높이 설정
                         left: 94.w,
                         child: CustomText(
                           id: widget.role,
@@ -66,7 +66,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                         ),
                       ),
                       Positioned(
-                        top: 110.h, // 반응형 높이 설정
+                        top: 127.h, // 반응형 높이 설정
                         left: 94.w,
                         child: CustomText(
                           id: widget.id,
@@ -79,7 +79,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
               ),
             ),
             Positioned(
-              top: 184.h, // 첫 번째 버튼의 위치를 조정
+              top: 210.h, // 첫 번째 버튼의 위치를 조정
               left: 0.w,
               right: 0.w,
               child: Divider(
@@ -109,11 +109,6 @@ class _DrawerScreenState extends State<DrawerScreen> {
                 id: widget.id,
               ),
             ] else if (widget.role == '학부생') ...[
-              AskButton( //참여 학생
-                onPressed: () {},
-                role: widget.role,
-                id: widget.id,
-              ),
 
               FutureBuilder<int?>(
                 future: viewModel.getTotalAttendanceByStudentId(widget.id), // student_id를 통해 데이터 가져옴
@@ -153,13 +148,38 @@ class _DrawerScreenState extends State<DrawerScreen> {
                   }
                 },
               ),
+
+              SizedBox.expand(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        AskButton(
+                          onPressed: () {},
+                          role: widget.role,
+                          id: widget.id,
+                        ),
+                        LogOutButton(onPressed: () {}),
+                      ],
+                    ),
+                    SizedBox(height: 15),
+                    Logo(onPressed: () {}),
+                    SizedBox(height: 40),
+                  ],
+                ),
+              ),
+
             ] else ...[ // 로그인 전에 로그인 버튼과 회원가입 버튼
               LogInButton(onPressed: () {}),
               JoinButton(onPressed: () {}),
             ],
-            if (widget.role == '관리자' || widget.role == '학부생')
+            if (widget.role == '관리자') ...[
               LogOutButton(onPressed: () {}),
-            Logo(onPressed: () {}),
+              Logo(onPressed: () {}),
+            ]
+
           ],
         ),
       ),

@@ -132,11 +132,11 @@ class AskButton extends StatelessWidget {
     return CommonButton(
       onPressed: _launchUrl,
       icon: Icons.chat,
-      text: '관리자에게 문의하기',
-      iconSize: 33.w,
-      textSize: 23.sp,
-      top: 600.h,
-      left: 10.w,
+      text: '문의하기',
+      iconSize: 23.w,
+      textSize: 17.sp,
+      top: 680.h,
+      left: 77.w,
     );
   }
 }
