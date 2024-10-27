@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../model/homeModel.dart';
+import '../SoonCheck.dart';
 import 'SchduleCardDesign.dart';
 
 class Buildschedulecard extends StatefulWidget {
@@ -43,18 +44,41 @@ class _ScheduleCardState extends State<Buildschedulecard> {
 
     return SingleChildScrollView(
       child: Center(
-        child: Column(
+        child: Stack(
+          alignment: Alignment.topCenter,
           children: [
-            Container(
-              height: isExpandedList.contains(true)  // 카드 높이
-                  ? MediaQuery.of(context).size.height * 0.025.h
-                  : MediaQuery.of(context).size.height * 0.22.h,
+            Column(
+              children: [
+                Container(
+                  height: isExpandedList.contains(true)
+                      ? MediaQuery.of(context).size.height * 0.025.h
+                      : MediaQuery.of(context).size.height * 0.22.h,
+                ),
+                Stack(
+                  clipBehavior: Clip.none,
+                  alignment: Alignment.topCenter,
+                  children: buildOverlappingCards(context, widget.schedules, barColors),
+                ),
+              ],
             ),
-            Stack(
-              clipBehavior: Clip.none,
-              alignment: Alignment.topCenter,
-              children: buildOverlappingCards(context, widget.schedules, barColors),
+            AnimatedPositioned(
+              top: isExpandedList.contains(true) ? -MediaQuery.of(context).size.height : -0.5, // 카드가 펼쳐지면 위로 이동
+              duration: Duration(milliseconds: 500), // 애니메이션 지속 시간
+              curve: Curves.easeInOut, // 애니메이션 곡선
+              child: AnimatedOpacity(
+                opacity: isExpandedList.contains(true) ? 0 : 1, // 카드가 펼쳐지면 숨김
+                duration: Duration(milliseconds: 500), // 애니메이션 지속 시간
+                child: Container(
+                  width: MediaQuery.of(context).size.width, // 원하는 너비 지정
+                  height: MediaQuery.of(context).size.height, // 원하는 높이 지정
+                  child: SoonCheckWidget(
+                    bottom: MediaQuery.of(context).size.height * 0.85, // 비례 조정
+                    left: MediaQuery.of(context).size.width * 0.21, // 원하는 SoonCheckWidget 추가
+                  ),
+                ),
+              ),
             ),
+
           ],
         ),
       ),
@@ -89,14 +113,13 @@ class _ScheduleCardState extends State<Buildschedulecard> {
         curve: Curves.easeInOut,
         margin: EdgeInsets.only(
           top: (isExpandedList[index]
-              ? (cardHeight ?? MediaQuery.of(context).size.height * 0.09) * 1.05  // Expanded 상태에서의 겹침 정도
-              : (cardHeight ?? MediaQuery.of(context).size.height * 0.5) * 0.28)* index,
+              ? (cardHeight ?? MediaQuery.of(context).size.height * 0.09) * 1.05
+              : (cardHeight ?? MediaQuery.of(context).size.height * 0.5) * 0.28) * index,
         ),
         child: buildScheduleCard(schedule, index, isExpandedList[index], barColors),
       ),
     );
   }
-
 
   Widget buildScheduleCard(Schedule schedule, int index, bool isExpanded, List<Color> barColors) {
     Color barColor = barColors[index % barColors.length];

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:camera/camera.dart';
 
 import 'ViewModel/QrViewModel.dart';
