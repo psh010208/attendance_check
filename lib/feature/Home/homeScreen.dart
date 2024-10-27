@@ -3,7 +3,6 @@ import 'package:attendance_check/feature/Home/widget/Icon/AdminIcon.dart';
 import 'package:attendance_check/feature/Home/widget/QRService/QrScanner.dart';
 import 'package:attendance_check/feature/Home/widget/SoonCheck.dart';
 import 'package:attendance_check/feature/Home/widget/card/BuildScheduleCard.dart';
-import 'package:attendance_check/feature/Home/widget/card/SchedulCard.dart';
 import 'package:flutter/material.dart';
 import 'package:attendance_check/feature/Home/model/homeModel.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -101,28 +100,38 @@ class HomeScreen extends HookWidget {
         ),
         child: SingleChildScrollView(
           child: SizedBox(
-            width: 500.w,
-            height: 1000.h,
+            width: MediaQuery.of(context).size.width, // 화면 너비에 맞추기
+            height: MediaQuery.of(context).size.height, // 화면 높이에 맞추기
             child: Stack(
+              // Stack의 children 내의 위젯들 위치 조정
               children: [
-                SoonCheckWidget(bottom: 850.h, left: 40.w),
+                SoonCheckWidget(
+                  bottom: MediaQuery.of(context).size.height * 0.85, // 비례 조정
+                  left: MediaQuery.of(context).size.width * 0.21,
+                ),
                 buildScheduleCard(context),
                 if (role == '학부생')
                   Positioned(
-                    bottom: 250.h,
-                    left: MediaQuery.of(context).size.width * 0.368.w,
+                    bottom: MediaQuery.of(context).size.height * 0.25, // 비율에 따른 위치
+                    left: MediaQuery.of(context).size.width * 0.368,
                     child: Padding(
-                      padding: const EdgeInsets.all(10.0),
+                      padding: EdgeInsets.all(10.0.w), // 패딩도 비율에 맞추기
                       child: animationButton(
                         icon: Icons.qr_code_scanner,
-                        iconSize: 40.w,
+                        iconSize: MediaQuery.of(context).size.width * 0.1, // 화면에 비례하는 아이콘 크기
                         iconColor: Theme.of(context).colorScheme.surface,
-                        defaultSize: const Offset(80, 80),
-                        clickedSize: const Offset(70, 70),
+                        defaultSize: Offset(
+                          MediaQuery.of(context).size.width * 0.2,
+                          MediaQuery.of(context).size.width * 0.2,
+                        ),
+                        clickedSize: Offset(
+                          MediaQuery.of(context).size.width * 0.175,
+                          MediaQuery.of(context).size.width * 0.175,
+                        ),
                         defaultButtonColor:
                         Theme.of(context).colorScheme.primary.withOpacity(0.8),
                         clickedButtonColor: Theme.of(context).colorScheme.inversePrimary,
-                        circularRadius: 50.r,
+                        circularRadius: 50.r, // 반지름도 비율에 맞추기
                         onTap: () {
                           Navigator.push(
                             context,
@@ -133,7 +142,7 @@ class HomeScreen extends HookWidget {
                         },
                       ),
                     ),
-                  ),
+                  ), // 일정 카드
               ],
             ),
           ),
