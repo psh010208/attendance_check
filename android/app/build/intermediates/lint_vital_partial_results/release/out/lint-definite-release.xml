@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<incidents format="6" by="lint 7.3.0" type="incidents">
+
+    <incident
+        id="ResourceCycle"
+        severity="fatal"
+        message="Drawable `background` should not reference itself">
+        <location
+            file="${:app*release*sourceProvider*0*resDir*0}/drawable/background.xml"
+            line="4"
+            column="40"
+            startOffset="164"
+            endLine="4"
+            endColumn="74"
+            endOffset="198"/>
+    </incident>
+
+    <incident
+        id="ResourceCycle"
+        severity="fatal"
+        message="Drawable `launch_background` should not reference itself">
+        <location
+            file="${:app*release*sourceProvider*0*resDir*0}/drawable/launch_background.xml"
+            line="4"
+            column="40"
+            startOffset="164"
+            endLine="4"
+            endColumn="81"
+            endOffset="205"/>
+    </incident>
+
+    <incident
+        id="ResourceCycle"
+        severity="fatal"
+        message="Drawable `background` should not reference itself">
+        <location
+            file="${:app*release*sourceProvider*0*resDir*0}/drawable-v21/background.xml"
+            line="4"
+            column="40"
+            startOffset="164"
+            endLine="4"
+            endColumn="74"
+            endOffset="198"/>
+    </incident>
+
+    <incident
+        id="ResourceCycle"
+        severity="fatal"
+        message="Drawable `launch_background` should not reference itself">
+        <location
+            file="${:app*release*sourceProvider*0*resDir*0}/drawable-v21/launch_background.xml"
+            line="4"
+            column="40"
+            startOffset="164"
+            endLine="4"
+            endColumn="81"
+            endOffset="205"/>
+    </incident>
+
+</incidents>

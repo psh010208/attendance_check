@@ -1,0 +1,18 @@
+C:\Users\pts90\Desktop\git_project\attendance_check\android\app\src\main\res\drawable-v21\background.xml:4: Error: Drawable background should not reference itself [ResourceCycle]
+        <bitmap android:gravity="fill" android:src="@drawable/background"/>
+                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\pts90\Desktop\git_project\attendance_check\android\app\src\main\res\drawable\background.xml:4: Error: Drawable background should not reference itself [ResourceCycle]
+        <bitmap android:gravity="fill" android:src="@drawable/background"/>
+                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\pts90\Desktop\git_project\attendance_check\android\app\src\main\res\drawable-v21\launch_background.xml:4: Error: Drawable launch_background should not reference itself [ResourceCycle]
+        <bitmap android:gravity="fill" android:src="@drawable/launch_background"/>
+                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+C:\Users\pts90\Desktop\git_project\attendance_check\android\app\src\main\res\drawable\launch_background.xml:4: Error: Drawable launch_background should not reference itself [ResourceCycle]
+        <bitmap android:gravity="fill" android:src="@drawable/launch_background"/>
+                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "ResourceCycle":
+   There should be no cycles in resource definitions as this can lead to
+   runtime exceptions.
+
+4 errors, 0 warnings

@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.example.attendance_check.app-mergeReleaseResources-39:/values-port/values-port.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\pts90\\.gradle\\caches\\transforms-3\\553db9e3e8f0a661424594dacd5a73e2\\transformed\\appcompat-1.4.2\\res\\values-port\\values-port.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "55",
+                        "endOffsets": "106"
+                    }
+                }
+            ]
+        }
+    ]
+}
