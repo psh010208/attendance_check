@@ -132,11 +132,11 @@ class AskButton extends StatelessWidget {
     return CommonButton(
       onPressed: _launchUrl,
       icon: Icons.chat,
-      text: '관리자에게 문의하기',
-      iconSize: 33.w,
-      textSize: 23.sp,
-      top: 600.h,
-      left: 10.w,
+      text: '문의하기',
+      iconSize: 23.w,
+      textSize: 17.sp,
+      top: 680.h,
+      left: 77.w,
     );
   }
 }
@@ -158,8 +158,8 @@ class ParticipationButton extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => ApproveListScreen(role:
-              role,  // role 값 전달
-             id:id,    // id 값 전달
+            role,  // role 값 전달
+              id:id,    // id 값 전달
             ),
           ),
         );
@@ -189,10 +189,10 @@ class CurrentButton extends StatelessWidget {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-              builder: (context) => StudentListScreen(
-                role: role, // widget.role 사용
-                id: id,
-              ),
+            builder: (context) => StudentListScreen(
+              role: role, // widget.role 사용
+              id: id,
+            ),
           ),
         );
       },
@@ -318,7 +318,3 @@ class Logo extends StatelessWidget {
     );
   }
 }
-
-
-
-

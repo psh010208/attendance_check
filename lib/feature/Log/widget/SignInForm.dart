@@ -185,7 +185,7 @@ class _SignInFormState extends State<SignInForm> {
   // 학번 입력 필드 빌드 함수
   Widget _buildStudentIdField() {
     return buildCustomTextField(
-      '학번',
+      '학번/사번',
       TextInputType.number,
       false,
           (value) => _studentId = value,

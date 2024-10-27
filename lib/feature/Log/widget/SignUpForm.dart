@@ -214,10 +214,19 @@ class _SignUpFormState extends State<SignUpForm> {
   // 학번 입력 필드 빌드 함수
   Widget _buildStudentIdField() {
     return buildCustomTextField(
-      '학번',
+      '학번/사번',
       TextInputType.number,
       false,
           (value) => _studentId = value,
+      // validator에 8자리 필수 입력 추가
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return '학번/사번을 입력하세요';
+        } else if (value.length != 8) {
+          return '학번/사번은 8자리여야 합니다';
+        }
+        return null;
+      },
     );
   }
   // 헤더 위젯 빌드 함수
@@ -248,13 +257,13 @@ class _SignUpFormState extends State<SignUpForm> {
     );
   }
   // Custom TextField widget to avoid conflicts
-  Widget buildCustomTextField(String labelText, TextInputType keyboardType, bool obscureText, FormFieldSetter<String>? onSaved) {
+  Widget buildCustomTextField(String labelText, TextInputType keyboardType, bool obscureText, FormFieldSetter<String>? onSaved, {FormFieldValidator<String>? validator}) {
     return InfoTextField(
       labelText: labelText,
       keyboardType: keyboardType,
       obscureText: obscureText,
       onSaved: onSaved,
-      validator: (value) => value == null || value.isEmpty ? '$labelText을 입력하세요' : null,
+      validator: validator, // validator 추가
     );
   }
 }
