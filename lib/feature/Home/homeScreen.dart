@@ -1,7 +1,6 @@
 import 'package:attendance_check/feature/Home/widget/Button/AnimationButton.dart';
 import 'package:attendance_check/feature/Home/widget/Icon/AdminIcon.dart';
 import 'package:attendance_check/feature/Home/widget/QRService/QrScanner.dart';
-import 'package:attendance_check/feature/Home/widget/SoonCheck.dart';
 import 'package:attendance_check/feature/Home/widget/card/BuildScheduleCard.dart';
 import 'package:flutter/material.dart';
 import 'package:attendance_check/feature/Home/model/homeModel.dart';
@@ -130,10 +129,6 @@ class HomeScreen extends HookWidget {
             child: Stack(
               // Stack의 children 내의 위젯들 위치 조정
               children: [
-                SoonCheckWidget(
-                  bottom: MediaQuery.of(context).size.height * 0.85, // 비례 조정
-                  left: MediaQuery.of(context).size.width * 0.21,
-                ),
                 buildScheduleCard(context),
                 if (role == '학부생')
                   Positioned(
