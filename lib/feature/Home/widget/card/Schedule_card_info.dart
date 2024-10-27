@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import '../../model/homeModel.dart';
 import 'package:attendance_check/feature/Home/widget/Text/IdText.dart';
@@ -55,7 +54,7 @@ class ScheduleCardInfo extends StatelessWidget {
                       id: schedule.scheduleName.isNotEmpty
                           ? schedule.scheduleName
                           : "이름 없음",
-                      size: cardHeight * 0.08,
+                      size: cardHeight * 0.09,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
                     ),
@@ -66,7 +65,7 @@ class ScheduleCardInfo extends StatelessWidget {
                       id: schedule.startTime.isNotEmpty
                           ? _formatTime(schedule.startTime, schedule.endTime)
                           : "시간 없음",
-                      size: cardHeight * 0.05,
+                      size: cardHeight * 0.065,
                     ),
                   ),
                 ],
@@ -82,7 +81,7 @@ class ScheduleCardInfo extends StatelessWidget {
 
               // 장소 및 교수 정보
               SizedBox(
-                height: cardHeight * 0.7, // 원하는 비율로 높이 설정
+                height: cardHeight * 0.6, // 원하는 비율로 높이 설정
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -90,16 +89,16 @@ class ScheduleCardInfo extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.location_on, color: Theme.of(context).colorScheme.onSurface, size: cardHeight * 0.1),
+                        Icon(Icons.location_on, color: Theme.of(context).colorScheme.onSurface, size: cardHeight * 0.12),
                         SizedBox(width: cardWidth * 0.02),
                         CustomText(
                           id: schedule.location.isNotEmpty ? schedule.location : "위치 없음",
-                          size: cardHeight * 0.12,
+                          size: cardHeight * 0.13,
                         ),
                         SizedBox(width: cardWidth * 0.02),
                         CustomText(
                           id: '강의실',
-                          size: cardHeight * 0.06,
+                          size: cardHeight * 0.08,
                         ),
                       ],
                     ),
@@ -109,18 +108,18 @@ class ScheduleCardInfo extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.person, color: Theme.of(context).colorScheme.onSurface, size: cardHeight * 0.1),
+                          Icon(Icons.person, color: Theme.of(context).colorScheme.onSurface, size: cardHeight * 0.12),
                           SizedBox(width: cardWidth * 0.02),
                           CustomText(
                             id: schedule.instructorName.isNotEmpty
                                 ? schedule.instructorName
                                 : "교수 없음",
-                            size: cardHeight * 0.12,
+                            size: cardHeight * 0.13,
                           ),
                           SizedBox(width: cardWidth * 0.02),
                           CustomText(
                             id: '교수님',
-                            size: cardHeight * 0.06,
+                            size: cardHeight * 0.08,
                           ),
                         ],
                       ),
