@@ -109,6 +109,12 @@ class _DrawerScreenState extends State<DrawerScreen> {
                 id: widget.id,
               ),
             ] else if (widget.role == '학부생') ...[
+              AskButton( //참여 학생
+                onPressed: () {},
+                role: widget.role,
+                id: widget.id,
+              ),
+
               FutureBuilder<int?>(
                 future: viewModel.getTotalAttendanceByStudentId(widget.id), // student_id를 통해 데이터 가져옴
                 builder: (context, snapshot) {
