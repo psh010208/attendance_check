@@ -8,6 +8,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:attendance_check/feature/Drawer/widget/IdText.dart';
 import 'package:attendance_check/feature/Lottery/lottery_view.dart';
 import 'package:attendance_check/feature/CurrentList/StudentListScreen.dart.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CommonButton extends StatelessWidget {
   final VoidCallback onPressed;
@@ -110,6 +111,36 @@ class JoinButton extends StatelessWidget {
   }
 }
 
+// 관리자에게 문의하기 버튼
+class AskButton extends StatelessWidget {
+  final VoidCallback onPressed;
+  final String role;
+  final String id;
+
+  AskButton({required this.onPressed, required this.role, required this.id});
+
+  final _url = Uri.parse('https://open.kakao.com/o/skfVRPWg');
+
+  Future<void> _launchUrl() async {
+    if (!await launchUrl(_url)) {
+      throw Exception('Could not launch $_url');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return CommonButton(
+      onPressed: _launchUrl,
+      icon: Icons.chat,
+      text: '관리자에게 문의하기',
+      iconSize: 33.w,
+      textSize: 23.sp,
+      top: 600.h,
+      left: 10.w,
+    );
+  }
+}
+
 // 승인 대기 현황 버튼
 class ParticipationButton extends StatelessWidget {
   final VoidCallback onPressed;
@@ -143,7 +174,7 @@ class ParticipationButton extends StatelessWidget {
   }
 }
 
-// 출석 현황 버튼
+// 참여 학생 현황 버튼
 class CurrentButton extends StatelessWidget {
   final VoidCallback onPressed;
   final String role;
