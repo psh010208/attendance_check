@@ -129,8 +129,8 @@ class _DrawerScreenState extends State<DrawerScreen> {
                         } else if (scheduleSnapshot.hasData) {
 
 
-                     int currentProgress = snapshot.data ?? 0; // Firestore에서 가져온 출석 데이터
-                     int totalProgress = scheduleSnapshot.data!.length; // 일정 수를 총 출석 가능 횟수로 사용
+                          int currentProgress = snapshot.data ?? 0; // Firestore에서 가져온 출석 데이터
+                          int totalProgress = scheduleSnapshot.data!.length; // 일정 수를 총 출석 가능 횟수로 사용
                           return CurrentBar(
                             currentProgress: currentProgress, // Firestore 출석 값 반영
                             totalProgress: totalProgress, // Firestore 일정 수 반영
@@ -160,4 +160,3 @@ class _DrawerScreenState extends State<DrawerScreen> {
     );
   }
 }
-

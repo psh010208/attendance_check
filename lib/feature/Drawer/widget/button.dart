@@ -127,8 +127,8 @@ class ParticipationButton extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => ApproveListScreen(role:
-              role,  // role 값 전달
-             id:id,    // id 값 전달
+            role,  // role 값 전달
+              id:id,    // id 값 전달
             ),
           ),
         );
@@ -158,10 +158,10 @@ class CurrentButton extends StatelessWidget {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-              builder: (context) => StudentListScreen(
-                role: role, // widget.role 사용
-                id: id,
-              ),
+            builder: (context) => StudentListScreen(
+              role: role, // widget.role 사용
+              id: id,
+            ),
           ),
         );
       },
@@ -287,7 +287,3 @@ class Logo extends StatelessWidget {
     );
   }
 }
-
-
-
-
