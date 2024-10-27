@@ -199,7 +199,7 @@ class HomeScreen extends HookWidget {
         }
 
         List<Schedule> schedules = snapshot.data!;
-        return ScheduleCard(schedules: schedules);
+        return Buildschedulecard(schedules: schedules);
       },
     );
   }

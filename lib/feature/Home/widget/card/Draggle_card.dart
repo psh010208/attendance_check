@@ -30,7 +30,7 @@ class DraggableCard extends StatelessWidget {
     );
   }
 
-    //카드의 상태
+  //카드의 상태
   void updateExpansionState(DragUpdateDetails details) {
     if (isExpandedList.every((isExpanded) => isExpanded)) {
       if (details.delta.dy < -10 && index == isExpandedList.length - 1) {

@@ -14,7 +14,7 @@ class CurrentBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      top: 222.h,
+      top: 235.h,
       left: 70.w,
       child: Column(
         children: [
@@ -26,7 +26,7 @@ class CurrentBar extends StatelessWidget {
               fontSize: 24.sp, // fontSize에 size 전달
             ),
           ),
-          SizedBox(height: 30.h,),
+          SizedBox(height: 18.h,),
           buildCustomProgressBar(currentProgress, totalProgress),
         ],
       ),
