@@ -1,7 +1,6 @@
 import 'package:attendance_check/feature/Home/widget/Button/AnimationButton.dart';
 import 'package:attendance_check/feature/Home/widget/Icon/AdminIcon.dart';
 import 'package:attendance_check/feature/Home/widget/QRService/QrScanner.dart';
-import 'package:attendance_check/feature/Home/widget/SoonCheck.dart';
 import 'package:attendance_check/feature/Home/widget/card/BuildScheduleCard.dart';
 import 'package:flutter/material.dart';
 import 'package:attendance_check/feature/Home/model/homeModel.dart';
