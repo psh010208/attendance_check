@@ -63,7 +63,7 @@ class NotificationService {
           priority: Priority.high,
           playSound: true,
           enableVibration: true,
-          vibrationPattern: Int64List.fromList([0, 1000, 500, 1000]),
+          vibrationPattern: Int64List.fromList([0, 1500, 500, 1500]),
           enableLights: true,
           ledColor: Color(0xFF3A7BD5),
           ledOnMs: 1000,

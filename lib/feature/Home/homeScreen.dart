@@ -47,15 +47,21 @@ class HomeScreen extends HookWidget {
         elevation: 1,
         actions: [
           if (role == '관리자')
-            Builder(
-              builder: (BuildContext context) {
-                return AdminIcon(
-                  onPressed: () async {
-                    AddSchedule(context); // 일정 추가 다이얼로그 호출,
-                  },
-                );
-              },
-            ),
+        Builder(
+        builder: (BuildContext context) {
+      return AdminIcon(
+        onPressed: () {
+          // 다이얼로그 호출
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AddScheduleDialog(); // AddScheduleDialog 호출
+            },
+          );
+        },
+      );
+    },
+    ),
           Builder(
             builder: (BuildContext context) {
               final isAlarmEnabled = context.watch<MyStore>().onAlarm;

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
+import '../Button/AddScheduleButton.dart';
 
 class AdminIcon extends StatelessWidget {
   final Function onPressed;
@@ -9,9 +10,16 @@ class AdminIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      icon: Icon(Icons.add, size: 30.w), // 일정 추가 아이콘
-      onPressed: () => onPressed(),
-      color: Theme.of(context).iconTheme.color,
+      icon: Icon(Icons.add),
+      color: Theme.of(context).primaryColor,
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AddScheduleDialog(); // AddScheduleDialog 호출
+          },
+        );
+      },
     );
   }
 }
