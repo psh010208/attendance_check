@@ -74,7 +74,7 @@ class NotificationService {
 
     print('알림이 표시되었습니다.'); // 추가된 로그
   }
-
+//commit
 // 특정 시간에 알림 예약
   static Future<void> scheduleNotification(String scheduleName, DateTime notificationTime, BuildContext context) async {
     if (notificationTime.isBefore(DateTime.now())) {
