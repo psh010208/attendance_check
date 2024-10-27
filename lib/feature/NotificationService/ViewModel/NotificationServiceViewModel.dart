@@ -28,7 +28,7 @@ class NotificationServiceViewModel {
 
     DateTime testNotificationTime = DateTime.now().add(Duration(seconds: 5)); // 5초 후
     await NotificationService.scheduleNotification(
-      "테스트 일정",
+      "알림 테스트 최종본은 삭제하세요 !",
       testNotificationTime,
       context, // context를 전달
     );
