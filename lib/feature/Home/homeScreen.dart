@@ -132,8 +132,8 @@ class HomeScreen extends HookWidget {
                 buildScheduleCard(context),
                 if (role == '학부생')
                   Positioned(
-                    bottom: MediaQuery.of(context).size.height * 0.25, // 비율에 따른 위치
-                    left: MediaQuery.of(context).size.width * 0.368,
+                    bottom: MediaQuery.of(context).size.height * 0.1, // 비율에 따른 위치
+                    left: MediaQuery.of(context).size.width * 0.379,
                     child: Padding(
                       padding: EdgeInsets.all(10.0.w), // 패딩도 비율에 맞추기
                       child: animationButton(
@@ -141,15 +141,15 @@ class HomeScreen extends HookWidget {
                         iconSize: MediaQuery.of(context).size.width * 0.1, // 화면에 비례하는 아이콘 크기
                         iconColor: Theme.of(context).colorScheme.surface,
                         defaultSize: Offset(
-                          MediaQuery.of(context).size.width * 0.2,
-                          MediaQuery.of(context).size.width * 0.2,
+                          MediaQuery.of(context).size.width * 0.18,
+                          MediaQuery.of(context).size.width * 0.18,
                         ),
                         clickedSize: Offset(
-                          MediaQuery.of(context).size.width * 0.175,
-                          MediaQuery.of(context).size.width * 0.175,
+                          MediaQuery.of(context).size.width * 0.17,
+                          MediaQuery.of(context).size.width * 0.17,
                         ),
                         defaultButtonColor:
-                        Theme.of(context).colorScheme.primary.withOpacity(0.8),
+                        Theme.of(context).colorScheme.primary.withOpacity(0.6),
                         clickedButtonColor: Theme.of(context).colorScheme.inversePrimary,
                         circularRadius: 50.r, // 반지름도 비율에 맞추기
                         onTap: () {
