@@ -31,7 +31,6 @@ class _AddScheduleDialogState extends State<AddScheduleDialog> {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20.0),
-
         ),
         padding: EdgeInsets.all(20.0), // 여백 추가
         child: SingleChildScrollView( // 키보드 오버플로우 방지
@@ -68,7 +67,6 @@ class _AddScheduleDialogState extends State<AddScheduleDialog> {
                   labelStyle: TextStyle(color: Colors.white, fontSize: 20),
                   filled: true,
                   border: OutlineInputBorder(
-
                     borderRadius: BorderRadius.circular(10.0),
                     borderSide: BorderSide.none,
                   ),
@@ -94,7 +92,7 @@ class _AddScheduleDialogState extends State<AddScheduleDialog> {
                     setState(() {
                       startTime = pickedTime;
                     });
-                  });
+                  }, helpText: '시작 시간 설정'); // Pass "시작 시간 설정" as helpText
                 },
               ),
               TextFormField(
@@ -116,7 +114,7 @@ class _AddScheduleDialogState extends State<AddScheduleDialog> {
                     setState(() {
                       endTime = pickedTime;
                     });
-                  });
+                  }, helpText: '종료 시간 설정'); // Pass "종료 시간 설정" as helpText
                 },
               ),
               TextFormField(
@@ -175,6 +173,9 @@ class _AddScheduleDialogState extends State<AddScheduleDialog> {
 
   void _pickDate(BuildContext context) async {
     DateTime? pickedDate = await showDatePicker(
+      cancelText: '취소',
+      confirmText: '확인',
+      helpText: '캘린더',
       context: context,
       initialDate: selectedDate ?? DateTime.now(),
       firstDate: DateTime(2000),
@@ -183,12 +184,18 @@ class _AddScheduleDialogState extends State<AddScheduleDialog> {
         return Theme(
           data: ThemeData.light().copyWith(
             colorScheme: ColorScheme.dark(
-              primary: Theme.of(context).colorScheme.secondaryContainer, // Set the top bar color to blue
-              onPrimary: Theme.of(context).colorScheme.onSurface, // Set the text color to white on the blue top bar
-              surface: Theme.of(context).colorScheme.secondaryContainer, // Background color of the calendar area
-              onSurface: Colors.black, // Text color of the calendar days
+              primary: Theme.of(context).colorScheme.inversePrimary,
+              onPrimary: Theme.of(context).colorScheme.outline,
+              surface: Theme.of(context).colorScheme.secondaryContainer,
+              onSurface: Colors.black,
             ),
-            dialogBackgroundColor: Colors.blue, // Background color for the dialog
+            dialogBackgroundColor: Theme.of(context).colorScheme.primaryContainer,
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.black,
+                textStyle: TextStyle(fontSize: 15),
+              ),
+            ),
           ),
           child: child!,
         );
@@ -202,13 +209,40 @@ class _AddScheduleDialogState extends State<AddScheduleDialog> {
     }
   }
 
-  void _selectTime(BuildContext context, Function(TimeOfDay) onTimeSelected) async {
+  void _selectTime(BuildContext context, Function(TimeOfDay) onTimeSelected, {required String helpText}) async {
     TimeOfDay? pickedTime = await showTimePicker(
       context: context,
       initialTime: startTime ?? TimeOfDay.now(),
-      initialEntryMode: TimePickerEntryMode.input, // Starts with the input mode (second image)
+      initialEntryMode: TimePickerEntryMode.input,
+      helpText: helpText, // Dynamically set help text
+      cancelText: '취소',
+      confirmText: '확인',
+      hourLabelText: '               시',
+      minuteLabelText: '             분',
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+            colorScheme: ColorScheme.light(
+              primary: Theme.of(context).colorScheme.inversePrimary,
+              onPrimary: Theme.of(context).colorScheme.outline,
+              surface: Theme.of(context).colorScheme.secondaryContainer,
+              secondary: Theme.of(context).colorScheme.inversePrimary
 
+
+            ),
+            dialogBackgroundColor: Theme.of(context).colorScheme.primaryContainer,
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.black,
+                textStyle: TextStyle(fontSize: 15),
+              ),
+            ),
+          ),
+          child: child!,
+        );
+      },
     );
+
     if (pickedTime != null) {
       onTimeSelected(pickedTime);
     }
@@ -237,13 +271,13 @@ class _AddScheduleDialogState extends State<AddScheduleDialog> {
         'instructor_name': instructorName,
         'start_time': Timestamp.fromDate(startDateTime),
         'end_time': Timestamp.fromDate(endDateTime),
-        'qr_code': generateQrCode(), // QR 코드 필드 추가
+        'qr_code': generateQrCode(),
       });
 
       Navigator.of(context).pop();
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('일정이 추가되었습니다.')));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('새로운 일정 카드가 생성되었습니다.')));
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('모든 필드를 입력해주세요.')));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('일정 정보를 모두 입력해주세요')));
     }
   }
 }
