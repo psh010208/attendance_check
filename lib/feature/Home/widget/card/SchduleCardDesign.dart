@@ -28,7 +28,7 @@ class ScheduleCardDesign extends StatelessWidget {
     double cardHeight = MediaQuery.of(context).size.height * 0.24; // 카드 높이를 화면 높이의 23%로 설정
     double cardWidth = MediaQuery.of(context).size.width * 0.83; // 카드 너비를 화면 너비의 83%로 설정
 
-    // 빌드가 완료된 후 높이와 너비를 콜백을 통해 AnimatedContainer에 전달
+    // 빌드가 완료된 후 높이와 너비를 콜백을 통해 전달
     WidgetsBinding.instance.addPostFrameCallback((_) {
       onSizeCalculated(cardHeight, cardWidth);
     });
@@ -37,9 +37,12 @@ class ScheduleCardDesign extends StatelessWidget {
       height: cardHeight, // 카드 높이 설정
       width: cardWidth, // 카드 너비 설정
       decoration: BoxDecoration(
-        color: Theme.of(context).brightness == Brightness.dark
-            ? Theme.of(context).secondaryHeaderColor
-            : Colors.white,
+        color: schedule.endTime.isBefore(DateTime.now())
+            ? Colors.grey // endTime이 현재 시각보다 이전인 경우 회색
+            : (Theme.of(context).brightness == Brightness.dark
+            ? Theme.of(context).secondaryHeaderColor // 다크 모드 색상
+            : Colors.white // 라이트 모드 색상
+        ),
         borderRadius: BorderRadius.circular(borderRadiusValue),
       ),
       child: Stack(
@@ -49,7 +52,7 @@ class ScheduleCardDesign extends StatelessWidget {
             child: ScheduleCardInfo(
               schedule: schedule,
               cardHeight: cardHeight, // 카드 높이 전달
-              cardWidth: cardWidth,    // 카드 너비 전달
+              cardWidth: cardWidth, // 카드 너비 전달
             ), // ScheduleCardInfo 사용
           ),
           // 왼쪽 바
