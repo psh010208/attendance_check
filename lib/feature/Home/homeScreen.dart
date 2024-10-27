@@ -35,11 +35,11 @@ class HomeScreen extends HookWidget {
           padding: EdgeInsets.only(
             top: MediaQuery.of(context).padding.top.h,
             left: MediaQuery.of(context).size.width * 0.05.w,
-            right: MediaQuery.of(context).size.width * 0.5.w,
+            right: MediaQuery.of(context).size.width * 0.6.w,
           ),
           child: Image.asset(
             'assets/logo.png',
-            height: MediaQuery.of(context).size.height * 0.1.h,
+            height: MediaQuery.of(context).size.height * 0.15.h,
             fit: BoxFit.contain,
           ),
         ),
