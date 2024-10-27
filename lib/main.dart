@@ -1,15 +1,14 @@
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
-import 'package:attendance_check/feature/Home/Load/SplashScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-import 'package:attendance_check/feature/Store/MyStore.dart';
 
+import 'feature/Home/Load/SplashScreen.dart';
 import 'feature/NotificationService/NotificationService.dart';
 import 'feature/NotificationService/ViewModel/NotificationServiceViewModel.dart';
-
+import 'feature/Store/MyStore.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,10 +18,6 @@ void main() async {
     await AndroidAlarmManager.initialize();  // 알람 매니저 초기화
     await NotificationService.init();  // 로컬 알림 초기화
     print('Firebase 초기화 성공');
-
-    // NotificationServiceViewModel 인스턴스를 생성하고 알림 예약 리스너 시작
-    final notificationServiceViewModel = NotificationServiceViewModel();
-    notificationServiceViewModel.listenToScheduleChanges();  // 일정 변경 리스너 시작
   } catch (e) {
     print('Firebase 초기화 중 오류 발생: $e');
   }
@@ -43,6 +38,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print('ScreenUtil 적용 확인');
+
+    // NotificationServiceViewModel 인스턴스를 생성하고 알림 예약 리스너 시작
+    final notificationServiceViewModel = NotificationServiceViewModel();
+    notificationServiceViewModel.listenToScheduleChanges(context);  // context를 전달하여 일정 변경 리스너 시작
 
     return ScreenUtilInit(
       minTextAdapt: true, // 작은 화면에서 텍스트 크기를 자동으로 조정

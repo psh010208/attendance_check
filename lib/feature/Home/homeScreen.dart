@@ -13,6 +13,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:attendance_check/feature/Store/MyStore.dart';
 
+import '../NotificationService/ViewModel/NotificationServiceViewModel.dart';
+
 class HomeScreen extends HookWidget {
   final String role;
   final String id;
@@ -54,6 +56,23 @@ class HomeScreen extends HookWidget {
                 );
               },
             ),
+          Builder(
+            builder: (BuildContext context) {
+              final isAlarmEnabled = context.watch<MyStore>().onAlarm;
+              return IconButton(
+                icon: Icon(
+                  isAlarmEnabled ? Icons.notifications : Icons.notifications_off,
+                ),
+                onPressed: () {
+                  context.read<MyStore>().changeAlarm(); // Toggle alarm status
+
+                  // 알림 예약 호출
+                  NotificationServiceViewModel().scheduleNotifications(context);
+                },
+                color: Theme.of(context).iconTheme.color,
+              );
+            },
+          ),
           Builder(
             builder: (BuildContext context) {
               final isDarkMode = context.watch<MyStore>().isDarkMode;
