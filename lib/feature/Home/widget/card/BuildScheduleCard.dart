@@ -1,15 +1,16 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+
 import '../../model/homeModel.dart';
 import '../SoonCheck.dart';
 import 'SchduleCardDesign.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 
 class Buildschedulecard extends StatefulWidget {
   final List<Schedule> schedules;
+  final String role; // role 추가
 
-  Buildschedulecard({required this.schedules});
+  Buildschedulecard({required this.schedules, required this.role}); // 생성자 수정
 
   @override
   _ScheduleCardState createState() => _ScheduleCardState();
@@ -26,10 +27,6 @@ class _ScheduleCardState extends State<Buildschedulecard> {
     super.initState();
     isExpandedList = List.generate(widget.schedules.length, (index) => false);
     _scrollController = ScrollController();
-    _scrollController.addListener(() {
-      print("Scroll Position: ${_scrollController.position.pixels}");
-      print("Max Scroll Extent: ${_scrollController.position.maxScrollExtent}");
-    });
   }
 
   @override
@@ -49,20 +46,10 @@ class _ScheduleCardState extends State<Buildschedulecard> {
   @override
   Widget build(BuildContext context) {
     final List<Color> barColors = [
-      Theme
-          .of(context)
-          .primaryColorLight,
-      Theme
-          .of(context)
-          .colorScheme
-          .secondaryContainer,
-      Theme
-          .of(context)
-          .colorScheme
-          .secondary,
-      Theme
-          .of(context)
-          .disabledColor,
+      Theme.of(context).primaryColorLight,
+      Theme.of(context).colorScheme.secondaryContainer,
+      Theme.of(context).colorScheme.secondary,
+      Theme.of(context).disabledColor,
     ];
 
     return Container(
@@ -88,14 +75,14 @@ class _ScheduleCardState extends State<Buildschedulecard> {
                         Stack(
                           clipBehavior: Clip.none,
                           alignment: Alignment.topCenter,
-                          children: buildOverlappingCards(context,
-                              widget.schedules, barColors),
+                          children: buildOverlappingCards(context, widget.schedules, barColors),
                         ),
                       ],
                     ),
                     AnimatedPositioned(
                       top: isExpandedList.contains(true)
-                          ? -MediaQuery.of(context).size.height: -0.5,
+                          ? -MediaQuery.of(context).size.height
+                          : -0.5,
                       duration: Duration(milliseconds: 400),
                       curve: Curves.easeInOut,
                       child: AnimatedOpacity(
@@ -117,14 +104,12 @@ class _ScheduleCardState extends State<Buildschedulecard> {
             ),
           ),
           SizedBox(height: isExpandedList.contains(true) ? 80 : 0),
-          // 펼쳐졌을 때만 공간 차지
         ],
       ),
     );
   }
 
-
-    List<Widget> buildOverlappingCards(BuildContext context, List<Schedule> schedules, List<Color> barColors) {
+  List<Widget> buildOverlappingCards(BuildContext context, List<Schedule> schedules, List<Color> barColors) {
     return schedules.asMap().entries.map((entry) {
       int index = entry.key;
       Schedule schedule = entry.value;
@@ -133,8 +118,8 @@ class _ScheduleCardState extends State<Buildschedulecard> {
   }
 
   Widget buildDraggableCard(Schedule schedule, int index, List<Color> barColors) {
-    return GestureDetector(
-      onVerticalDragUpdate: (details) {
+    return Listener(
+      onPointerMove: (details) {
         setState(() {
           bool isAtBottom = _scrollController.position.pixels >= _scrollController.position.maxScrollExtent;
 
@@ -157,54 +142,78 @@ class _ScheduleCardState extends State<Buildschedulecard> {
               ? (cardHeight ?? MediaQuery.of(context).size.height * 0.09) * 1.05
               : (cardHeight ?? MediaQuery.of(context).size.height * 0.5) * 0.28) * index,
         ),
-        child: buildScheduleCard(schedule, index, isExpandedList[index], barColors),
-      ),
-    );
-  }
-
-  Widget buildScheduleCard(Schedule schedule, int index, bool isExpanded, List<Color> barColors) {
-    Color barColor = barColors[index % barColors.length];
-    return Container(
-      color: Colors.transparent,
-      margin: EdgeInsets.symmetric(vertical: 20.h),
-      child: Center(
-        child: Container(
-          width: MediaQuery.of(context).size.width * 0.8, // 원하는 너비 설정 (예: 90%)
-          child: Slidable(
-            key: ValueKey(index), // 각 카드에 고유한 키 부여
-            endActionPane: ActionPane(
-              motion: DrawerMotion(), // 슬라이드 애니메이션
-              children: [
-                SlidableAction(
-                  onPressed: (context) {
-                    // 삭제 기능 구현
-                    setState(() {
-                      widget.schedules.removeAt(index); // 스케줄 리스트에서 해당 항목 제거
-                    });
-                  },
-                  backgroundColor: Colors.red, // 삭제 시 배경색
-                  foregroundColor: Colors.white,
-                  icon: Icons.delete,
-                  label: 'Delete',
-                ),
-              ],
-            ),
-            child: ScheduleCardDesign(
-              schedule: schedule,
-              index: index,
-              barColor: barColor,
-              isExpanded: isExpanded,
-              onSizeCalculated: (height, width) {
-                setState(() {
-                  cardHeight = height; // 카드 높이 저장
-                  cardWidth = width;   // 카드 너비 저장
-                });
-              },
-            ),
-          ),
+        child: SingleChildScrollView( // 카드 내부에 스크롤 가능하도록 추가
+          child: buildScheduleCard(schedule, index, isExpandedList[index], barColors, widget.role),
         ),
       ),
     );
   }
 
+
+  Widget buildScheduleCard(Schedule schedule, int index, bool isExpanded, List<Color> barColors, String role) {
+    Color barColor = barColors[index % barColors.length];
+
+    // 일반 사용자 카드
+    if (role != '관리자') {
+      return Container(
+        color: Colors.transparent,
+        margin: EdgeInsets.symmetric(vertical: 20.h),
+        child: ScheduleCardDesign(
+          schedule: schedule,
+          index: index,
+          barColor: barColor,
+          isExpanded: isExpanded,
+          onSizeCalculated: (height, width) {
+            setState(() {
+              cardHeight = height;
+              cardWidth = width;
+            });
+          },
+        ),
+      );
+    }
+    // 관리자 카드
+    else {
+      return Container(
+        color: Colors.transparent,
+        margin: EdgeInsets.symmetric(vertical: 20.h),
+        child: Center(
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.8,
+            child: Slidable(
+              key: ValueKey(index),
+              endActionPane: ActionPane(
+                motion: DrawerMotion(),
+                children: [
+                  SlidableAction(
+                    onPressed: (context) {
+                      setState(() {
+                        widget.schedules.removeAt(index);
+                      });
+                    },
+                    backgroundColor: Colors.red,
+                    foregroundColor: Colors.white,
+                    icon: Icons.delete,
+                    label: 'Delete',
+                  ),
+                ],
+              ),
+              child: ScheduleCardDesign(
+                schedule: schedule,
+                index: index,
+                barColor: barColor,
+                isExpanded: isExpanded,
+                onSizeCalculated: (height, width) {
+                  setState(() {
+                    cardHeight = height;
+                    cardWidth = width;
+                  });
+                },
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+  }
 }
