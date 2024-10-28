@@ -25,7 +25,7 @@ class _SignUpFormState extends State<SignUpForm> {
   // 회원가입 폼 제출
   Future<void> _submitForm(BuildContext context) async {
     if (!_formKey.currentState!.validate()) {
-      showErrorDialog(context, '회원가입 실패', '다시 시도해주세요'); // 변경된 다이얼로그 호출
+      showErrorDialog(context, '회원가입 실패', '학번 및 사번은 8자리입니다.'); // 변경된 다이얼로그 호출
       return;
     }
 

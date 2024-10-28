@@ -6,7 +6,7 @@ void showErrorDialog(BuildContext context, String title, String message) {
     context: context,
     builder: (context) => AlertDialog(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.0), // 다이얼로그 모서리를 둥글게
+        borderRadius: BorderRadius.circular(10.0), // 다이얼로그 모서리를 둥글게
       ),
       backgroundColor: Theme.of(context).primaryColorLight, // 배경색 설정
       title: Text(
@@ -35,7 +35,7 @@ void showErrorDialog(BuildContext context, String title, String message) {
                 backgroundColor: Theme.of(context).colorScheme.outlineVariant.withOpacity(0.1), // 버튼 배경색
                 padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0), // 버튼 패딩
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0), // 버튼 모서리 둥글게
+                  borderRadius: BorderRadius.circular(10.0), // 버튼 모서리 둥글게
                   side: BorderSide(
                     color: Theme.of(context).primaryColorDark, // 테두리 색상
                   ),
