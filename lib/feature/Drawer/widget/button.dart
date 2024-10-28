@@ -329,8 +329,9 @@ class Logo extends StatelessWidget {
 class FriendsListButton extends StatelessWidget {
   final VoidCallback onPressed;
   final String id;
+  final String role;
 
-  FriendsListButton({required this.onPressed,required this.id});
+  FriendsListButton({required this.onPressed,required this.id,required this.role});
 
   @override
   Widget build(BuildContext context) {
@@ -339,7 +340,7 @@ class FriendsListButton extends StatelessWidget {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => FriendsScreen(
-            studentId: id,)),
+            studentId: id, role: this.role, id: this.id,)),
         );
       },
       icon: Icons.group,

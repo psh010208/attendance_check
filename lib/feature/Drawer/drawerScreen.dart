@@ -47,7 +47,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                       top: screenHeight * 0,
                       left: screenWidth * 0.25,
                       child: CircleAvatar(
-                        radius: 35.w,
+                        radius: 0.w,
                         child: Icon(Icons.account_circle, size: 70.w),
                       ),
                     ),
@@ -108,6 +108,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                 FriendsListButton(
                   onPressed: () {},
                   id: widget.id,
+                  role: widget.role,
                 ),
               FutureBuilder<int?>(
                 future: viewModel.getTotalAttendanceByStudentId(widget.id),

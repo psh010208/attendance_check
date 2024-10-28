@@ -401,7 +401,10 @@ class _StudentListScreenState extends State<StudentListScreen> {
                     },
                   ),
                   Spacer(),
-                  Text('참여 학생 명단', style: TextStyle(fontSize: 22)),
+                  CustomText(id:'참여 학생 명단', size: 20.sp, color: Theme
+                      .of(context)
+                      .colorScheme
+                      .scrim),
                   Spacer(),
                   IconButton(
                     icon: Icon(
