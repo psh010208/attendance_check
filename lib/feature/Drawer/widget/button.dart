@@ -10,6 +10,8 @@ import 'package:attendance_check/feature/CurrentList/StudentListScreen.dart.dart
 import 'package:url_launcher/url_launcher.dart';
 import 'package:attendance_check/feature/FriendsList/FriendsScreen.dart';
 
+import '../../Log/ViewModel/logViewModel.dart';
+
 class CommonButton extends StatelessWidget {
   final VoidCallback onPressed;
   final IconData icon;
@@ -270,21 +272,26 @@ class QrScreenButton extends StatelessWidget {
     );
   }
 }
-
-// 로그아웃 버튼
 class LogOutButton extends StatelessWidget {
-  final VoidCallback onPressed;
+  final LogViewModel logViewModel = LogViewModel(); // Create an instance of LogViewModel
 
-  LogOutButton({required this.onPressed});
+  LogOutButton(); // Remove the onPressed parameter from the constructor
 
   @override
   Widget build(BuildContext context) {
     return CommonButton(
-      onPressed: () {
+      onPressed: () async {
+        // Execute logout logic to delete token and user info
+        await logViewModel.logout();
+
+        // After logout, navigate to the login page
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => logPage(isLogin: true)),
         );
+
+        // Optional: Print logout confirmation
+        print('Logout successful: All tokens and user information deleted');
       },
       icon: Icons.logout,
       text: '로그아웃',
@@ -295,7 +302,6 @@ class LogOutButton extends StatelessWidget {
     );
   }
 }
-
 // 로고 버튼
 class Logo extends StatelessWidget {
   final VoidCallback onPressed;

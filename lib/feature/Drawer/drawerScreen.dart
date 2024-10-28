@@ -155,7 +155,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                             role: widget.role,
                             id: widget.id,
                           ),
-                          LogOutButton(onPressed: () {}),
+                          LogOutButton(),
                         ],
                       ),
                       SizedBox(height: screenHeight * 0.02),
@@ -169,7 +169,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
               JoinButton(onPressed: () {}),
             ],
             if (widget.role == '관리자' && !widget.isFriendView) ...[
-              LogOutButton(onPressed: () {}),
+              LogOutButton(),
               Logo(onPressed: () {}),
             ]
           ],
