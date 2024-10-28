@@ -42,6 +42,7 @@ class _AddScheduleDialogState extends State<AddScheduleDialog> {
                 style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.white),
               ),
               Divider(color: Colors.white.withOpacity(0.7), thickness: 2),
+              SizedBox(height: 5),
               TextFormField(
                 decoration: InputDecoration(
                   fillColor: Colors.white.withOpacity(0.2),
@@ -57,6 +58,7 @@ class _AddScheduleDialogState extends State<AddScheduleDialog> {
                   scheduleName = value;
                 },
               ),
+              SizedBox(height: 8),
               TextFormField(
                 readOnly: true,
                 decoration: InputDecoration(
@@ -73,6 +75,7 @@ class _AddScheduleDialogState extends State<AddScheduleDialog> {
                 ),
                 onTap: () => _pickDate(context),
               ),
+              SizedBox(height: 8),
               TextFormField(
                 readOnly: true,
                 decoration: InputDecoration(
@@ -95,6 +98,7 @@ class _AddScheduleDialogState extends State<AddScheduleDialog> {
                   }, helpText: '시작 시간 설정'); // Pass "시작 시간 설정" as helpText
                 },
               ),
+              SizedBox(height: 8),
               TextFormField(
                 readOnly: true,
                 decoration: InputDecoration(
@@ -117,6 +121,7 @@ class _AddScheduleDialogState extends State<AddScheduleDialog> {
                   }, helpText: '종료 시간 설정'); // Pass "종료 시간 설정" as helpText
                 },
               ),
+              SizedBox(height: 8),
               TextFormField(
                 decoration: InputDecoration(
                   fillColor: Colors.white.withOpacity(0.2),
@@ -132,6 +137,7 @@ class _AddScheduleDialogState extends State<AddScheduleDialog> {
                   location = value;
                 },
               ),
+              SizedBox(height: 8),
               TextFormField(
                 decoration: InputDecoration(
                   fillColor: Colors.white.withOpacity(0.2),
@@ -147,6 +153,7 @@ class _AddScheduleDialogState extends State<AddScheduleDialog> {
                   instructorName = value;
                 },
               ),
+              SizedBox(height: 5),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -154,13 +161,13 @@ class _AddScheduleDialogState extends State<AddScheduleDialog> {
                     onPressed: () {
                       Navigator.of(context).pop(); // 다이얼로그 닫기
                     },
-                    child: Text('취소', style: TextStyle(color: Colors.white)),
+                    child: Text('취소', style: TextStyle(fontSize: 16, color: Colors.white)),
                   ),
                   TextButton(
                     onPressed: () {
                       _addSchedule(); // 일정 추가 함수 호출
                     },
-                    child: Text('추가', style: TextStyle(color: Colors.white)),
+                    child: Text('추가', style: TextStyle(fontSize: 16, color: Colors.white)),
                   ),
                 ],
               ),
