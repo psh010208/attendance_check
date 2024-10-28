@@ -8,6 +8,7 @@ import '../logPage.dart';
 import 'CustomDropdownFormField.dart';
 import 'CustomTextFormField.dart';
 import 'LogUpButton.dart';
+import 'dialogText.dart';
 
 class SignUpForm extends StatefulWidget {
   @override
@@ -23,9 +24,8 @@ class _SignUpFormState extends State<SignUpForm> {
 
   // 회원가입 폼 제출
   Future<void> _submitForm(BuildContext context) async {
-
     if (!_formKey.currentState!.validate()) {
-      _showErrorDialog(context, '회원가입 실패','다시 시도해주세요');
+      showErrorDialog(context, '회원가입 실패', '다시 시도해주세요'); // 변경된 다이얼로그 호출
       return;
     }
 
@@ -46,7 +46,10 @@ class _SignUpFormState extends State<SignUpForm> {
 
     // 학부생일 경우에만 attendance_summary에 학생의 출석 정보 저장 (초기값: total_attendance = 0)
     if (_selectedRole == '학부생') {
-      await FirebaseFirestore.instance.collection('attendance_summary').doc('${_studentId!}-${_selectedRole!}').set({
+      await FirebaseFirestore.instance
+          .collection('attendance_summary')
+          .doc('${_studentId!}-${_selectedRole!}')
+          .set({
         'student_id': _studentId!,
         'total_attendance': 0, // 출석 횟수 초기값 0
       });
@@ -59,27 +62,10 @@ class _SignUpFormState extends State<SignUpForm> {
   Future<bool> _checkDuplicate() async {
     bool isDuplicate = await logViewModel.isStudentIdDuplicate(_studentId!);
     if (isDuplicate) {
-      _showErrorDialog(context, '오류', '이미 사용 중인 학번입니다.');
+      showErrorDialog(context, '오류', '이미 사용 중인 학번입니다.'); // 변경된 다이얼로그 호출
       return true;
     }
     return false;
-  }
-
-  // 에러 메시지 다이얼로그 표시
-  void _showErrorDialog(BuildContext context, String title, String message) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(title),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text('확인'),
-          ),
-        ],
-      ),
-    );
   }
 
   // 회원가입 성공 메시지 다이얼로그 표시

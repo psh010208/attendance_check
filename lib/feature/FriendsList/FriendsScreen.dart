@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import ' widget/Dialog/AddFriendButton.dart';
 import '../Drawer/drawerScreen.dart';
+import '../Home/homeScreen.dart';
 import 'Model/FriendModel.dart';
 import 'ViewModel/FriendViewModel.dart';
 
 class FriendsScreen extends StatefulWidget {
   final String studentId;
+  final String role;
+  final String id;
 
-  const FriendsScreen({Key? key, required this.studentId}) : super(key: key);
+  const FriendsScreen({Key? key, required this.studentId, required this.role, required this.id}) : super(key: key);
 
   @override
   _FriendsScreenState createState() => _FriendsScreenState();
@@ -64,7 +68,29 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('친구 관리'),
+        backgroundColor: Theme.of(context).primaryColorLight,
+        title: Row(
+          children: [
+            IconButton(
+              icon: Icon(Icons.arrow_back_ios,
+                  color: Theme
+                      .of(context)
+                      .colorScheme
+                      .scrim,
+                  size: 25.sp),
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        HomeScreen(role: widget.role, id: widget.id),
+                  ),
+                );
+              },
+            ),
+            Text('친구 관리'),
+          ],
+        ),
         actions: [
           AddFriendButton(currentUserId: widget.studentId),
         ],

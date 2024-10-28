@@ -9,6 +9,7 @@ import '../../Home/widget/SoonCheck.dart';
 import '../Model/logModel.dart';
 import 'CustomDropdownFormField.dart';
 import 'CustomTextFormField.dart';
+import 'dialogText.dart';
 
 class SignInForm extends StatefulWidget {
   final String? initialRole; // 초기 역할
@@ -66,24 +67,69 @@ class _SignInFormState extends State<SignInForm> {
     LogModel? user = await logViewModel.getUser(_studentId!);
 
     if (user != null && user.role == '관리자' && !user.isApproved) {
-      _showErrorDialog(context, '로그인 실패', '관리자 승인이 필요합니다. 승인이 완료될 때까지 기다려 주세요.');
+      showErrorDialog(context, '로그인 실패', '관리자 승인 대기 중');
     } else {
-      _showErrorDialog(context, '로그인 실패', '학번 또는 역할이 올바르지 않습니다.');
+      showErrorDialog(context, '로그인 실패', '학번 또는 역할을 다시 입력하세요.');
     }
   }
 
-  // 에러 메시지 다이얼로그를 표시하는 함수
   void _showErrorDialog(BuildContext context, String title, String message) {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(title),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: Text('확인'),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20.0), // 다이얼로그 모서리를 둥글게
+        ),
+        backgroundColor: Theme.of(context).primaryColorLight, // 배경색 설정
+      title: Text(
+        title,
+        textAlign: TextAlign.center, // 제목 가운데 정렬
+        style: TextStyle(
+          color: Theme.of(context).colorScheme.scrim, // 제목 색상
+          fontSize: 23, // 제목 크기
+          fontWeight: FontWeight.bold, // 제목 폰트 굵기
+        ),
+      ),
+
+        content: Text(
+          message,
+          style: TextStyle(
+
+            color: Theme.of(context).colorScheme.scrim, // 제목 색상
+            fontSize: 16, // 메시지 텍스트 크기
+
           ),
+        ),
+        actions: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center, // 가운데 정렬
+            children: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(),
+                style: TextButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.outlineVariant.withOpacity(0.1), // 버튼 배경색
+                  padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0), // 버튼 패딩
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0), // 버튼 모서리 둥글게
+                    side: BorderSide(
+                      color: Theme.of(context).primaryColorDark, // 테두리 색상
+                    ),
+                  ),
+
+                ),
+                child: Text(
+                  '확인',
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.scrim, // 텍스트 색상
+                    fontSize: 17.5, // 버튼 텍스트 크기
+                    // fontWeight: FontWeight.bold, // 텍스트 굵게
+                  ),
+                  textAlign: TextAlign.center, // 텍스트 가운데 정렬
+                ),
+              ),
+            ],
+          ),
+
         ],
       ),
     );

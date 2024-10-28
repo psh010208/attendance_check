@@ -91,7 +91,7 @@ class _QrCodeListScreenState extends State<QrCodeListScreen> {
         toolbarHeight: 50.h, // 반응형으로 상단바의 높이를 설정
         backgroundColor: Theme.of(context).primaryColorLight,
         title: CustomText(
-          id : 'QR 코드 확인',
+          id : 'QR 코드 확인',size: 20.sp,
           color : Theme.of(context).colorScheme.scrim,),
         centerTitle: true,
         elevation: 1,
