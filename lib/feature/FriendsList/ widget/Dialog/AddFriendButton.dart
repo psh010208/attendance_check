@@ -46,7 +46,7 @@ print('친구 아이디 $friendId');
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
+    return FloatingActionButton(
       onPressed: () {
         showDialog(
           context: context,
@@ -81,7 +81,7 @@ print('친구 아이디 $friendId');
           },
         );
       },
-      child: Text('친구 추가'),
+      child: Icon(Icons.group_add), // group_add 아이콘 추가
     );
   }
 

@@ -96,9 +96,6 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
             Spacer(),
           ],
         ),
-        actions: [
-          AddFriendButton(currentUserId: widget.studentId),
-        ],
         bottom: TabBar(
           controller: _tabController,
           tabs: [
@@ -130,13 +127,16 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
 
         ),
       ),
-      endDrawer: DrawerScreen(
-        role: '학부생',
-        id: selectedFriendId,
-        isFriendView: true
-        ,
+      endDrawer: Drawer(
+        backgroundColor: Colors.black, // 배경색을 검은색으로 설정
+        child: DrawerScreen(
+          role: '학부생',
+          id: widget.id,
+          isFriendView: true,
+        ),
       ),
-      drawerScrimColor: Colors.black.withOpacity(0.5),
+
+      floatingActionButton: AddFriendButton(currentUserId: widget.studentId),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -177,21 +177,40 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
       itemBuilder: (context, index) {
         return Card(
           elevation: 3,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-          child: Builder(
-            builder: (context) => ListTile(
-              contentPadding: EdgeInsets.all(10),
-              leading: CircleAvatar(
-                child: Text(friendList[index].name[0]),
+          child: Container(
+            decoration: _buildCardDecoration(context),
+            child: Builder(
+              builder: (context) => ListTile(
+                contentPadding: EdgeInsets.all(10),
+                leading: CircleAvatar(
+                  child: Text(friendList[index].name[0]),
+                ),
+                title: Text(friendList[index].name, style: TextStyle(fontWeight: FontWeight.bold)),
+                subtitle: Text(friendList[index].department),
+                trailing: ElevatedButton(
+                  onPressed: () => removeFriend(friendList[index].studentId),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).colorScheme.surface, // 버튼 배경색 설정
+                    padding: EdgeInsets.symmetric(horizontal: 3, vertical: 1), // 버튼 패딩 설정
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8), // 버튼 모서리 둥글게
+                    ),
+                    elevation: 3, // 그림자 높이 설정
+                    shadowColor: Theme.of(context).primaryColorDark, // 그림자 색상 설정
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min, // 버튼 크기를 텍스트와 아이콘에 맞게 최소화
+                    children: [
+                      Icon(Icons.delete, color: Colors.red), // 삭제 아이콘과 색상
+                      SizedBox(width: 1), // 아이콘과 텍스트 사이의 간격
+                      Text('삭제', style: TextStyle(color: Colors.red)),
+                    ],
+                  ),
+                ),
+                onTap: () => openFriendDrawer(context, friendList[index].studentId),
               ),
-              title: Text(friendList[index].name, style: TextStyle(fontWeight: FontWeight.bold)),
-              subtitle: Text(friendList[index].department),
-              trailing: TextButton(
-                onPressed: () => removeFriend(friendList[index].studentId),
-                child: Text('삭제', style: TextStyle(color: Colors.red)),
-              ),
-              onTap: () => openFriendDrawer(context, friendList[index].studentId),
             ),
           ),
         );
@@ -208,28 +227,63 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
       itemBuilder: (context, index) {
         return Card(
           elevation: 3,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
           margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-          child: ListTile(
-            contentPadding: EdgeInsets.all(10),
-            leading: CircleAvatar(
-              backgroundColor: Colors.blueAccent,
-              child: Text(pendingRequests[index].name[0]),
-            ),
-            title: Text(pendingRequests[index].name, style: TextStyle(fontWeight: FontWeight.bold)),
-            subtitle: Text(pendingRequests[index].department),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextButton(
-                  onPressed: () => acceptFriendRequest(pendingRequests[index].studentId),
-                  child: Text('수락', style: TextStyle(color: Colors.green)),
-                ),
-                TextButton(
-                  onPressed: () => declineFriendRequest(pendingRequests[index].studentId),
-                  child: Text('거절', style: TextStyle(color: Colors.red)),
-                ),
-              ],
+          child: Container(
+            decoration: _buildCardDecoration(context),
+            child: ListTile(
+              contentPadding: EdgeInsets.all(10),
+              leading: CircleAvatar(
+                child: Text(pendingRequests[index].name[0]),
+              ),
+              title: Text(pendingRequests[index].name, style: TextStyle(fontWeight: FontWeight.bold)),
+              subtitle: Text(pendingRequests[index].department),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ElevatedButton(
+                    onPressed: () => acceptFriendRequest(pendingRequests[index].studentId),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).colorScheme.surface, // 버튼 배경색 설정
+                      padding: EdgeInsets.symmetric(horizontal: 3, vertical: 1), // 버튼 패딩 설정
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8), // 버튼 모서리 둥글게
+                      ),
+                      elevation: 5, // 그림자 높이 설정 (값이 높을수록 진해짐)
+                      shadowColor: Theme.of(context).primaryColorDark, // 그림자 색상 설정
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min, // 버튼 크기를 텍스트와 아이콘에 맞게 최소화
+                      children: [
+                        Icon(Icons.check, color: Colors.green), // 아이콘과 색상
+                        SizedBox(width: 1), // 아이콘과 텍스트 사이의 간격
+                        Text('수락', style: TextStyle(color: Colors.green)),
+                      ],
+                    ),
+                  ),
+                  SizedBox(width: 3,),
+                  ElevatedButton(
+                    onPressed: () => declineFriendRequest(pendingRequests[index].studentId),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).colorScheme.surface, // 버튼 배경색 설정
+                      padding: EdgeInsets.symmetric(horizontal: 3, vertical: 1), // 버튼 패딩 설정
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8), // 버튼 모서리 둥글게
+                      ),
+                      elevation: 5, // 그림자 높이 설정 (값이 높을수록 진해짐)
+                      shadowColor: Theme.of(context).primaryColorDark, // 그림자 색상 설정
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min, // 버튼 크기를 텍스트와 아이콘에 맞게 최소화
+                      children: [
+                        Icon(Icons.close, color: Colors.red), // 거절 아이콘과 색상
+                        SizedBox(width: 1), // 아이콘과 텍스트 사이의 간격
+                        Text('거절', style: TextStyle(color: Colors.red)),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         );
@@ -257,5 +311,33 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
   void dispose() {
     _tabController.dispose();
     super.dispose();
+  }
+
+  // 카드 디자인
+  BoxDecoration _buildCardDecoration(BuildContext context) {
+    return BoxDecoration(
+      gradient: LinearGradient(
+        colors: [Theme
+            .of(context)
+            .secondaryHeaderColor
+            .withOpacity(0.8), Theme
+            .of(context)
+            .primaryColorDark
+            .withOpacity(0.8)
+        ],
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        stops: [0.1, 0.9],
+      ),
+      borderRadius: BorderRadius.circular(15),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(0.1),
+          blurRadius: 10,
+          spreadRadius: 2,
+          offset: Offset(0, 5),
+        ),
+      ],
+    );
   }
 }
