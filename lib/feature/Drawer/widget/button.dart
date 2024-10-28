@@ -1,5 +1,4 @@
 import 'package:attendance_check/feature/ApproveList/ApproveListScreen.dart';
-import 'package:attendance_check/feature/Home/homeScreen.dart';
 import 'package:attendance_check/feature/Home/widget/QRService/QrCodeListScreen.dart';
 import 'package:attendance_check/feature/Log/widget/SignUpForm.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +8,7 @@ import 'package:attendance_check/feature/Drawer/widget/IdText.dart';
 import 'package:attendance_check/feature/Lottery/lottery_view.dart';
 import 'package:attendance_check/feature/CurrentList/StudentListScreen.dart.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:attendance_check/feature/FriendsList/FriendsScreen.dart';
 
 class CommonButton extends StatelessWidget {
   final VoidCallback onPressed;
@@ -315,6 +315,31 @@ class Logo extends StatelessWidget {
           height: 30.h,
         ),
       ),
+    );
+  }
+}
+
+// 친구 목록 보기 버튼
+class FriendsListButton extends StatelessWidget {
+  final VoidCallback onPressed;
+
+  FriendsListButton({required this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return CommonButton( // 또는 다른 버튼 위젯을 사용하세요
+      onPressed: () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => FriendsScreen()),
+        );
+      },
+      icon: Icons.group,
+      text: '친구 목록',
+      iconSize: 25.h,
+      textSize: 23.w,
+      top: 200,
+      left: 200,  // 버튼의 텍스트
     );
   }
 }
