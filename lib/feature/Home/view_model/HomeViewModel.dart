@@ -99,12 +99,25 @@ class ScheduleViewModel {
     });
   }
 
-// 일정 스트림을 받아오는 메서드 (일정 시작 시간 (start_time) 기준으로 정렬)
+  // 일정 스트림을 받아오는 메서드 (일정 시작 시간 (start_time) 기준으로 정렬하고 end_time이 지난 일정들은 맨 뒤에 배치)
   Stream<List<Schedule>> getScheduleStream() {
-    return _firestore.collection('schedules')
+    return _firestore
+        .collection('schedules')
         .orderBy('start_time', descending: true)
         .snapshots()
-        .map((snapshot) =>
-        snapshot.docs.map((doc) => Schedule.fromFirestore(doc)).toList());
+        .map((snapshot) {
+      final now = DateTime.now();
+
+      // 모든 일정 문서를 Schedule 객체로 변환
+      final allSchedules = snapshot.docs.map((doc) => Schedule.fromFirestore(doc)).toList();
+
+      // 현재 시각 기준으로 end_time이 지난 일정과 그렇지 않은 일정을 구분
+      final pastSchedules = allSchedules.where((schedule) => schedule.endTime.isBefore(now)).toList();
+      final activeSchedules = allSchedules.where((schedule) => schedule.endTime.isAfter(now)).toList();
+
+      // 종료된 일정을 먼저, 종료되지 않은 일정을 나중에 반환
+      return [...pastSchedules, ...activeSchedules];
+    });
   }
+
 }
