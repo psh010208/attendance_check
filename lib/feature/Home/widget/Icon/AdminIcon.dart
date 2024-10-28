@@ -11,7 +11,7 @@ class AdminIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       icon: Icon(Icons.add),
-      color: Theme.of(context).primaryColor,
+      color: Theme.of(context).iconTheme.color,
       onPressed: () {
         showDialog(
           context: context,
