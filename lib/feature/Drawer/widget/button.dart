@@ -322,8 +322,10 @@ class Logo extends StatelessWidget {
 // 친구 목록 보기 버튼
 class FriendsListButton extends StatelessWidget {
   final VoidCallback onPressed;
+  final String role;
+  final String id;
 
-  FriendsListButton({required this.onPressed});
+  FriendsListButton({required this.onPressed, required this.role, required this.id});
 
   @override
   Widget build(BuildContext context) {
@@ -331,7 +333,9 @@ class FriendsListButton extends StatelessWidget {
       onPressed: () {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => FriendsScreen()),
+          MaterialPageRoute(builder: (context) => FriendsScreen(
+            role: role, // widget.role 사용
+            id: id,)),
         );
       },
       icon: Icons.group,

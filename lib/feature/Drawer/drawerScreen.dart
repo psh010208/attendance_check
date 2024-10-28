@@ -112,6 +112,8 @@ class _DrawerScreenState extends State<DrawerScreen> {
               Positioned(
                 child: FriendsListButton(
                   onPressed: (){},
+                  role: widget.role,
+                  id: widget.id,
                 )
               ),
               FutureBuilder<int?>(
