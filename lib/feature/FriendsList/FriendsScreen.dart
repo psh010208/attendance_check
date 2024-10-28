@@ -1,68 +1,135 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../Drawer/widget/button.dart';
-import '../Home/homeScreen.dart';
+import ' widget/Dialog/AddFriendButton.dart';
+import 'Model/FriendModel.dart';
+import 'ViewModel/FriendViewModel.dart';
 
-void main() {
-  runApp(MaterialApp(
-    home: FriendsScreen(role: 'User', id: '123'), // 필요한 role과 id를 전달
-  ));
+class FriendsScreen extends StatefulWidget {
+  final String studentId;
+
+  const FriendsScreen({Key? key, required this.studentId}) : super(key: key);
+
+  @override
+  _FriendsScreenState createState() => _FriendsScreenState();
 }
 
-class FriendsScreen extends StatelessWidget {
-  final String role;
-  final String id;
+class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+  final FriendViewModel _friendViewModel = FriendViewModel();
 
-  FriendsScreen({required this.role, required this.id}); // 생성자 수정
+  List<FriendModel> friendList = [];
+  List<FriendModel> pendingRequests = [];
+  bool isLoading = true;
+  String errorMessage = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 2, vsync: this);
+    fetchFriendData();
+  }
+
+  Future<void> fetchFriendData() async {
+    setState(() {
+      isLoading = true;
+      errorMessage = '';
+    });
+    try {
+      friendList = await _friendViewModel.fetchFriendList(widget.studentId);
+      pendingRequests = await _friendViewModel.fetchPendingRequests(widget.studentId);
+    } catch (e) {
+      errorMessage = "Error fetching friend data: $e";
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  // 친구 요청 수락
+  Future<void> acceptFriendRequest(String friendId) async {
+    await _friendViewModel.acceptFriendRequest(widget.studentId, friendId);
+    fetchFriendData();
+  }
+
+  // 친구 요청 거절
+  Future<void> declineFriendRequest(String friendId) async {
+    await _friendViewModel.removePendingRequest(widget.studentId, friendId);
+    fetchFriendData();
+  }
+
+  // 친구 삭제
+  Future<void> removeFriend(String friendId) async {
+    await _friendViewModel.removeFriend(widget.studentId, friendId);
+    fetchFriendData();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, // 흰색 배경 설정
       appBar: AppBar(
-        title: Text('Friends Screen'),
-        backgroundColor: Colors.blue, // AppBar 색상
+        title: Text('친구 관리'),
+        actions: [AddFriendButton(currentUserId: widget.studentId)],
+        bottom: TabBar(
+          controller: _tabController,
+          tabs: [Tab(text: '친구 목록'), Tab(text: '요청 대기 목록')],
+        ),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+      body: isLoading
+          ? Center(child: CircularProgressIndicator())
+          : errorMessage.isNotEmpty
+          ? Center(child: Text(errorMessage))
+          : TabBarView(
+        controller: _tabController,
+        children: [buildFriendList(), buildPendingRequests()],
+      ),
+    );
+  }
+
+  Widget buildFriendList() {
+    return friendList.isNotEmpty
+        ? ListView.builder(
+      padding: EdgeInsets.all(10),
+      itemCount: friendList.length,
+      itemBuilder: (context, index) {
+        return buildFriendCard(friendList[index], () => removeFriend(friendList[index].studentId), '삭제');
+      },
+    )
+        : Center(child: Text('친구가 없습니다.'));
+  }
+
+  Widget buildPendingRequests() {
+    return pendingRequests.isNotEmpty
+        ? ListView.builder(
+      padding: EdgeInsets.all(10),
+      itemCount: pendingRequests.length,
+      itemBuilder: (context, index) {
+        return buildFriendCard(pendingRequests[index],
+              () => acceptFriendRequest(pendingRequests[index].studentId),
+          '수락',
+          declineAction: () => declineFriendRequest(pendingRequests[index].studentId),
+        );
+      },
+    )
+        : Center(child: Text('요청 대기 중인 친구가 없습니다.'));
+  }
+
+  Widget buildFriendCard(FriendModel friend, VoidCallback action, String actionLabel, {VoidCallback? declineAction}) {
+    return Card(
+      elevation: 3,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+      child: ListTile(
+        contentPadding: EdgeInsets.all(10),
+        leading: CircleAvatar(child: Text(friend.name[0])),
+        title: Text(friend.name, style: TextStyle(fontWeight: FontWeight.bold)),
+        subtitle: Text(friend.department),
+        trailing: declineAction == null
+            ? TextButton(onPressed: action, child: Text(actionLabel, style: TextStyle(color: Colors.red)))
+            : Row(
+          mainAxisSize: MainAxisSize.min,
           children: [
-            IconButton(
-              icon: Icon(Icons.arrow_back_ios,
-                  color: Theme.of(context).colorScheme.onSurface, // 아이콘 색상 수정
-                  size: 25.sp),
-              onPressed: () {
-                // HomeScreen으로 네비게이션
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => HomeScreen(role: role, id: id), // role과 id 전달
-                  ),
-                );
-              },
-            ),
-            SizedBox(height: 20), // 아이콘과 텍스트 간격
-            Text(
-              'Hello, World!',
-              style: TextStyle(fontSize: 24, color: Colors.black), // 텍스트 스타일
-            ),
-            SizedBox(height: 20), // 텍스트와 버튼 간격
-            FriendsListButton( // FriendsListButton 추가
-              onPressed: () {},
-              role: role,
-              id: id,
-            ),
-            SizedBox(height: 20), // FriendsListButton과 친구 추가 버튼 간격
-            ElevatedButton(
-              onPressed: () {
-                // 친구 추가 동작 구현
-                // 여기에서 친구 추가 로직을 추가하세요.
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('친구 추가되었습니다!')),
-                );
-              },
-              child: Text('친구 추가', style: TextStyle(fontSize: 20)), // 버튼 텍스트
-            ),
+            TextButton(onPressed: action, child: Text(actionLabel, style: TextStyle(color: Colors.green))),
+            TextButton(onPressed: declineAction, child: Text('거절', style: TextStyle(color: Colors.red))),
           ],
         ),
       ),

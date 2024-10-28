@@ -4,7 +4,8 @@ class LogModel {
   final String name;
   final String role;
   final bool isApproved;
-  final List<String> friend; // 친구 목록 추가
+  final List<String> friend; // 친구 목록
+  final List<String> pendingRequests; // 요청 대기 목록 추가
 
   LogModel({
     required this.studentId,
@@ -13,6 +14,7 @@ class LogModel {
     required this.role,
     required this.isApproved,
     this.friend = const [], // 기본값으로 빈 리스트 설정
+    this.pendingRequests = const [], // 요청 대기 목록을 빈 리스트로 초기화
   });
 
   // Firestore에서 데이터를 가져와서 LogModel 객체로 변환
@@ -24,6 +26,7 @@ class LogModel {
       role: data['role'] ?? '',
       isApproved: data['is_approved'] ?? false,
       friend: List<String>.from(data['friend'] ?? []), // 친구 목록 가져오기
+      pendingRequests: List<String>.from(data['pending_requests'] ?? []), // 요청 대기 목록 가져오기
     );
   }
 
@@ -36,6 +39,7 @@ class LogModel {
       'role': role,
       'is_approved': isApproved,
       'friend': friend, // 친구 목록을 Firestore에 저장
+      'pending_requests': pendingRequests, // 요청 대기 목록을 Firestore에 저장
     };
   }
 }
