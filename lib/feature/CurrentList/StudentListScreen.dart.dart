@@ -159,12 +159,13 @@ class _StudentListScreenState extends State<StudentListScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start, // 왼쪽 정렬 설정
                 children: [
                   // 첫 번째 그룹: 학과, 학번
-                  Row(
-                    children: [
-                      CustomText(id: student.department, size: 27.sp), // 학과
-                      SizedBox(width: 10.w),
-                      CustomText(id: ' ${student.studentId}', size: 16.sp), // 학번
-                    ],
+                  Container(
+                    padding: EdgeInsets.only(bottom: 5.w), // 학과 아래쪽에 패딩 추가
+                    child: CustomText(id: student.department, size: 25.sp), // 학과
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(top: 5.w), // 학번 위쪽에 패딩 추가
+                    child: CustomText(id: ' ${student.studentId}', size: 16.sp), // 학번
                   ),
 
                   // 두 번째 그룹: 이름
