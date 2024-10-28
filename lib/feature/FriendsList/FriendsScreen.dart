@@ -124,8 +124,20 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
               ),
             ),
           ],
-
         ),
+        actions: [
+          Builder(
+            builder: (BuildContext context) {
+              return IconButton(
+                icon: Icon(Icons.menu),
+                onPressed: () {
+                  Scaffold.of(context).openEndDrawer();
+                },
+                color: Theme.of(context).colorScheme.scrim,
+              );
+            },
+          ),
+        ],
       ),
       endDrawer: Drawer(
         backgroundColor: Colors.black, // 배경색을 검은색으로 설정
@@ -209,7 +221,9 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
                     ],
                   ),
                 ),
-                onTap: () => openFriendDrawer(context, friendList[index].studentId),
+                onTap: () => openFriendDrawer(context, friendList[index].studentId
+
+                ),
               ),
             ),
           ),
