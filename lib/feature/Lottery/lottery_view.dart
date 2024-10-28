@@ -61,7 +61,8 @@ class _LotteryView extends State<LotteryView> {
           ),
         ],
       ),
-      endDrawer: DrawerScreen(role: widget.role, id: widget.id),
+      endDrawer: DrawerScreen(role: widget.role, id: widget.id,        isFriendView: false,
+      ),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(

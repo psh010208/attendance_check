@@ -108,7 +108,7 @@ class HomeScreen extends HookWidget {
       endDrawer: DrawerScreen(
         role: role,
         id: id,
-
+        isFriendView: false, //false가 현재 ID사용
       ),
       drawerScrimColor: Colors.black.withOpacity(0.5),
       body: Container(
