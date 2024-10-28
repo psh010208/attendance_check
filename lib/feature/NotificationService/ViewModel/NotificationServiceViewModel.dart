@@ -24,14 +24,7 @@ class NotificationServiceViewModel {
 
   // 알림 예약 설정
   Future<void> scheduleNotifications(BuildContext context) async {
-    print("알람 예약 시작");
 
-    DateTime testNotificationTime = DateTime.now().add(Duration(seconds: 5)); // 5초 후
-    await NotificationService.scheduleNotification(
-      "알림 테스트 최종본은 삭제하세요 !",
-      testNotificationTime,
-      context, // context를 전달
-    );
 
     List<NotificationServiceModel> schedules = await fetchSchedules();
 

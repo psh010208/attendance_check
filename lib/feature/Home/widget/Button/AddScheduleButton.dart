@@ -119,7 +119,8 @@ class _AddScheduleDialogState extends State<AddScheduleDialog> {
         endTime!.minute,
       );
 
-      await FirebaseFirestore.instance.collection('schedules').add({
+      // Firestore에 일정 추가 (schedule_name을 문서 ID로 사용)
+      await FirebaseFirestore.instance.collection('schedules').doc(_scheduleNameController.text).set({
         'schedule_name': _scheduleNameController.text,
         'location': _locationController.text,
         'instructor_name': _instructorNameController.text,
