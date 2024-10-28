@@ -115,7 +115,6 @@ class _DrawerScreenState extends State<DrawerScreen> {
             ] else if (widget.role == '학부생') ...[
               FriendsListButton(
                 onPressed: () {},
-                role: widget.role,
                 id: widget.id,
               ),
               FutureBuilder<int?>(
