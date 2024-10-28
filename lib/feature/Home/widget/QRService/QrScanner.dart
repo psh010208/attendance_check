@@ -22,7 +22,7 @@ class _QrScannerState extends State<QrScanner> {
   late CameraController cameraController;
   List<CameraDescription>? cameras;
   bool isFlashOn = false;
-  bool isCameraInitialized = false; // 카메라 초기화 상태 플래그 추가
+  bool isCameraInitialized = false;
 
   final TransformationController _transformationController =
   TransformationController();
@@ -34,16 +34,15 @@ class _QrScannerState extends State<QrScanner> {
     initializeCamera();
   }
 
-  // 카메라 초기화 함수
   Future<void> initializeCamera() async {
     cameras = await availableCameras();
     cameraController = CameraController(
-      cameras!.first, // 후면 카메라 사용
+      cameras!.first,
       ResolutionPreset.high,
     );
     await cameraController.initialize();
     setState(() {
-      isCameraInitialized = true; // 카메라 초기화 완료 후 플래그 변경
+      isCameraInitialized = true;
     });
   }
 
@@ -56,18 +55,8 @@ class _QrScannerState extends State<QrScanner> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('QR 스캐너'),
-        actions: [
-          IconButton(
-            icon: Icon(isFlashOn ? Icons.flash_off : Icons.flash_on),
-            onPressed: () {
-              controller?.toggleFlash();
-              setState(() {
-                isFlashOn = !isFlashOn;
-              });
-            },
-          ),
-        ],
+        title: Text('QR 코드 스캐너', style: TextStyle(color: Colors.white)),
+        backgroundColor: Theme.of(context).colorScheme.scrim,
       ),
       body: GestureDetector(
         onDoubleTapDown: _handleDoubleTapDown,
@@ -77,7 +66,7 @@ class _QrScannerState extends State<QrScanner> {
           panEnabled: false,
           minScale: 1.0,
           maxScale: 3.0,
-          child: isCameraInitialized // 카메라가 초기화되었을 때만 QRView 렌더링
+          child: isCameraInitialized
               ? Stack(
             children: [
               Column(
@@ -87,7 +76,7 @@ class _QrScannerState extends State<QrScanner> {
                     child: LayoutBuilder(
                       builder: (context, constraints) {
                         double screenHeight = constraints.maxHeight;
-                        double cutOutHeight = scanArea * 2.0.h;
+                        double cutOutHeight = scanArea * 2.2.h;
 
                         return Stack(
                           alignment: Alignment.center,
@@ -96,37 +85,51 @@ class _QrScannerState extends State<QrScanner> {
                               key: qrKey,
                               onQRViewCreated: _onQRViewCreated,
                               overlay: QrScannerOverlayShape(
-                                borderColor: Theme.of(context).primaryColor,
+                                borderColor: Theme.of(context).colorScheme.secondaryContainer,
                                 borderRadius: 10.r,
                                 borderLength: 30.w,
                                 borderWidth: 15.w,
                                 cutOutSize: cutOutHeight,
                               ),
                             ),
-
                           ],
                         );
                       },
                     ),
                   ),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      color: Theme.of(context).primaryColor,
-                      child: Center(
-                        child: (result != null)
-                            ? Text('QR 코드 데이터: ${result!.code}',
-                            style: TextStyle(color: Colors.white))
-                            : Text('QR 코드를 스캔하세요',
-                            style: TextStyle(color: Colors.white)),
-                      ),
-                    ),
-                  ),
                 ],
+              ),
+              Positioned(
+                bottom: 30.h,
+                left: 0,
+                right: 0,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      icon: Icon(
+                        isFlashOn ? Icons.flashlight_off : Icons.flashlight_on,
+                        size: 45.w,
+                        color: Colors.white,
+                      ),
+                      onPressed: () {
+                        controller?.toggleFlash();
+                        setState(() {
+                          isFlashOn = !isFlashOn;
+                        });
+                      },
+                    ),
+                    SizedBox(height: 10.h),
+                    Text(
+                      '  플래시 ${isFlashOn ? "끄기" : "켜기"}',
+                      style: TextStyle(color: Colors.white, fontSize: 16.sp),
+                    ),
+                  ],
+                ),
               ),
             ],
           )
-              : Center(child: CircularProgressIndicator()), // 카메라가 초기화 중일 때 로딩 표시
+              : Center(child: CircularProgressIndicator()),
         ),
       ),
     );
@@ -157,9 +160,10 @@ class _QrScannerState extends State<QrScanner> {
         });
         controller.pauseCamera();
 
-        // Firestore에 출석 정보를 추가/업데이트하는 함수 호출 (학생_ID/QR_CODE)
         await addOrUpdateAttendance(context, widget.studentId, result!.code!);
-        dispose();
+
+        // QR 코드 인식 후 뒤로가기
+        Navigator.pop(context);
       }
     });
   }

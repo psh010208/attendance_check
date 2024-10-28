@@ -129,9 +129,9 @@ class _AddScheduleDialogState extends State<AddScheduleDialog> {
       });
 
       Navigator.of(context).pop();
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('새로운 일정 카드가 생성되었습니다.')));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('새로운 일정이 등록되었습니다')));
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('일정 정보를 모두 입력해주세요')));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('필요한 일정 정보를 입력해 주세요.')));
     }
   }
 
