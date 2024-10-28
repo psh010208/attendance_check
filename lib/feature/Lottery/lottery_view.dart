@@ -2,6 +2,7 @@ import 'package:attendance_check/feature/Home/homeScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
 import '../ApproveList/widget/CustomText.dart';
 import 'Model/model.dart';
 import 'ViewModel/viewModel.dart';
@@ -10,6 +11,7 @@ import 'widget/button/lottery_dialog_register_button.dart';
 import 'widget/button/lottery_dialog_redraw_button.dart';
 import 'widget/button/lottery_draw_button.dart';
 import 'package:attendance_check/feature/Drawer/drawerScreen.dart';
+import 'package:attendance_check/feature/Store/MyStore.dart';
 
 class LotteryView extends StatefulWidget {
   final String role;
@@ -61,7 +63,8 @@ class _LotteryView extends State<LotteryView> {
           ),
         ],
       ),
-      endDrawer: DrawerScreen(role: widget.role, id: widget.id),
+      endDrawer: DrawerScreen(role: widget.role, id: widget.id,        isFriendView: false,
+      ),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -214,17 +217,38 @@ class _LotteryView extends State<LotteryView> {
           ),
         ),
       ),
+      // DataColumn(
+      //   label: SizedBox(
+      //     width: 200.w, // 너비 설정
+      //     height: 90.h, // 높이 설정
+      //     child: ElevatedButton(
+      //       onPressed: () {},
+      //       style: ElevatedButton.styleFrom(
+      //         backgroundColor: Theme.of(context).colorScheme.secondary, // 배경색 변경
+      //       ),
+      //       child: Text(
+      //         "참여 횟수",
+      //         style: TextStyle(
+      //           fontSize: 36.sp,
+      //           fontWeight: FontWeight.bold,
+      //         ),
+      //       ),
+      //     ),
+      //   ),
+      // ),
       DataColumn(
         label: SizedBox(
           width: 200.w, // 너비 설정
           height: 90.h, // 높이 설정
           child: ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              context.read<MyStore>().changeReversed();
+            },
             style: ElevatedButton.styleFrom(
               backgroundColor: Theme.of(context).colorScheme.secondary, // 배경색 변경
             ),
             child: Text(
-              "참여 횟수",
+              "등수",
               style: TextStyle(
                 fontSize: 36.sp,
                 fontWeight: FontWeight.bold,
@@ -255,12 +279,30 @@ class _LotteryView extends State<LotteryView> {
     ];
   }
 
-
-
-
   // Firestore에서 불러온 학부생 데이터를 행으로 변환
   List<DataRow> createRows(List<LotteryStudent> students) {
-    return students.map((student) {
+    // 참여 횟수로 학생 리스트를 정렬하여 등수를 계산
+    List<LotteryStudent> sortedStudents = List.from(students)
+      ..sort((a, b) => b.attendanceCount.compareTo(a.attendanceCount));
+
+    // 추첨할 학생 리스트 생성
+    List<LotteryStudent> drawList = [];
+
+    // 추첨 로직을 통해 순서를 유지하면서 먼저 뽑힌 사람을 상단에 추가
+    for (var student in sortedStudents) {
+      // 각 학생이 추첨되었다고 가정하고 drawList에 추가
+      drawList.add(student);
+    }
+
+    return drawList.asMap().entries.map((entry) {
+      int rank = entry.key; // 0부터 시작하는 등수
+      LotteryStudent student = entry.value;
+
+      List<int> rankList = [1,2,2,3,3,3,4,4,4,4,5,5,5,5,5];
+      List<int> rankListReverse = [5,5,5,5,5,4,4,4,4,3,3,3,2,2,1];
+
+      final isReversed = context.watch<MyStore>().isReversed;
+
       return DataRow(
         cells: [
           DataCell(
@@ -268,7 +310,7 @@ class _LotteryView extends State<LotteryView> {
               alignment: Alignment.center, // 중앙 정렬
               child: Text(student.department,
                   style: TextStyle(
-                      fontSize: 35.sp,
+                    fontSize: 35.sp,
                     color: Colors.black,
                   )),
             ),
@@ -293,10 +335,24 @@ class _LotteryView extends State<LotteryView> {
                   )),
             ),
           ),
+          // DataCell(
+          //   Container(
+          //     alignment: Alignment.center, // 중앙 정렬
+          //     child: Text(student.attendanceCount.toString(),
+          //         style: TextStyle(
+          //           fontSize: 35.sp,
+          //           color: Colors.black,
+          //         )),
+          //   ),
+          // ),
           DataCell(
             Container(
-              alignment: Alignment.center, // 중앙 정렬
-              child: Text(student.attendanceCount.toString(),
+              alignment: Alignment.center,
+              child: isReversed ? Text('${rankList[rank]}',
+                  style: TextStyle(
+                    fontSize: 35.sp,
+                    color: Colors.black,
+                  )) : Text('${rankListReverse[rank]}',
                   style: TextStyle(
                     fontSize: 35.sp,
                     color: Colors.black,
@@ -324,53 +380,54 @@ class _LotteryView extends State<LotteryView> {
       );
     }).toList();
   }
+
   // 삭제 확인 다이얼로그
   Future<bool> _showConfirmationDialog(BuildContext context) async {
     return await showDialog<bool>(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              title: Text('삭제 확인'),
-              content: Text('정말로 삭제하시겠습니까?'),
-              actions: [
-                TextButton(
-                  child: Text('취소'),
-                  onPressed: () {
-                    Navigator.of(context).pop(false);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).colorScheme.error,
-                    foregroundColor: Theme.of(context).colorScheme.surface,
-                    minimumSize: Size(55.w, 40.h),
-                    elevation: 4.sw,
-                    shadowColor:
-                        Theme.of(context).colorScheme.onSurface.withOpacity(1),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.r),
-                    ),
-                  ),
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('삭제 확인'),
+          content: Text('정말로 삭제하시겠습니까?'),
+          actions: [
+            TextButton(
+              child: Text('취소'),
+              onPressed: () {
+                Navigator.of(context).pop(false);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Theme.of(context).colorScheme.error,
+                foregroundColor: Theme.of(context).colorScheme.surface,
+                minimumSize: Size(55.w, 40.h),
+                elevation: 4.sw,
+                shadowColor:
+                Theme.of(context).colorScheme.onSurface.withOpacity(1),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.r),
                 ),
-                TextButton(
-                  child: Text('삭제'),
-                  onPressed: () {
-                    Navigator.of(context).pop(true);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).primaryColorLight,
-                    foregroundColor: Theme.of(context).canvasColor,
-                    minimumSize: Size(55.w, 40.h),
-                    elevation: 4.sw,
-                    shadowColor:
-                        Theme.of(context).colorScheme.onSurface.withOpacity(1),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.r),
-                    ),
-                  ),
+              ),
+            ),
+            TextButton(
+              child: Text('삭제'),
+              onPressed: () {
+                Navigator.of(context).pop(true);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Theme.of(context).primaryColorLight,
+                foregroundColor: Theme.of(context).canvasColor,
+                minimumSize: Size(55.w, 40.h),
+                elevation: 4.sw,
+                shadowColor:
+                Theme.of(context).colorScheme.onSurface.withOpacity(1),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.r),
                 ),
-              ],
-            );
-          },
-        ) ??
+              ),
+            ),
+          ],
+        );
+      },
+    ) ??
         false;
   }
 
@@ -380,7 +437,7 @@ class _LotteryView extends State<LotteryView> {
       isLoading = true;
     });
 
-    await Future.delayed(Duration(milliseconds: 3550)); // gif 1회 반복 시간 대기
+    await Future.delayed(Duration(milliseconds: 550)); // gif 1회 반복 시간 대기
 
     try {
       LotteryStudent winner = await _lotteryViewModel.runLottery();

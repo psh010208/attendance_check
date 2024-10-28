@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 class MyStore extends ChangeNotifier {
   var isDarkMode = false;
   var onAlarm = true;
+  var isReversed = false;
 
   changeMode() {
     isDarkMode = !isDarkMode;
@@ -11,6 +12,11 @@ class MyStore extends ChangeNotifier {
 
   changeAlarm() {
     onAlarm = !onAlarm;
+    notifyListeners();
+  }
+
+  changeReversed() {
+    isReversed = !isReversed;
     notifyListeners();
   }
 }

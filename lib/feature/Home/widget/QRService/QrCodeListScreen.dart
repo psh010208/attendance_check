@@ -120,7 +120,8 @@ class _QrCodeListScreenState extends State<QrCodeListScreen> {
           ),
         ],
       ),
-      endDrawer: DrawerScreen(role: widget.role, id: widget.id),
+      endDrawer: DrawerScreen(role: widget.role, id: widget.id,        isFriendView: false,
+      ),
       body: Container(
         height: 800.w,
         decoration: BoxDecoration(
