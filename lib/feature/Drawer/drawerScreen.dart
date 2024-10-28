@@ -25,6 +25,10 @@ class _DrawerScreenState extends State<DrawerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // MediaQuery를 사용하여 화면 크기 가져오기
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
     return Drawer(
       backgroundColor: Theme.of(context).primaryColorDark,
       child: Container(
@@ -34,40 +38,40 @@ class _DrawerScreenState extends State<DrawerScreen> {
               decoration: BoxDecoration(
                 color: Theme.of(context).primaryColorDark,
               ),
-              // DrawerHeader의 높이를 200.h로 설정하여 크기를 조정
               child: Container(
-                height: 300.h, // DrawerHeader의 높이 설정
+                height: screenHeight * 0.3, // 화면 높이의 30%로 설정
                 child: Stack(
                   children: [
                     Positioned(
-                      top: -5.h, // 반응형 높이 설정
-                      left: 99.w,
+                      top: screenHeight * 0, // 반응형 높이 설정
+                      left: screenWidth * 0.25, // 반응형 위치 설정
                       child: CircleAvatar(
-                        radius: 0,
+                        radius: 35.w, // 반응형 반지름
                         child: Icon(Icons.account_circle, size: 70.w),
                       ),
                     ),
-                    if (widget.role != '관리자' && widget.role != '학부생')
+                    if (widget.role != '관리자' && widget.role != '학부생') ...[
                       Positioned(
-                        top: 80.h, // 반응형 높이 설정
-                        left: 82.w,
+                        top: screenHeight * 0.1, // 반응형 높이 설정
+                        left: screenWidth * 0.20, // 반응형 위치 설정
                         child: CustomText(
                           id: '정보없음',
                           size: 30.w, // 역할 표시
                         ),
                       ),
-                    if (widget.role == '관리자' || widget.role == '학부생') ... [
+                    ],
+                    if (widget.role == '관리자' || widget.role == '학부생') ...[
                       Positioned(
-                        top: 75.h, // 반응형 높이 설정
-                        left: 94.w,
+                        top: screenHeight * 0.1, // 반응형 높이 설정
+                        left: screenWidth * 0.23, // 반응형 위치 설정
                         child: CustomText(
                           id: widget.role,
                           size: 30.w, // 역할 표시
                         ),
                       ),
                       Positioned(
-                        top: 127.h, // 반응형 높이 설정
-                        left: 94.w,
+                        top: screenHeight * 0.15, // 반응형 높이 설정
+                        left: screenWidth * 0.23, // 반응형 위치 설정
                         child: CustomText(
                           id: widget.id,
                           size: 20.w, // 아이디 표시
@@ -79,9 +83,9 @@ class _DrawerScreenState extends State<DrawerScreen> {
               ),
             ),
             Positioned(
-              top: 210.h, // 첫 번째 버튼의 위치를 조정
-              left: 0.w,
-              right: 0.w,
+              top: screenHeight * 0.25,
+              left: screenWidth * 0.0,
+              right: screenWidth * 0.0,
               child: Divider(
                 color: Colors.grey,
                 thickness: 3,
@@ -109,17 +113,14 @@ class _DrawerScreenState extends State<DrawerScreen> {
                 id: widget.id,
               ),
             ] else if (widget.role == '학부생') ...[
-              Positioned(
-                child: FriendsListButton(
-                  onPressed: (){},
-                  id: widget.id,
-                )
+              FriendsListButton(
+                onPressed: () {},
+                role: widget.role,
+                id: widget.id,
               ),
               FutureBuilder<int?>(
-
                 future: viewModel.getTotalAttendanceByStudentId(widget.id), // student_id를 통해 데이터 가져옴
                 builder: (context, snapshot) {
-
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return CircularProgressIndicator(); // 로딩 상태 표시
                   } else if (snapshot.hasError) {
@@ -127,7 +128,6 @@ class _DrawerScreenState extends State<DrawerScreen> {
                   } else if (snapshot.hasData) {
                     // StreamBuilder로 일정 데이터에서 totalProgress 가져오기
                     return StreamBuilder<List<Schedule>>(
-
                       stream: scheduleViewModel.getScheduleStream(), // 일정 스트림을 구독
                       builder: (context, scheduleSnapshot) {
                         if (scheduleSnapshot.connectionState == ConnectionState.waiting) {
@@ -142,8 +142,6 @@ class _DrawerScreenState extends State<DrawerScreen> {
                             totalProgress: totalProgress, // Firestore 일정 수 반영
                             schedules: scheduleSnapshot.data!, // Schedule 리스트 전달
                           );
-
-
                         } else {
                           return Text('No schedule data available');
                         }
@@ -170,13 +168,12 @@ class _DrawerScreenState extends State<DrawerScreen> {
                         LogOutButton(onPressed: () {}),
                       ],
                     ),
-                    SizedBox(height: 15),
+                    SizedBox(height: screenHeight * 0.02), // 반응형 여백
                     Logo(onPressed: () {}),
-                    SizedBox(height: 40),
+                    SizedBox(height: screenHeight * 0.1), // 반응형 여백
                   ],
                 ),
               ),
-
             ] else ...[ // 로그인 전에 로그인 버튼과 회원가입 버튼
               LogInButton(onPressed: () {}),
               JoinButton(onPressed: () {}),
@@ -185,7 +182,6 @@ class _DrawerScreenState extends State<DrawerScreen> {
               LogOutButton(onPressed: () {}),
               Logo(onPressed: () {}),
             ]
-
           ],
         ),
       ),

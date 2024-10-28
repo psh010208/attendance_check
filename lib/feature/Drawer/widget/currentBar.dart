@@ -17,9 +17,12 @@ class CurrentBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+    final barWidth = screenSize.width * 0.8; // 전체 너비의 80%를 사용
+    final barHeight = 60.h; // 고정 높이
     return Positioned(
-      top: 235.h,
-      left: 70.w,
+      top: screenSize.height * 0.3, // 화면의 30% 위치에 배치
+      left: (screenSize.width ) / (totalProgress*1.3), // 중앙
       child: Column(
         children: [
           Text(

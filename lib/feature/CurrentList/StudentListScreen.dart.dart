@@ -158,18 +158,15 @@ class _StudentListScreenState extends State<StudentListScreen> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start, // 왼쪽 정렬 설정
                 children: [
-                  // 첫 번째 그룹: 학과, 학번
-                  Row(
-                    children: [
-                      CustomText(id: student.department, size: 27.sp), // 학과
-                      SizedBox(width: 10.w),
-                      CustomText(id: ' ${student.studentId}', size: 16.sp), // 학번
-                    ],
+                  // 첫 번째 그룹: 학과
+                  Container(
+                    padding: EdgeInsets.only(bottom: 5.w), // 학과 아래쪽에 패딩 추가
+                    child: CustomText(id: student.department, size: 25.sp), // 학과
                   ),
 
                   // 두 번째 그룹: 이름
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10.0), // 이름과 첫 번째 그룹 사이의 간격 설정
+                  Container(
+                    padding: EdgeInsets.only(bottom: 5.w), // 이름과 첫 번째 그룹 사이의 간격 설정
                     child: CustomText(
                       id: student.name,
                       size: 22.sp,
@@ -178,7 +175,14 @@ class _StudentListScreenState extends State<StudentListScreen> {
                     ),
                   ),
 
-                  // 세 번째 그룹: 출석 횟수 및 버튼을 하나의 Row로 정렬
+                  // 세 번째 그룹: 학번
+                  Container(
+                    padding: EdgeInsets.only(top: 5.w), // 학번 위쪽에 패딩 추가
+                    child: CustomText(id: ' ${student.studentId}', size: 16.sp), // 학번
+                  ),
+
+
+                  // 네 번째 그룹: 출석 횟수 및 버튼을 하나의 Row로 정렬
                   Padding(
                     padding: const EdgeInsets.only(top: 10.0), // 출석 횟수와 이름 사이의 간격 설정
                     child: Row(
@@ -187,7 +191,7 @@ class _StudentListScreenState extends State<StudentListScreen> {
                         CustomText(
                             id: '출석 횟수: ${student.attendanceCount}',
                             size: 16.sp,
-                          color: Theme.of(context).disabledColor,
+                          color: Theme.of(context).hintColor,
                         ),
                         SizedBox(width: 50.w), // 버튼과 출석 횟수 간 간격
 

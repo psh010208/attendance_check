@@ -340,8 +340,11 @@ class FriendsListButton extends StatelessWidget {
       text: '친구 목록',
       iconSize: 25.h,
       textSize: 23.w,
-      top: 200,
-      left: 200,  // 버튼의 텍스트
+      top: 350.h,
+      left: 20.w,  // 버튼의 텍스트
     );
   }
 }
+
+
+
