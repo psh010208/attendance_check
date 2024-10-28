@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 
+import '../../ApproveList/widget/CustomText.dart';
 import '../../Home/model/homeModel.dart';
 
 class CurrentBar extends StatelessWidget {
@@ -25,13 +26,10 @@ class CurrentBar extends StatelessWidget {
       left: (screenSize.width ) / (totalProgress*1.3), // 중앙
       child: Column(
         children: [
-          Text(
-            '출석 현황    $currentProgress / $totalProgress',
-            style: Theme.of(context).textTheme.titleSmall?.copyWith(
-              color: Theme.of(context).colorScheme.surface,
-              fontWeight: FontWeight.bold,
-              fontSize: 24.sp,
-            ),
+          CustomText(
+            id: '출석 현황    $currentProgress / $totalProgress',
+            color: Theme.of(context).dialogBackgroundColor,
+            size: 24.sp,
           ),
           SizedBox(height: 18.h,),
           buildCustomProgressBar(currentProgress, totalProgress, schedules), // Schedule 리스트 전달
