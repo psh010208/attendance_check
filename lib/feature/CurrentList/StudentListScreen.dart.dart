@@ -381,45 +381,45 @@ class _StudentListScreenState extends State<StudentListScreen> {
             // 앱바
             AppBar(
               backgroundColor: Theme.of(context).primaryColorLight,
-              title: Row(
-                children: [
-                  IconButton(
-                    icon: Icon(Icons.arrow_back_ios,
-                        color: Theme
-                            .of(context)
-                            .colorScheme
-                            .scrim,
-                        size: 25.sp),
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              HomeScreen(role: widget.role, id: widget.id),
-                        ),
-                      );
-                    },
-                  ),
-                  Spacer(),
-                  CustomText(id:'참여 학생 명단', size: 20.sp, color: Theme
-                      .of(context)
-                      .colorScheme
-                      .scrim),
-                  Spacer(),
-                  IconButton(
-                    icon: Icon(
-                      Icons.search,
-                      color: Theme.of(context).colorScheme.scrim,
-                      size: 25.sp,
-                    ),
-                    onPressed: () {
-                      // 검색 기능 로직
-                    },
-                  ),
-                ],
+              title: CustomText(
+                id: '참여 학생 명단',
+                color: Theme.of(context).colorScheme.scrim,
+                size: 20.sp,
               ),
               centerTitle: true,
-            ),
+              elevation: 1,
+
+              leading: IconButton(
+                icon: Icon(
+                  Icons.arrow_back_ios_new,
+                  color: Theme.of(context).colorScheme.scrim,
+                  size: 25.sp,
+                ),
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => HomeScreen(role: widget.role, id: widget.id),
+                    ),
+                  );
+                },
+              ),
+
+              actions: [
+                Builder(
+                  builder: (BuildContext context) {
+                    return IconButton(
+                      icon: Icon(Icons.menu),
+                      onPressed: () {
+                        Scaffold.of(context).openEndDrawer();
+                      },
+                      color: Theme.of(context).colorScheme.scrim,
+                    );
+                  },
+                ),
+              ],
+            )
+,
 
             // 필터 버튼들
             Column(

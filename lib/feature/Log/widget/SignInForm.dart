@@ -173,7 +173,7 @@ class _SignInFormState extends State<SignInForm> {
                 _buildLoginButton(),
                 //SizedBox(height: 10.h), // 로그인 버튼과 아래 텍스트 버튼 사이 간격
                 _buildSignUpPrompt(context), // 회원가입으로 전환하는 버튼 추가
-                SizedBox(height: 30.h), //크기 수정
+                SizedBox(height: 16.h), //크기 수정
               ],
             ),
           ),
