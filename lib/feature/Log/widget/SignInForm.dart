@@ -30,9 +30,6 @@ class _SignInFormState extends State<SignInForm> {
   @override
   void initState() {
     super.initState();
-    // 초기값 설정
-    _selectedRole = widget.initialRole ?? '학부생'; // 초기 역할 설정
-    _studentId = widget.initialStudentId ?? '20225524'; // 초기 학번 설정
   }
   Future<void> _submitForm(BuildContext context) async {
     if (!_formKey.currentState!.validate()) return;
@@ -50,8 +47,7 @@ class _SignInFormState extends State<SignInForm> {
 
 
   void _navigateToDrawerScreen() {
-    // InfoModel에 정보 저장
-    print(_selectedRole);
+
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(
