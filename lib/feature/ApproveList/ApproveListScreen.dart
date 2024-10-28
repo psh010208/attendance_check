@@ -192,45 +192,39 @@ class _ApproveListScreenState extends State<ApproveListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme
-            .of(context)
-            .primaryColorLight,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            SizedBox(width: 17.w),
-            IconButton(
-              icon: Icon(Icons.arrow_back_ios,
-                  color: Theme
-                      .of(context)
-                      .colorScheme
-                      .scrim,
-                  size: 25.sp),
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        HomeScreen(role: widget.role, id: widget.id),
-                  ),
-                );
-              },
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).primaryColorLight,
+          title: CustomText(
+            id: '관리자 승인 대기 목록',
+            size: 20.sp,
+            color: Theme.of(context).colorScheme.scrim,
+          ),
+          centerTitle: true,
+          elevation: 1,
+
+          leading: IconButton(
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: Theme.of(context).colorScheme.scrim,
+              size: 25.sp,
             ),
-            Spacer(),
-            CustomText(id: '관리자 승인 대기 목록', size: 20.sp, color: Theme
-                .of(context)
-                .colorScheme
-                .scrim),
-            Spacer(),
+            onPressed: () {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => HomeScreen(role: widget.role, id: widget.id),
+                ),
+              );
+            },
+          ),
+
+          actions: [
             IconButton(
               icon: Icon(
-                  _isRejectionMode ? Icons.check : Icons.edit,
-                  color: Theme
-                      .of(context)
-                      .colorScheme
-                      .scrim,
-                  size: 25.sp),
+                _isRejectionMode ? Icons.check : Icons.edit,
+                color: Theme.of(context).colorScheme.scrim,
+                size: 25.sp,
+              ),
               onPressed: () {
                 setState(() {
                   _isRejectionMode = !_isRejectionMode;
@@ -238,10 +232,9 @@ class _ApproveListScreenState extends State<ApproveListScreen> {
               },
             ),
           ],
-        ),
-        centerTitle: true,
-      ),
-      body: Container(
+        )
+,
+        body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
