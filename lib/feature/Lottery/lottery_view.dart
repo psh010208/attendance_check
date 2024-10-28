@@ -446,15 +446,18 @@ class _LotteryView extends State<LotteryView> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('추첨 완료', style: TextStyle(
-                color: Colors.black,
+            title: Text('추첨 완료 🎉', style: TextStyle(
+                color: Theme.of(context).colorScheme.onSurface,
                 fontSize: 23.sp,
                 fontWeight: FontWeight.bold
             )),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text('${winner.department}의 ${winner.name}님이 당첨되었습니다!'),
+                Text('"${winner.department} ${winner.name}"',
+                  style: TextStyle(
+                    fontSize: 22.sp,
+                  ),),
                 // 이름 가져오기
                 SizedBox(height: 16.h),
               ],
