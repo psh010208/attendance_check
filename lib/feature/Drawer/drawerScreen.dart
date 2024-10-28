@@ -9,10 +9,12 @@ import 'model/AttendanceViewModel.dart';
 class DrawerScreen extends StatefulWidget {
   final String role;
   final String id;
+  final bool isFriendView; // 친구 프로필 보기인지 여부 추가
 
   DrawerScreen({
     required this.role,
     required this.id,
+    this.isFriendView = false, // 기본값은 본인 프로필 보기
   });
 
   @override
@@ -20,12 +22,11 @@ class DrawerScreen extends StatefulWidget {
 }
 
 class _DrawerScreenState extends State<DrawerScreen> {
-  AttendanceViewModel viewModel = AttendanceViewModel(); // ViewModel 인스턴스 생성
-  ScheduleViewModel scheduleViewModel = ScheduleViewModel(); // 일정 ViewModel 생성
+  AttendanceViewModel viewModel = AttendanceViewModel();
+  ScheduleViewModel scheduleViewModel = ScheduleViewModel();
 
   @override
   Widget build(BuildContext context) {
-    // MediaQuery를 사용하여 화면 크기 가져오기
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
@@ -39,45 +40,33 @@ class _DrawerScreenState extends State<DrawerScreen> {
                 color: Theme.of(context).primaryColorDark,
               ),
               child: Container(
-                height: screenHeight * 0.3, // 화면 높이의 30%로 설정
+                height: screenHeight * 0.3,
                 child: Stack(
                   children: [
                     Positioned(
-                      top: screenHeight * 0, // 반응형 높이 설정
-                      left: screenWidth * 0.25, // 반응형 위치 설정
+                      top: screenHeight * 0,
+                      left: screenWidth * 0.25,
                       child: CircleAvatar(
-                        radius: 35.w, // 반응형 반지름
+                        radius: 35.w,
                         child: Icon(Icons.account_circle, size: 70.w),
                       ),
                     ),
-                    if (widget.role != '관리자' && widget.role != '학부생') ...[
-                      Positioned(
-                        top: screenHeight * 0.1, // 반응형 높이 설정
-                        left: screenWidth * 0.20, // 반응형 위치 설정
-                        child: CustomText(
-                          id: '정보없음',
-                          size: 30.w, // 역할 표시
-                        ),
+                    Positioned(
+                      top: screenHeight * 0.1,
+                      left: screenWidth * 0.23,
+                      child: CustomText(
+                        id: widget.role == '관리자' ? widget.role : '학부생',
+                        size: 30.w,
                       ),
-                    ],
-                    if (widget.role == '관리자' || widget.role == '학부생') ...[
-                      Positioned(
-                        top: screenHeight * 0.1, // 반응형 높이 설정
-                        left: screenWidth * 0.23, // 반응형 위치 설정
-                        child: CustomText(
-                          id: widget.role,
-                          size: 30.w, // 역할 표시
-                        ),
+                    ),
+                    Positioned(
+                      top: screenHeight * 0.15,
+                      left: screenWidth * 0.23,
+                      child: CustomText(
+                        id: widget.id,
+                        size: 20.w,
                       ),
-                      Positioned(
-                        top: screenHeight * 0.15, // 반응형 높이 설정
-                        left: screenWidth * 0.23, // 반응형 위치 설정
-                        child: CustomText(
-                          id: widget.id,
-                          size: 20.w, // 아이디 표시
-                        ),
-                      ),
-                    ]
+                    ),
                   ],
                 ),
               ),
@@ -91,55 +80,57 @@ class _DrawerScreenState extends State<DrawerScreen> {
                 thickness: 3,
               ),
             ),
-            if (widget.role == '관리자') ...[
-              ParticipationButton( //참여 학생
+            // 관리자인 경우 친구 보기 모드가 아니면 버튼 표시
+            if (widget.role == '관리자' && !widget.isFriendView) ...[
+              ParticipationButton(
                 onPressed: () {},
                 role: widget.role,
                 id: widget.id,
               ),
-              CurrentButton( // 현황
+              CurrentButton(
                 onPressed: () {},
                 role: widget.role,
                 id: widget.id,
               ),
-              RaffleButton( //추첨
+              RaffleButton(
                 onPressed: () {},
                 role: widget.role,
                 id: widget.id,
               ),
-              QrScreenButton( // 현황
+              QrScreenButton(
                 onPressed: () {},
                 role: widget.role,
                 id: widget.id,
               ),
             ] else if (widget.role == '학부생') ...[
-              FriendsListButton(
-                onPressed: () {},
-                id: widget.id,
-              ),
+              // 학부생이 친구 프로필을 보는 경우 FriendsListButton 숨기기
+              if (!widget.isFriendView)
+                FriendsListButton(
+                  onPressed: () {},
+                  id: widget.id,
+                ),
               FutureBuilder<int?>(
-                future: viewModel.getTotalAttendanceByStudentId(widget.id), // student_id를 통해 데이터 가져옴
+                future: viewModel.getTotalAttendanceByStudentId(widget.id),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator(); // 로딩 상태 표시
+                    return CircularProgressIndicator();
                   } else if (snapshot.hasError) {
                     return Text('Error: ${snapshot.error}');
                   } else if (snapshot.hasData) {
-                    // StreamBuilder로 일정 데이터에서 totalProgress 가져오기
                     return StreamBuilder<List<Schedule>>(
-                      stream: scheduleViewModel.getScheduleStream(), // 일정 스트림을 구독
+                      stream: scheduleViewModel.getScheduleStream(),
                       builder: (context, scheduleSnapshot) {
                         if (scheduleSnapshot.connectionState == ConnectionState.waiting) {
-                          return CircularProgressIndicator(); // 로딩 상태 표시
+                          return CircularProgressIndicator();
                         } else if (scheduleSnapshot.hasError) {
                           return Text('Error: ${scheduleSnapshot.error}');
                         } else if (scheduleSnapshot.hasData) {
-                          int currentProgress = snapshot.data ?? 0; // Firestore에서 가져온 출석 데이터
-                          int totalProgress = scheduleSnapshot.data!.length; // 일정 수를 총 출석 가능 횟수로 사용
+                          int currentProgress = snapshot.data ?? 0;
+                          int totalProgress = scheduleSnapshot.data!.length;
                           return CurrentBar(
-                            currentProgress: currentProgress, // Firestore 출석 값 반영
-                            totalProgress: totalProgress, // Firestore 일정 수 반영
-                            schedules: scheduleSnapshot.data!, // Schedule 리스트 전달
+                            currentProgress: currentProgress,
+                            totalProgress: totalProgress,
+                            schedules: scheduleSnapshot.data!,
                           );
                         } else {
                           return Text('No schedule data available');
@@ -151,33 +142,33 @@ class _DrawerScreenState extends State<DrawerScreen> {
                   }
                 },
               ),
-
-              SizedBox.expand(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        AskButton(
-                          onPressed: () {},
-                          role: widget.role,
-                          id: widget.id,
-                        ),
-                        LogOutButton(onPressed: () {}),
-                      ],
-                    ),
-                    SizedBox(height: screenHeight * 0.02), // 반응형 여백
-                    Logo(onPressed: () {}),
-                    SizedBox(height: screenHeight * 0.1), // 반응형 여백
-                  ],
+              if (!widget.isFriendView) // 친구 보기 모드가 아니면 표시
+                SizedBox.expand(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          AskButton(
+                            onPressed: () {},
+                            role: widget.role,
+                            id: widget.id,
+                          ),
+                          LogOutButton(onPressed: () {}),
+                        ],
+                      ),
+                      SizedBox(height: screenHeight * 0.02),
+                      Logo(onPressed: () {}),
+                      SizedBox(height: screenHeight * 0.1),
+                    ],
+                  ),
                 ),
-              ),
-            ] else ...[ // 로그인 전에 로그인 버튼과 회원가입 버튼
+            ] else ...[
               LogInButton(onPressed: () {}),
               JoinButton(onPressed: () {}),
             ],
-            if (widget.role == '관리자') ...[
+            if (widget.role == '관리자' && !widget.isFriendView) ...[
               LogOutButton(onPressed: () {}),
               Logo(onPressed: () {}),
             ]

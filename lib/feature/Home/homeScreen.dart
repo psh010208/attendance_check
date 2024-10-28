@@ -108,6 +108,7 @@ class HomeScreen extends HookWidget {
       endDrawer: DrawerScreen(
         role: role,
         id: id,
+
       ),
       drawerScrimColor: Colors.black.withOpacity(0.5),
       body: Container(

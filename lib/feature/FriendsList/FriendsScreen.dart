@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import ' widget/Dialog/AddFriendButton.dart';
+import '../Drawer/drawerScreen.dart';
 import 'Model/FriendModel.dart';
 import 'ViewModel/FriendViewModel.dart';
 
@@ -20,6 +21,7 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
   List<FriendModel> pendingRequests = [];
   bool isLoading = true;
   String errorMessage = '';
+  String selectedFriendId = '';
 
   @override
   void initState() {
@@ -34,33 +36,28 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
       errorMessage = '';
     });
     try {
-      friendList = await _friendViewModel.fetchFriendList(widget.studentId);
-      pendingRequests = await _friendViewModel.fetchPendingRequests(widget.studentId);
-    } catch (e) {
-      errorMessage = "Error fetching friend data: $e";
-    } finally {
+      final fetchedFriends = await _friendViewModel.fetchFriendList(widget.studentId);
+      final fetchedPendingRequests = await _friendViewModel.fetchPendingRequests(widget.studentId);
+
       setState(() {
+        friendList = fetchedFriends;
+        pendingRequests = fetchedPendingRequests;
+        isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        errorMessage = "친구 데이터를 불러오는 중 오류가 발생했습니다: $e";
         isLoading = false;
       });
     }
   }
 
-  // 친구 요청 수락
-  Future<void> acceptFriendRequest(String friendId) async {
-    await _friendViewModel.acceptFriendRequest(widget.studentId, friendId);
-    fetchFriendData();
-  }
-
-  // 친구 요청 거절
-  Future<void> declineFriendRequest(String friendId) async {
-    await _friendViewModel.removePendingRequest(widget.studentId, friendId);
-    fetchFriendData();
-  }
-
-  // 친구 삭제
-  Future<void> removeFriend(String friendId) async {
-    await _friendViewModel.removeFriend(widget.studentId, friendId);
-    fetchFriendData();
+  // Method to open friend drawer
+  void openFriendDrawer(BuildContext context, String friendId) {
+    setState(() {
+      selectedFriendId = friendId;
+    });
+    Scaffold.of(context).openEndDrawer();
   }
 
   @override
@@ -68,19 +65,35 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
     return Scaffold(
       appBar: AppBar(
         title: Text('친구 관리'),
-        actions: [AddFriendButton(currentUserId: widget.studentId)],
+        actions: [
+          AddFriendButton(currentUserId: widget.studentId),
+        ],
         bottom: TabBar(
           controller: _tabController,
-          tabs: [Tab(text: '친구 목록'), Tab(text: '요청 대기 목록')],
+          tabs: [
+            Tab(text: '친구 목록'),
+            Tab(text: '요청 대기 목록'),
+          ],
         ),
       ),
+      endDrawer: DrawerScreen(
+        role: '학부생',
+        id: selectedFriendId,
+        isFriendView: true
+
+        ,
+      ),
+      drawerScrimColor: Colors.black.withOpacity(0.5),
       body: isLoading
           ? Center(child: CircularProgressIndicator())
           : errorMessage.isNotEmpty
           ? Center(child: Text(errorMessage))
           : TabBarView(
         controller: _tabController,
-        children: [buildFriendList(), buildPendingRequests()],
+        children: [
+          buildFriendList(),
+          buildPendingRequests(),
+        ],
       ),
     );
   }
@@ -91,7 +104,26 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
       padding: EdgeInsets.all(10),
       itemCount: friendList.length,
       itemBuilder: (context, index) {
-        return buildFriendCard(friendList[index], () => removeFriend(friendList[index].studentId), '삭제');
+        return Card(
+          elevation: 3,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+          child: Builder(
+            builder: (context) => ListTile(
+              contentPadding: EdgeInsets.all(10),
+              leading: CircleAvatar(
+                child: Text(friendList[index].name[0]),
+              ),
+              title: Text(friendList[index].name, style: TextStyle(fontWeight: FontWeight.bold)),
+              subtitle: Text(friendList[index].department),
+              trailing: TextButton(
+                onPressed: () => removeFriend(friendList[index].studentId),
+                child: Text('삭제', style: TextStyle(color: Colors.red)),
+              ),
+              onTap: () => openFriendDrawer(context, friendList[index].studentId),
+            ),
+          ),
+        );
       },
     )
         : Center(child: Text('친구가 없습니다.'));
@@ -103,36 +135,56 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
       padding: EdgeInsets.all(10),
       itemCount: pendingRequests.length,
       itemBuilder: (context, index) {
-        return buildFriendCard(pendingRequests[index],
-              () => acceptFriendRequest(pendingRequests[index].studentId),
-          '수락',
-          declineAction: () => declineFriendRequest(pendingRequests[index].studentId),
+        return Card(
+          elevation: 3,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+          child: ListTile(
+            contentPadding: EdgeInsets.all(10),
+            leading: CircleAvatar(
+              backgroundColor: Colors.blueAccent,
+              child: Text(pendingRequests[index].name[0]),
+            ),
+            title: Text(pendingRequests[index].name, style: TextStyle(fontWeight: FontWeight.bold)),
+            subtitle: Text(pendingRequests[index].department),
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextButton(
+                  onPressed: () => acceptFriendRequest(pendingRequests[index].studentId),
+                  child: Text('수락', style: TextStyle(color: Colors.green)),
+                ),
+                TextButton(
+                  onPressed: () => declineFriendRequest(pendingRequests[index].studentId),
+                  child: Text('거절', style: TextStyle(color: Colors.red)),
+                ),
+              ],
+            ),
+          ),
         );
       },
     )
         : Center(child: Text('요청 대기 중인 친구가 없습니다.'));
   }
 
-  Widget buildFriendCard(FriendModel friend, VoidCallback action, String actionLabel, {VoidCallback? declineAction}) {
-    return Card(
-      elevation: 3,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-      child: ListTile(
-        contentPadding: EdgeInsets.all(10),
-        leading: CircleAvatar(child: Text(friend.name[0])),
-        title: Text(friend.name, style: TextStyle(fontWeight: FontWeight.bold)),
-        subtitle: Text(friend.department),
-        trailing: declineAction == null
-            ? TextButton(onPressed: action, child: Text(actionLabel, style: TextStyle(color: Colors.red)))
-            : Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextButton(onPressed: action, child: Text(actionLabel, style: TextStyle(color: Colors.green))),
-            TextButton(onPressed: declineAction, child: Text('거절', style: TextStyle(color: Colors.red))),
-          ],
-        ),
-      ),
-    );
+  Future<void> removeFriend(String friendId) async {
+    await _friendViewModel.removeFriend(widget.studentId, friendId);
+    fetchFriendData();
+  }
+
+  Future<void> acceptFriendRequest(String friendId) async {
+    await _friendViewModel.acceptFriendRequest(widget.studentId, friendId);
+    fetchFriendData();
+  }
+
+  Future<void> declineFriendRequest(String friendId) async {
+    await _friendViewModel.removePendingRequest(widget.studentId, friendId);
+    fetchFriendData();
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 }
