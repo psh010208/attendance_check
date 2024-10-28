@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import ' widget/Dialog/AddFriendButton.dart';
+import '../ApproveList/widget/CustomText.dart';
 import '../Drawer/drawerScreen.dart';
 import '../Home/homeScreen.dart';
 import 'Model/FriendModel.dart';
@@ -87,8 +88,12 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
                   ),
                 );
               },
-            ),
-            Text('친구 관리'),
+            ),Spacer(),
+            CustomText(id : '친구 관리',size: 20.sp, color: Theme
+                .of(context)
+                .colorScheme
+                .scrim),
+            Spacer(),
           ],
         ),
         actions: [
@@ -97,29 +102,69 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
         bottom: TabBar(
           controller: _tabController,
           tabs: [
-            Tab(text: '친구 목록'),
-            Tab(text: '요청 대기 목록'),
+            Tab(
+              child: Text(
+                '친구 목록',
+                style: TextStyle(
+                  fontSize: 16, // 원하는 두께
+                    color: Theme
+                        .of(context)
+                        .colorScheme
+                        .scrim // 원하는 색상
+                ),
+              ),
+            ),
+            Tab(
+              child: Text(
+                '요청 대기 목록',
+                style: TextStyle(
+                  fontSize: 16,
+                    color: Theme
+                        .of(context)
+                        .colorScheme
+                        .scrim
+                ),
+              ),
+            ),
           ],
+
         ),
       ),
       endDrawer: DrawerScreen(
         role: '학부생',
         id: selectedFriendId,
         isFriendView: true
-
         ,
       ),
       drawerScrimColor: Colors.black.withOpacity(0.5),
-      body: isLoading
-          ? Center(child: CircularProgressIndicator())
-          : errorMessage.isNotEmpty
-          ? Center(child: Text(errorMessage))
-          : TabBarView(
-        controller: _tabController,
-        children: [
-          buildFriendList(),
-          buildPendingRequests(),
-        ],
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Theme
+                  .of(context)
+                  .colorScheme
+                  .onInverseSurface,
+              Theme
+                  .of(context)
+                  .primaryColorLight,
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            stops: [0.3, 0.9],
+          ),
+        ),
+        child: isLoading
+            ? Center(child: CircularProgressIndicator())
+            : errorMessage.isNotEmpty
+            ? Center(child: Text(errorMessage))
+            : TabBarView(
+          controller: _tabController,
+          children: [
+            buildFriendList(),
+            buildPendingRequests(),
+          ],
+        ),
       ),
     );
   }
@@ -152,7 +197,7 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
         );
       },
     )
-        : Center(child: Text('친구가 없습니다.'));
+        : Center(child: Text('아직 목록이 추가 되지 않았습니다.'));
   }
 
   Widget buildPendingRequests() {
