@@ -96,6 +96,7 @@ class LotteryViewModel {
   Stream<List<LotteryStudent>> getLotteryResults() {
     return _firestore
         .collection('lottery')
+        .orderBy('lottery_date', descending: false) // 당첨된 날짜 기준으로 오름차순 정렬
         .snapshots()
         .map((snapshot) {
       return snapshot.docs.map((doc) {
@@ -104,11 +105,12 @@ class LotteryViewModel {
         // 출석 횟수를 Firestore에서 가져와서 사용
         return LotteryStudent.fromFirestore(
           data,
-          attendanceCount: data['attendance_count'] ?? 0, // Firestore에서 출석 횟수 가져오기
+          attendanceCount: data['attendance_count'] ?? 0,
         );
-      ;}).toList();
+      }).toList();
     });
   }
+
 
   // 학생 정보 삭제 메서드 (학부생 포함)
   Future<void> deleteStudent(String studentId) async {
