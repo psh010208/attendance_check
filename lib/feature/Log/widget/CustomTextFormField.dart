@@ -9,6 +9,7 @@ class InfoTextField extends StatelessWidget {
   final bool obscureText;
   final FormFieldSetter<String>? onSaved;
   final FormFieldValidator<String>? validator; // validator 추가
+  final IconData? prefixIcon; // Add IconData for prefixIcon
 
   InfoTextField({
     required this.labelText,
@@ -17,6 +18,7 @@ class InfoTextField extends StatelessWidget {
     this.obscureText = false,
     this.onSaved,
     this.validator,
+    this.prefixIcon, // Add prefixIcon parameter
   });
 
   @override
