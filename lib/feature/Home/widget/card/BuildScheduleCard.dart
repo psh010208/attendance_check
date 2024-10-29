@@ -5,6 +5,20 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import '../../model/homeModel.dart';
 import '../SoonCheck.dart';
 import 'SchduleCardDesign.dart';
+import 'package:cloud_firestore/cloud_firestore.dart'; // Firestore 임포트 추가
+
+// 삭제 함수 추가
+Future<void> deleteScheduleFromDatabase(String scheduleId) async {
+  try {
+    await FirebaseFirestore.instance
+        .collection('schedules') // 데이터베이스의 컬렉션 이름을 맞춰 주세요
+        .doc(scheduleId) // 삭제할 문서의 ID
+        .delete();
+  } catch (e) {
+    print('Failed to delete schedule: $e');
+  }
+}
+
 
 class Buildschedulecard extends StatefulWidget {
   final List<Schedule> schedules;
@@ -186,10 +200,13 @@ class _ScheduleCardState extends State<Buildschedulecard> {
                 motion: DrawerMotion(),
                 children: [
                   SlidableAction(
-                    onPressed: (context) {
+                    onPressed: (context) async {
                       setState(() {
-                        widget.schedules.removeAt(index);
+                        widget.schedules.removeAt(index); // 로컬에서 삭제
                       });
+
+                      // Firestore에서 일정 삭제
+                      await deleteScheduleFromDatabase(schedule.id);
                     },
                     backgroundColor: Colors.red,
                     foregroundColor: Colors.white,
