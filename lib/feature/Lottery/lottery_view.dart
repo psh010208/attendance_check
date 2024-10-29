@@ -446,6 +446,7 @@ class _LotteryView extends State<LotteryView> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
+            backgroundColor: Theme.of(context).primaryColorLight,
             title: Text('추첨 완료 🎉', style: TextStyle(
                 color: Theme.of(context).colorScheme.onSurface,
                 fontSize: 23.sp,

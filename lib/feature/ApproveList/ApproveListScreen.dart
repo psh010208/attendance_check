@@ -171,6 +171,7 @@ class _ApproveListScreenState extends State<ApproveListScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
+          backgroundColor: Theme.of(context).primaryColorLight,
           title: CustomText(id: '${admin.name} 관리자 정보', size: 18),
           content: Column(
             mainAxisSize: MainAxisSize.min,

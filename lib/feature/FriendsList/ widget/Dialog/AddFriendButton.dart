@@ -59,7 +59,8 @@ print('친구 아이디 $friendId');
               title: Text('친구 추가 요청',
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    fontSize: 25
+                    fontSize: 20,
+                  color: Theme.of(context).colorScheme.scrim
                 )),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -68,7 +69,7 @@ print('친구 아이디 $friendId');
                     controller: _studentIdController,
                     decoration: InputDecoration(
                       labelText: '학번',
-                      labelStyle: TextStyle(color: Colors.black, fontSize: 18),
+                      labelStyle: TextStyle(color: Theme.of(context).colorScheme.scrim, fontWeight: FontWeight.bold,fontSize: 18),
                       fillColor: Theme.of(context).primaryColorLight, // 배경 색 설정
                       filled: true,
                     ),
@@ -78,7 +79,7 @@ print('친구 아이디 $friendId');
                     controller: _nameController,
                     decoration: InputDecoration(
                       labelText: '이름',
-                      labelStyle: TextStyle(color: Colors.black, fontSize: 18),
+                      labelStyle: TextStyle(color: Theme.of(context).colorScheme.scrim,fontWeight: FontWeight.bold, fontSize: 18),
                       fillColor: Theme.of(context).primaryColorLight, // 배경 색 설정
                       filled: true,
                     ),
@@ -89,20 +90,22 @@ print('친구 아이디 $friendId');
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(),
                   style: TextButton.styleFrom(
-                    foregroundColor: Colors.black,
+                    foregroundColor: Theme.of(context).colorScheme.scrim,
                   ),
                   child: Text('취소', style: TextStyle(
-                      fontWeight: FontWeight.normal,
+                      fontWeight: FontWeight.bold
+                      ,
                       fontSize: 16
+
             )),
                 ),
                 TextButton(
                   onPressed: sendFriendRequest,
                   style: TextButton.styleFrom(
-                    foregroundColor: Colors.black,
+                    foregroundColor: Theme.of(context).colorScheme.scrim,
                   ),
-                  child: Text('친구 추가 요청', style: TextStyle(
-                      fontWeight: FontWeight.normal,
+                  child: Text('요청', style: TextStyle(
+                      fontWeight: FontWeight.bold,
                       fontSize: 16
                   )),
                 ),

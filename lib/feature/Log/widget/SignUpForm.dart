@@ -73,9 +73,9 @@ class _SignUpFormState extends State<SignUpForm> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('회원가입 성공하였습니다.'),
+        title: Text('회원가입 성공'),
         content: Text(_selectedRole == '관리자'
-            ? '회원가입이 완료되었습니다. 관리자 승인 대기 중입니다.'
+            ? '회원가입이 완료되었습니다. 현재 관리자 권한 승인 대기 중입니다.'
             : '회원가입이 완료되었습니다!'),
         actions: [
           TextButton(
