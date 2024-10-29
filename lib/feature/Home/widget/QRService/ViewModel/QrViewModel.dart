@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
+import '../../../homeScreen.dart';
+
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 QRViewController? controller;
 
@@ -29,11 +31,11 @@ Future<void> addOrUpdateAttendance(BuildContext context, String studentId, Strin
         DateTime BeforeStart = start.subtract(Duration(minutes: 10));
         DateTime AfterStart = start.add(Duration(minutes: 10));
         if (now.isBefore(BeforeStart)) {
-          _showAlertDialog(context, '출석 가능 시간이 아닙니다.');
+          _showAlertDialog(context, '출석 가능한 시간이 아닙니다.',studentId);
           return;
         }
         if (now.isAfter(AfterStart)) {
-          _showAlertDialog(context, '출석 가능 시간이 지났습니다.');
+          _showAlertDialog(context, '출석 가능한 시간이 지났습니다.',studentId);
           return;
         }
 
@@ -51,7 +53,7 @@ Future<void> addOrUpdateAttendance(BuildContext context, String studentId, Strin
 
           // attendance 테이블의 qr_code 리스트에 스캔된 qr_code가 있는지 확인
           if (attendanceQrCodes.contains(scheduleQrCode)) {
-            _showAlertDialog(context, '이미 출석한 일정입니다.');
+            _showAlertDialog(context, '이미 출석한 일정입니다.',studentId);
             return;
           }
 
@@ -77,20 +79,20 @@ Future<void> addOrUpdateAttendance(BuildContext context, String studentId, Strin
         }
 
         // 출석 완료 팝업
-        _showAlertDialog(context, '출석 완료되었습니다.');
+        _showAlertDialog(context, '출석 완료되었습니다.',studentId);
       } else {
-        _showAlertDialog(context, 'schedule_name이 존재하지 않습니다.');
+        _showAlertDialog(context, 'schedule_name이 존재하지 않습니다.',studentId);
       }
 
       // attendance_summary 업데이트
       await _updateTotalAttendance(studentId);
       print(studentId);
     } else {
-      _showAlertDialog(context, '해당 QR 코드를 찾을 수 없습니다.');
+      _showAlertDialog(context, '해당 QR 코드를 찾을 수 없습니다.',studentId);
     }
   } catch (e) {
     print('출석 기록을 추가하거나 업데이트하는 중 에러가 발생했습니다: $e');
-    _showAlertDialog(context, 'QR 인식에 실패하였습니다.');
+    _showAlertDialog(context, 'QR 인식에 실패하였습니다.',studentId);
   }
 }
 
@@ -131,7 +133,7 @@ Future<void> _updateTotalAttendance(String studentId) async {
 }
 
 // 다이얼로그를 띄우는 함수
-void _showAlertDialog(BuildContext context, String message) {
+void _showAlertDialog(BuildContext context, String message, String studentId) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
@@ -144,6 +146,9 @@ void _showAlertDialog(BuildContext context, String message) {
             onPressed: () {
               controller?.dispose();
               Navigator.of(context).pop(); // 다이얼로그 닫기
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => HomeScreen(role: '학부생', id: studentId)), // HomeScreen으로 이동
+              );
             },
           ),
         ],

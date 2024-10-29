@@ -39,16 +39,13 @@ class NotificationService {
     await _notificationsPlugin
         .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
-    print("알림 채널 생성 완료"); // 추가된 로그
   }
 
   // 진동 및 배지 설정 포함 알림 표시 메서드
   static Future<void> showNotification(String scheduleName,BuildContext context) async {
-    print('알림 표시: $scheduleName'); // 로그 추가
     final isAlarmEnabled = context.read<MyStore>().onAlarm;
 
     if (!isAlarmEnabled) {
-      print('알림이 비활성화되어 있습니다.');
       return; // 알림이 비활성화된 경우 함수 종료
     }
     await _notificationsPlugin.show(
@@ -72,22 +69,18 @@ class NotificationService {
       ),
     );
 
-    print('알림이 표시되었습니다.'); // 추가된 로그
   }
 //commit
 // 특정 시간에 알림 예약
   static Future<void> scheduleNotification(String scheduleName, DateTime notificationTime, BuildContext context) async {
     if (notificationTime.isBefore(DateTime.now())) {
-      print('예약된 알림 시간이 현재 시각보다 과거입니다: $notificationTime');
       return; // 유효하지 않은 경우 함수를 종료
     }
 
     final Duration duration = notificationTime.difference(DateTime.now()); // 예약 시간까지 남은 시간 계산
 
-    print('알람 예약: $scheduleName at $notificationTime'); // 추가된 로그
     // Timer를 사용하여 알림 예약
     Timer(duration, () async {
-      print('알람이 울립니다: $scheduleName'); // 알람 발송 전 로그
       await showNotification(scheduleName, context); // 알림 이름과 context 전달
     });
   }

@@ -56,7 +56,7 @@ class _QrScannerState extends State<QrScanner> {
     return Scaffold(
       appBar: AppBar(
         title: Text('QR 코드 스캐너', style: TextStyle(color: Colors.white)),
-        backgroundColor: Theme.of(context).colorScheme.scrim,
+        backgroundColor: Colors.teal,
       ),
       body: GestureDetector(
         onDoubleTapDown: _handleDoubleTapDown,
@@ -85,7 +85,7 @@ class _QrScannerState extends State<QrScanner> {
                               key: qrKey,
                               onQRViewCreated: _onQRViewCreated,
                               overlay: QrScannerOverlayShape(
-                                borderColor: Theme.of(context).colorScheme.secondaryContainer,
+                                borderColor: Colors.teal,
                                 borderRadius: 10.r,
                                 borderLength: 30.w,
                                 borderWidth: 15.w,
@@ -99,8 +99,9 @@ class _QrScannerState extends State<QrScanner> {
                   ),
                 ],
               ),
+              // 하단 중앙에 플래시 아이콘 추가
               Positioned(
-                bottom: 30.h,
+                bottom: 30.h, // 플래시 아이콘 위치 조정
                 left: 0,
                 right: 0,
                 child: Column(
@@ -110,7 +111,7 @@ class _QrScannerState extends State<QrScanner> {
                       icon: Icon(
                         isFlashOn ? Icons.flashlight_off : Icons.flashlight_on,
                         size: 45.w,
-                        color: Colors.white,
+                        color: Colors.teal, // 아이콘 색상 조정
                       ),
                       onPressed: () {
                         controller?.toggleFlash();
@@ -119,10 +120,10 @@ class _QrScannerState extends State<QrScanner> {
                         });
                       },
                     ),
-                    SizedBox(height: 10.h),
+                    SizedBox(height: 10.h), // 아이콘과 텍스트 간격 조정
                     Text(
-                      '  플래시 ${isFlashOn ? "끄기" : "켜기"}',
-                      style: TextStyle(color: Colors.white, fontSize: 16.sp),
+                      '플래시 ${isFlashOn ? "끄기" : "켜기"}',
+                      style: TextStyle(color: Colors.teal, fontSize: 16.sp),
                     ),
                   ],
                 ),
@@ -161,9 +162,7 @@ class _QrScannerState extends State<QrScanner> {
         controller.pauseCamera();
 
         await addOrUpdateAttendance(context, widget.studentId, result!.code!);
-
-        // QR 코드 인식 후 뒤로가기
-        Navigator.pop(context);
+        dispose();
       }
     });
   }

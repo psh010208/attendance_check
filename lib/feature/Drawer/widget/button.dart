@@ -340,7 +340,7 @@ class FriendsListButton extends StatelessWidget {
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => FriendsScreen(
-            studentId: id, role: this.role, id: this.id,)),
+            studentId: id, role: role, id: id,)),
         );
       },
       icon: Icons.group,

@@ -62,7 +62,7 @@ class _SignUpFormState extends State<SignUpForm> {
   Future<bool> _checkDuplicate() async {
     bool isDuplicate = await logViewModel.isStudentIdDuplicate(_studentId!);
     if (isDuplicate) {
-      showErrorDialog(context, '오류', '이미 사용 중인 학번입니다.'); // 변경된 다이얼로그 호출
+      showErrorDialog(context, '회원가입 실패', '이미 사용 중인 학번입니다.'); // 변경된 다이얼로그 호출
       return true;
     }
     return false;
@@ -73,7 +73,7 @@ class _SignUpFormState extends State<SignUpForm> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text('회원가입 성공'),
+        title: Text('회원가입 성공하였습니다.'),
         content: Text(_selectedRole == '관리자'
             ? '회원가입이 완료되었습니다. 관리자 승인 대기 중입니다.'
             : '회원가입이 완료되었습니다!'),
@@ -205,7 +205,6 @@ class _SignUpFormState extends State<SignUpForm> {
       TextInputType.number,
       false,
           (value) => _studentId = value,
-      // validator에 8자리 필수 입력 추가
       validator: (value) {
         if (value == null || value.isEmpty) {
           return '학번/사번을 입력하세요';

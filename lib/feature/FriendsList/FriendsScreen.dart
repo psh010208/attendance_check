@@ -32,6 +32,7 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+    selectedFriendId = widget.studentId; // 자신의 ID로 초기화
     fetchFriendData();
   }
 
@@ -60,10 +61,11 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
   // Method to open friend drawer
   void openFriendDrawer(BuildContext context, String friendId) {
     setState(() {
-      selectedFriendId = friendId;
+      selectedFriendId = friendId; // 친구 ID로 업데이트
     });
     Scaffold.of(context).openEndDrawer();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -143,7 +145,7 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
         backgroundColor: Colors.black, // 배경색을 검은색으로 설정
         child: DrawerScreen(
           role: '학부생',
-          id: widget.id,
+          id: selectedFriendId,
           isFriendView: true,
         ),
       ),
@@ -175,7 +177,8 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
           children: [
             buildFriendList(),
             buildPendingRequests(),
-          ],
+
+        ],
         ),
       ),
     );
