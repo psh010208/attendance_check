@@ -198,7 +198,8 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
             decoration: _buildCardDecoration(context),
             child: Builder(
               builder: (context) => ListTile(
-                contentPadding: EdgeInsets.all(10),
+                contentPadding: EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 5),
+                //contentPadding: EdgeInsets.all(20),
                 leading: CircleAvatar(
                   child: Text(friendList[index].name[0]),
                 ),
@@ -220,7 +221,7 @@ class _FriendsScreenState extends State<FriendsScreen> with SingleTickerProvider
                     children: [
                       Icon(Icons.delete, color: Colors.red), // 삭제 아이콘과 색상
                       SizedBox(width: 1), // 아이콘과 텍스트 사이의 간격
-                      Text('삭제', style: TextStyle(color: Colors.red)),
+                      Text('삭제', style: TextStyle(color: Colors.black)),
                     ],
                   ),
                 ),

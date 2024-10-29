@@ -52,29 +52,59 @@ print('친구 아이디 $friendId');
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('친구 추가 요청'),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              backgroundColor: Theme.of(context).primaryColorLight,
+              title: Text('친구 추가 요청',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 25
+                )),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   TextField(
                     controller: _studentIdController,
-                    decoration: InputDecoration(labelText: '학번'),
+                    decoration: InputDecoration(
+                      labelText: '학번',
+                      labelStyle: TextStyle(color: Colors.black, fontSize: 18),
+                      fillColor: Theme.of(context).primaryColorLight, // 배경 색 설정
+                      filled: true,
+                    ),
                     keyboardType: TextInputType.number,
                   ),
                   TextField(
                     controller: _nameController,
-                    decoration: InputDecoration(labelText: '이름'),
+                    decoration: InputDecoration(
+                      labelText: '이름',
+                      labelStyle: TextStyle(color: Colors.black, fontSize: 18),
+                      fillColor: Theme.of(context).primaryColorLight, // 배경 색 설정
+                      filled: true,
+                    ),
                   ),
                 ],
               ),
               actions: [
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(),
-                  child: Text('취소'),
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.black,
+                  ),
+                  child: Text('취소', style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      fontSize: 16
+            )),
                 ),
                 TextButton(
                   onPressed: sendFriendRequest,
-                  child: Text('친구 추가 요청'),
+                  style: TextButton.styleFrom(
+                    foregroundColor: Colors.black,
+                  ),
+                  child: Text('친구 추가 요청', style: TextStyle(
+                      fontWeight: FontWeight.normal,
+                      fontSize: 16
+                  )),
                 ),
               ],
             );
